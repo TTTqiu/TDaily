@@ -1,6 +1,9 @@
 package com.ttt.zhihudaily;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +19,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +49,28 @@ public class MainActivity extends AppCompatActivity {
         list.add(title7);
         list.add(title8);
 
+        // ListView
         listView.setAdapter(new TitleAdapter(this,R.layout.list_view_item,list));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=new Intent(MainActivity.this,NewsActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        // 下拉刷新
+        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.refresh);
+        swipeRefreshLayout.setColorSchemeColors(Color.GREEN);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },5000);
             }
         });
     }
