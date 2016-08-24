@@ -1,1 +1,1 @@
-# ZhiHuDaily
+# 简易知乎日报
