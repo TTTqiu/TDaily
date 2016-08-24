@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
+        <layer-list>
+            <item>
+                <color android:color="@color/背景灰"/>
+            </item>
+            <item android:top="5dp" android:bottom="1dp">
+                <shape>
+                    <solid
+                        android:color="@color/阴影灰"/>
+                    <corners
+                        android:radius="3dp"/>
+                </shape>
+            </item>
+            <item android:top="5dp" android:bottom="5dp" android:right="2dp">
+                <shape>
+                    <solid
+                        android:color="@color/白色"/>
+                    <corners
+                        android:radius="3dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <color android:color="@color/背景灰"/>
+            </item>
+            <item android:top="5dp" android:bottom="1dp">
+                <shape>
+                    <solid
+                        android:color="@color/阴影灰"/>
+                    <corners
+                        android:radius="3dp"/>
+                </shape>
+            </item>
+            <item android:top="5dp" android:bottom="5dp" android:right="2dp">
+                <shape>
+                    <solid
+                        android:color="@color/按下灰"/>
+                    <corners
+                        android:radius="3dp"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

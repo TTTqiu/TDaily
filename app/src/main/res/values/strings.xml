@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">知乎日报</string>
+    <string name="menu_fav">收藏</string>
+    <string name="menu_settings">设置</string>
+</resources>

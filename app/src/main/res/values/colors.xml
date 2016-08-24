@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="背景灰">#ffeeeeee</color>
+    <color name="阴影灰">#c6c6c6</color>
+    <color name="白色">#ffffff</color>
+    <color name="黑色">#000000</color>
+    <color name="按下灰">#e9e9e9</color>
+</resources>
