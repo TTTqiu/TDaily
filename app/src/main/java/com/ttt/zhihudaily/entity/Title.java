@@ -1,5 +1,6 @@
 package com.ttt.zhihudaily.entity;
 
+
 import java.io.Serializable;
 
 public class Title implements Serializable{

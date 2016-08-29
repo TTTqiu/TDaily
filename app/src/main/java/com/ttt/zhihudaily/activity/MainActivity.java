@@ -37,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
         setTitle(getTime());
 
         initListView();
-        new LoadTitleTask(adapter).execute();
+        if(HttpUtil.isNetworkConnected(this)){
+            new LoadTitleTask(adapter).execute();
+        }else {
+            Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
+        }
         pullToRefresh();
     }
 
@@ -73,14 +77,21 @@ public class MainActivity extends AppCompatActivity {
         return format.format(calendar.getTime());
     }
 
-    // 下拉刷新
+    /**
+     * 下拉刷新
+     */
     private void pullToRefresh(){
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.refresh);
         swipeRefreshLayout.setColorSchemeColors(Color.GREEN,Color.YELLOW,Color.RED);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new LoadTitleTask(adapter,swipeRefreshLayout,MainActivity.this).execute();
+                if(HttpUtil.isNetworkConnected(MainActivity.this)){
+                    new LoadTitleTask(adapter,swipeRefreshLayout,MainActivity.this).execute();
+                }else {
+                    Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }

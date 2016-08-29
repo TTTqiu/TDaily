@@ -14,25 +14,29 @@ import android.widget.Toast;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.db.ZhiHuDailyDB;
 import com.ttt.zhihudaily.entity.Title;
+import com.ttt.zhihudaily.task.LoadNewsTask;
+import com.ttt.zhihudaily.util.HttpUtil;
 
 public class NewsActivity extends AppCompatActivity {
 
     private Boolean isFavourite=false;
     private ZhiHuDailyDB mZhiHuDailyDB;
     private Title title;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        WebView webView=(WebView)findViewById(R.id.webview);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        webView=(WebView)findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         title=(Title) getIntent().getSerializableExtra("title");
-        if(title!=null){
-            webView.loadUrl("http://daily.zhihu.com/story/"+title.getId());
-        }
+        int newsId=title.getId();
+        new LoadNewsTask(webView).execute(newsId);
         mZhiHuDailyDB=ZhiHuDailyDB.getInstance(this);
         isFavourite=mZhiHuDailyDB.isFavourite(title);
     }
@@ -45,7 +49,7 @@ public class NewsActivity extends AppCompatActivity {
         }
         return true;
     }
-
+//
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
@@ -66,12 +70,16 @@ public class NewsActivity extends AppCompatActivity {
             default:
                 break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     public static void startNewsActivity(Context context,Title title){
-        Intent intent=new Intent(context,NewsActivity.class);
-        intent.putExtra("title",title);
-        context.startActivity(intent);
+        if(HttpUtil.isNetworkConnected(context)){
+            Intent intent=new Intent(context,NewsActivity.class);
+            intent.putExtra("title",title);
+            context.startActivity(intent);
+        }else {
+            Toast.makeText(context, "No Network", Toast.LENGTH_SHORT).show();
+        }
     }
 }

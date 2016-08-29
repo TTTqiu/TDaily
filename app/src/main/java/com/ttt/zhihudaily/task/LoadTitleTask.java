@@ -5,18 +5,17 @@ import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.Toast;
 
-import com.ttt.zhihudaily.activity.MainActivity;
 import com.ttt.zhihudaily.adapter.TitleAdapter;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.util.HttpUtil;
-import com.ttt.zhihudaily.util.TitleJSONBean;
+import com.ttt.zhihudaily.entity.TitleBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadTitleTask extends AsyncTask<Void,Void,TitleJSONBean>{
+public class LoadTitleTask extends AsyncTask<Void,Void,TitleBean>{
 
-    private List<Title> list=new ArrayList<>(13);
+    private List<Title> list=new ArrayList<>();
     private TitleAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Context context;
@@ -32,12 +31,12 @@ public class LoadTitleTask extends AsyncTask<Void,Void,TitleJSONBean>{
     }
 
     @Override
-    protected TitleJSONBean doInBackground(Void... voids) {
+    protected TitleBean doInBackground(Void... voids) {
         return HttpUtil.getParsedTitle();
     }
 
     @Override
-    protected void onPostExecute(TitleJSONBean bean) {
+    protected void onPostExecute(TitleBean bean) {
         Title title;
         for(int i=0;i<bean.getStories().length;i++){
             title=new Title(bean.getStories()[i].getTitle(),bean.getStories()[i].getImages()[0],

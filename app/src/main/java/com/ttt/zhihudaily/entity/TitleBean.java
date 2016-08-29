@@ -1,6 +1,6 @@
-package com.ttt.zhihudaily.util;
+package com.ttt.zhihudaily.entity;
 
-public class TitleJSONBean {
+public class TitleBean {
     private String date;
     private Stories[] stories;
 

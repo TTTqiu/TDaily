@@ -1,20 +1,23 @@
 package com.ttt.zhihudaily.util;
 
-import android.util.Log;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ttt.zhihudaily.entity.NewsBean;
+import com.ttt.zhihudaily.entity.TitleBean;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HttpUtil {
     private static String TITLE_LIST="http://news-at.zhihu.com/api/4/news/latest";
-    private static String NEWS_DETAIL="http://news-at.zhihu.com/api/4/news/3892357";
+    private static String NEWS_DETAIL="http://news-at.zhihu.com/api/4/news/";
 
     public static String sendHttpRequest(String address){
         HttpURLConnection connection=null;
@@ -47,8 +50,20 @@ public class HttpUtil {
         }
     }
 
-    public static TitleJSONBean getParsedTitle(){
+    public static TitleBean getParsedTitle(){
         Gson gson=new Gson();
-        return gson.fromJson(sendHttpRequest(TITLE_LIST),new TypeToken<TitleJSONBean>(){}.getType());
+        return gson.fromJson(sendHttpRequest(TITLE_LIST),new TypeToken<TitleBean>(){}.getType());
+    }
+
+    public static NewsBean getParsedNews(int id){
+        Gson gson=new Gson();
+        return gson.fromJson(sendHttpRequest(NEWS_DETAIL+id),new TypeToken<NewsBean>(){}.getType());
+    }
+
+    public static Boolean isNetworkConnected(Context context){
+        ConnectivityManager manager=(ConnectivityManager)context.
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo=manager.getActiveNetworkInfo();
+        return networkInfo!=null&&networkInfo.isConnected();
     }
 }
