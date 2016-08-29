@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     android:background="@color/背景灰"
-    tools:context="com.ttt.zhihudaily.FavouriteActivity">
+    tools:context=".activity.FavouriteActivity">
 
     <ListView
         android:id="@+id/list_view_fav"

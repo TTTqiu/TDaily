@@ -1,4 +1,4 @@
-package com.ttt.zhihudaily;
+package com.ttt.zhihudaily.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,15 +8,27 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.ttt.zhihudaily.R;
+import com.ttt.zhihudaily.entity.Title;
+
 import java.util.List;
 
 public class TitleAdapter extends ArrayAdapter<Title>{
 
     private int resource;
+    private Context mContext;
 
-    public TitleAdapter(Context context, int resource, List<Title> objects){
+    public TitleAdapter(Context context, int resource){
+        super(context,resource);
+        this.resource=resource;
+        mContext=context;
+    }
+
+    public TitleAdapter(Context context, int resource,List<Title> objects){
         super(context,resource,objects);
         this.resource=resource;
+        mContext=context;
     }
 
     @Override
@@ -34,13 +46,20 @@ public class TitleAdapter extends ArrayAdapter<Title>{
             view=convertView;
             viewHolder=(ViewHolder) view.getTag();
         }
-        viewHolder.imageView.setImageResource(title.getImageId());
+
         viewHolder.textView.setText(title.getName());
+        Glide.with(mContext).load(title.getImage()).into(viewHolder.imageView);
         return view;
     }
 
     private class ViewHolder{
         private ImageView imageView;
         private TextView textView;
+    }
+
+    public void refreshList(List<Title> list){
+        clear();
+        addAll(list);
+        notifyDataSetChanged();
     }
 }
