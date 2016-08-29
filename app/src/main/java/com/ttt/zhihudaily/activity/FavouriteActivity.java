@@ -34,9 +34,7 @@ public class FavouriteActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent=new Intent(FavouriteActivity.this,NewsActivity.class);
-                intent.putExtra("title",adapter.getItem(position));
-                startActivity(intent);
+                NewsActivity.startNewsActivity(FavouriteActivity.this,adapter.getItem(position));
             }
         });
     }

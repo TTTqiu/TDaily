@@ -1,5 +1,6 @@
 package com.ttt.zhihudaily.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.BoolRes;
 import android.support.v7.app.AppCompatActivity;
@@ -66,5 +67,11 @@ public class NewsActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    public static void startNewsActivity(Context context,Title title){
+        Intent intent=new Intent(context,NewsActivity.class);
+        intent.putExtra("title",title);
+        context.startActivity(intent);
     }
 }

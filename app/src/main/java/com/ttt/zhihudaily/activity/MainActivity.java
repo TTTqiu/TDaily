@@ -92,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent=new Intent(MainActivity.this,NewsActivity.class);
-                intent.putExtra("title",adapter.getItem(position));
-                startActivity(intent);
+                NewsActivity.startNewsActivity(MainActivity.this,adapter.getItem(position));
             }
         });
     }

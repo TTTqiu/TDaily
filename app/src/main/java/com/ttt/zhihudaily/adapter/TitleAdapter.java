@@ -48,7 +48,12 @@ public class TitleAdapter extends ArrayAdapter<Title>{
         }
 
         viewHolder.textView.setText(title.getName());
-        Glide.with(mContext).load(title.getImage()).into(viewHolder.imageView);
+        Glide
+                .with(mContext)
+                .load(title.getImage())
+                .placeholder(R.drawable.loading_image)
+                .error(R.drawable.fail_image)
+                .into(viewHolder.imageView);
         return view;
     }
 
