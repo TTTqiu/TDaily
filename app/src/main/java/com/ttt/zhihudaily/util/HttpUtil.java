@@ -16,7 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpUtil {
-    private static String TITLE_LIST="http://news-at.zhihu.com/api/4/news/latest";
+    private static String LATEST_TITLE="http://news-at.zhihu.com/api/4/news/latest";
+    private static String BEFORE_TITLE="http://news-at.zhihu.com/api/4/news/before/";
     private static String NEWS_DETAIL="http://news-at.zhihu.com/api/4/news/";
 
     public static String sendHttpRequest(String address){
@@ -50,9 +51,14 @@ public class HttpUtil {
         }
     }
 
-    public static TitleBean getParsedTitle(){
+    public static TitleBean getParsedLatestTitle(){
         Gson gson=new Gson();
-        return gson.fromJson(sendHttpRequest(TITLE_LIST),new TypeToken<TitleBean>(){}.getType());
+        return gson.fromJson(sendHttpRequest(LATEST_TITLE),new TypeToken<TitleBean>(){}.getType());
+    }
+
+    public static TitleBean getParsedBeforeTitle(String date){
+        Gson gson=new Gson();
+        return gson.fromJson(sendHttpRequest(BEFORE_TITLE+date),new TypeToken<TitleBean>(){}.getType());
     }
 
     public static NewsBean getParsedNews(int id){

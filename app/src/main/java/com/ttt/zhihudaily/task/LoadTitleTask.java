@@ -19,20 +19,36 @@ public class LoadTitleTask extends AsyncTask<Void,Void,TitleBean>{
     private TitleAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Context context;
+    private String date;
 
     public LoadTitleTask(TitleAdapter adapter){
         this.adapter=adapter;
     }
 
+    public LoadTitleTask(TitleAdapter adapter,String date){
+        this(adapter);
+        this.date=date;
+    }
+
     public LoadTitleTask(TitleAdapter adapter,SwipeRefreshLayout swipeRefreshLayout,Context context){
-        this.adapter=adapter;
+        this(adapter);
         this.swipeRefreshLayout=swipeRefreshLayout;
         this.context=context;
     }
 
+    public LoadTitleTask(TitleAdapter adapter,SwipeRefreshLayout swipeRefreshLayout,
+                         Context context,String date){
+        this(adapter,swipeRefreshLayout,context);
+        this.date=date;
+    }
+
     @Override
     protected TitleBean doInBackground(Void... voids) {
-        return HttpUtil.getParsedTitle();
+        if(date!=null){
+            return HttpUtil.getParsedBeforeTitle(date);
+        }else {
+            return HttpUtil.getParsedLatestTitle();
+        }
     }
 
     @Override

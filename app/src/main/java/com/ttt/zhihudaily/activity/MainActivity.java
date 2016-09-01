@@ -1,23 +1,17 @@
 package com.ttt.zhihudaily.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.ttt.zhihudaily.R;
-import com.ttt.zhihudaily.entity.Title;
-import com.ttt.zhihudaily.adapter.TitleAdapter;
-import com.ttt.zhihudaily.task.LoadTitleTask;
-import com.ttt.zhihudaily.util.HttpUtil;
+import com.ttt.zhihudaily.adapter.MyPagerAdapter;
+import com.ttt.zhihudaily.fragment.MyFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,23 +20,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private TitleAdapter adapter;
-    private ListView listView;
+    private List<Fragment> list=new ArrayList<>();
+    private String[] titles=new String[5];
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle(getTime());
+//        getSupportActionBar().setElevation(0);
 
-        initListView();
-        if(HttpUtil.isNetworkConnected(this)){
-            new LoadTitleTask(adapter).execute();
-        }else {
-            Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
-        }
-        pullToRefresh();
+        initViewPager();
+        initStrip();
     }
 
     @Override
@@ -68,43 +57,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 获得日期和星期
-     * @return 2016年8月23日 星期三 格式的日期
+     * 获得日期
+     * @return 2016年8月23日 格式的日期
      */
-    private String getTime(){
+    private String getDate(int i,Boolean isFormat){
         Calendar calendar=Calendar.getInstance();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy年M月d日 EEEE");
-        return format.format(calendar.getTime());
+        calendar.add(Calendar.DATE,-i);
+        SimpleDateFormat simpleDateFormat;
+        if(isFormat){
+            simpleDateFormat=new SimpleDateFormat("yyyy年M月d日");
+        }else {
+            simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
+        }
+        return simpleDateFormat.format(calendar.getTime());
     }
 
-    /**
-     * 下拉刷新
-     */
-    private void pullToRefresh(){
-        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.refresh);
-        swipeRefreshLayout.setColorSchemeColors(Color.GREEN,Color.YELLOW,Color.RED);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if(HttpUtil.isNetworkConnected(MainActivity.this)){
-                    new LoadTitleTask(adapter,swipeRefreshLayout,MainActivity.this).execute();
-                }else {
-                    Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        });
+    private void initStrip(){
+        PagerSlidingTabStrip strip=(PagerSlidingTabStrip)findViewById(R.id.pager_strip);
+        strip.setIndicatorHeight(15);
+        strip.setDividerColorResource(R.color.colorPrimary);
+        strip.setIndicatorColorResource(R.color.colorPrimary);
+        strip.setTabPaddingLeftRight(30);
+        strip.setTextColorResource(R.color.colorPrimary);
+        strip.setTextSize(40);
+        strip.setViewPager(viewPager);
     }
 
-    private void initListView(){
-        listView=(ListView)findViewById(R.id.list_view);
-        adapter=new TitleAdapter(this,R.layout.list_view_item);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                NewsActivity.startNewsActivity(MainActivity.this,adapter.getItem(position));
+    private void initViewPager(){
+        for(int i=0;i<5;i++){
+            titles[i]= getDate(i,true);
+            MyFragment fragment=new MyFragment();
+            if(i!=0){
+                Bundle bundle=new Bundle();
+                bundle.putString("date",getDate(i-1,false));
+                fragment.setArguments(bundle);
             }
-        });
+            list.add(fragment);
+
+            viewPager=(ViewPager)findViewById(R.id.view_pager);
+            viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(),list,titles));
+        }
     }
 }
