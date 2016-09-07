@@ -3,6 +3,7 @@ package com.ttt.zhihudaily.entity;
 public class TitleBean {
     private String date;
     private Stories[] stories;
+    private TopStories[] top_stories;
 
     public String getDate() {
         return date;
@@ -18,6 +19,14 @@ public class TitleBean {
 
     public void setStories(Stories[] stories) {
         this.stories = stories;
+    }
+
+    public TopStories[] getTop_stories() {
+        return top_stories;
+    }
+
+    public void setTop_stories(TopStories[] top_stories) {
+        this.top_stories = top_stories;
     }
 
     public class Stories{
@@ -47,6 +56,27 @@ public class TitleBean {
 
         public void setId(int id) {
             this.id = id;
+        }
+    }
+
+    public class TopStories{
+        private String title;
+        private String image;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
         }
     }
 }

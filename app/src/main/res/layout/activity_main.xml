@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
@@ -10,21 +9,66 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="160dp"/>
+
+    <LinearLayout
+        android:id="@+id/dot_linear"
+        android:layout_alignBottom="@+id/banner"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="25dp">
+        <View
+            android:id="@+id/dot1"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/dot_focus"/>
+        <View
+            android:id="@+id/dot2"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/dot_normal"/>
+        <View
+            android:id="@+id/dot3"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/dot_normal"/>
+        <View
+            android:id="@+id/dot4"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/dot_normal"/>
+        <View
+            android:id="@+id/dot5"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/dot_normal"/>
+    </LinearLayout>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
+        android:layout_below="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         app:tabBackground="@color/colorPrimary"
-        app:tabTextColor="@color/阴影灰"
+        app:tabTextColor="@color/按下灰"
         app:tabSelectedTextColor="@color/白色"
         app:tabIndicatorColor="@color/白色"
         app:tabMode="scrollable"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
+        android:layout_below="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+</RelativeLayout>
