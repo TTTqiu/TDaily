@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/banner_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/banner_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/banner_image"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingBottom="25dp"
+        android:textSize="18sp"
+        android:textColor="@color/白色"/>
+</RelativeLayout>

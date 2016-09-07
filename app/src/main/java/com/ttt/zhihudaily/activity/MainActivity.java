@@ -9,17 +9,21 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.bumptech.glide.Glide;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.adapter.MyPagerAdapter;
+import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.fragment.MyFragment;
 import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.util.HttpUtil;
@@ -32,14 +36,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private List<Fragment> list=new ArrayList<>();
     private String[] titles=new String[5];
     private ViewPager viewPager;
     private ViewPager banner;
     private List<View> dotList;
-    private List<ImageView> imageViewList;
+    private List<View> bannerList;
+    private List<Title> bannerTitleList;
     private Boolean isAutoPlay=false;
     private int currentItem;
     private ScheduledExecutorService executorService;
@@ -57,17 +62,40 @@ public class MainActivity extends AppCompatActivity {
 //        getSupportActionBar().setElevation(0);
 
         initViewPager();
-        TabLayout tabLayout=(TabLayout)findViewById(R.id.tab_layout);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        initDotList();
-        initImageList();
-        initBanner();
+        if (HttpUtil.isNetworkConnected(this)) {
+            initDotList();
+            initBannerList();
+            initBanner();
 
-        if(HttpUtil.isNetworkConnected(this)){
-            new LoadBannerTask(imageViewList,this).execute();
-        }else {
+            new LoadBannerTask(bannerList, this, bannerTitleList).execute();
+        } else {
             Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (currentItem){
+            case 0:
+                NewsActivity.startNewsActivity(this,bannerTitleList.get(0));
+                break;
+            case 1:
+                NewsActivity.startNewsActivity(this,bannerTitleList.get(1));
+                break;
+            case 2:
+                NewsActivity.startNewsActivity(this,bannerTitleList.get(2));
+                break;
+            case 3:
+                NewsActivity.startNewsActivity(this,bannerTitleList.get(3));
+                break;
+            case 4:
+                NewsActivity.startNewsActivity(this,bannerTitleList.get(4));
+                break;
+            default:
+                break;
         }
     }
 
@@ -111,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPlay(){
         executorService=Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(new SlideTask(),3,5, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(new SlideTask(),4,5, TimeUnit.SECONDS);
         isAutoPlay=true;
     }
 
@@ -154,17 +182,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            currentItem=(currentItem+1)%imageViewList.size();
+            currentItem=(currentItem+1)%bannerList.size();
             handler.obtainMessage().sendToTarget();
         }
     }
 
-    private void initImageList(){
-        imageViewList=new ArrayList<>();
+    private void initBannerList(){
+        bannerList=new ArrayList<>();
         for(int i=0;i<5;i++){
-            ImageView imageView=new ImageView(this);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageViewList.add(imageView);
+            View view= LayoutInflater.from(this).inflate(R.layout.banner_view,null);
+            view.setOnClickListener(this);
+            bannerList.add(view);
         }
     }
 
@@ -179,11 +207,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void initBanner(){
         currentItem=0;
+        bannerTitleList=new ArrayList<>();
         banner=(ViewPager)findViewById(R.id.banner);
         banner.setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
-                return imageViewList.size();
+                return bannerList.size();
             }
 
             @Override
@@ -193,13 +222,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                container.addView(imageViewList.get(position));
-                return imageViewList.get(position);
+                container.addView(bannerList.get(position));
+                return bannerList.get(position);
             }
 
             @Override
             public void destroyItem(ViewGroup container, int position, Object object) {
-                container.removeView(imageViewList.get(position));
+                container.removeView(bannerList.get(position));
             }
         });
         banner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
