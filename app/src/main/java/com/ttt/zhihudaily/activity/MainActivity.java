@@ -1,6 +1,7 @@
 package com.ttt.zhihudaily.activity;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
 //        getSupportActionBar().setElevation(0);
 
         initViewPager();
-        initStrip();
+        TabLayout tabLayout=(TabLayout)findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -70,17 +72,6 @@ public class MainActivity extends AppCompatActivity {
             simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
         }
         return simpleDateFormat.format(calendar.getTime());
-    }
-
-    private void initStrip(){
-        PagerSlidingTabStrip strip=(PagerSlidingTabStrip)findViewById(R.id.pager_strip);
-        strip.setIndicatorHeight(15);
-        strip.setDividerColorResource(R.color.colorPrimary);
-        strip.setIndicatorColorResource(R.color.colorPrimary);
-        strip.setTabPaddingLeftRight(30);
-        strip.setTextColorResource(R.color.colorPrimary);
-        strip.setTextSize(40);
-        strip.setViewPager(viewPager);
     }
 
     private void initViewPager(){
