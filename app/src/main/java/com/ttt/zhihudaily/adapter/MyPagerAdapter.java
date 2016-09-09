@@ -3,6 +3,7 @@ package com.ttt.zhihudaily.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,10 @@ public class MyPagerAdapter extends FragmentPagerAdapter{
     private List<Fragment> list;
     private String[] titles;
 
-    public MyPagerAdapter(FragmentManager fm, List<Fragment> list,String[] titles){
+    public MyPagerAdapter(FragmentManager fm, List<Fragment> list, String[] titles) {
         super(fm);
-        this.list=list;
-        this.titles=titles;
+        this.list = list;
+        this.titles = titles;
     }
 
     @Override

@@ -1,19 +1,10 @@
 package com.ttt.zhihudaily.task;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.webkit.WebView;
-import android.widget.Toast;
 
-import com.ttt.zhihudaily.adapter.TitleAdapter;
 import com.ttt.zhihudaily.entity.NewsBean;
-import com.ttt.zhihudaily.entity.Title;
-import com.ttt.zhihudaily.entity.TitleBean;
 import com.ttt.zhihudaily.util.HttpUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoadNewsTask extends AsyncTask<Integer,Void,NewsBean>{
 

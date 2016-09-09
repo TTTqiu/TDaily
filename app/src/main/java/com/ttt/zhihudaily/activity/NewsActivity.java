@@ -2,20 +2,17 @@ package com.ttt.zhihudaily.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.BoolRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.db.ZhiHuDailyDB;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadNewsTask;
-import com.ttt.zhihudaily.util.HttpUtil;
 
 public class NewsActivity extends AppCompatActivity {
 
@@ -29,8 +26,6 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         webView=(WebView)findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
@@ -73,13 +68,9 @@ public class NewsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void startNewsActivity(Context context,Title title){
-        if(HttpUtil.isNetworkConnected(context)){
-            Intent intent=new Intent(context,NewsActivity.class);
-            intent.putExtra("title",title);
-            context.startActivity(intent);
-        }else {
-            Toast.makeText(context, "No Network", Toast.LENGTH_SHORT).show();
-        }
+    public static void startNewsActivity(Context context, Title title) {
+        Intent intent = new Intent(context, NewsActivity.class);
+        intent.putExtra("title", title);
+        context.startActivity(intent);
     }
 }

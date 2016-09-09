@@ -9,18 +9,15 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.Window;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
-import com.bumptech.glide.Glide;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.adapter.MyPagerAdapter;
 import com.ttt.zhihudaily.entity.Title;
@@ -38,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private List<Fragment> list=new ArrayList<>();
+    private List<Fragment> list;
     private String[] titles=new String[5];
     private ViewPager viewPager;
     private ViewPager banner;
@@ -59,17 +56,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        getSupportActionBar().setElevation(0);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         initViewPager();
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (HttpUtil.isNetworkConnected(this)) {
-            initDotList();
-            initBannerList();
-            initBanner();
+        initDotList();
+        initBannerList();
+        initBanner();
 
+        if (HttpUtil.isNetworkConnected(this)) {
             new LoadBannerTask(bannerList, this, bannerTitleList).execute();
         } else {
             Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
@@ -78,24 +76,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (currentItem){
-            case 0:
-                NewsActivity.startNewsActivity(this,bannerTitleList.get(0));
-                break;
-            case 1:
-                NewsActivity.startNewsActivity(this,bannerTitleList.get(1));
-                break;
-            case 2:
-                NewsActivity.startNewsActivity(this,bannerTitleList.get(2));
-                break;
-            case 3:
-                NewsActivity.startNewsActivity(this,bannerTitleList.get(3));
-                break;
-            case 4:
-                NewsActivity.startNewsActivity(this,bannerTitleList.get(4));
-                break;
-            default:
-                break;
+        if (HttpUtil.isNetworkConnected(this)) {
+            switch (currentItem) {
+                case 0:
+                    NewsActivity.startNewsActivity(this, bannerTitleList.get(0));
+                    break;
+                case 1:
+                    NewsActivity.startNewsActivity(this, bannerTitleList.get(1));
+                    break;
+                case 2:
+                    NewsActivity.startNewsActivity(this, bannerTitleList.get(2));
+                    break;
+                case 3:
+                    NewsActivity.startNewsActivity(this, bannerTitleList.get(3));
+                    break;
+                case 4:
+                    NewsActivity.startNewsActivity(this, bannerTitleList.get(4));
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -149,19 +151,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViewPager(){
-        for(int i=0;i<5;i++){
-            titles[i]= getDate(i,true);
-            MyFragment fragment=new MyFragment();
-            if(i!=0){
-                Bundle bundle=new Bundle();
-                bundle.putString("date",getDate(i-1,false));
+        list = new ArrayList<>();
+        for(int i=0;i<5;i++) {
+            titles[i] = getDate(i, true);
+            MyFragment fragment = new MyFragment();
+            if (i != 0) {
+                Bundle bundle = new Bundle();
+                bundle.putString("date", getDate(i - 1, false));
                 fragment.setArguments(bundle);
             }
             list.add(fragment);
-
-            viewPager=(ViewPager)findViewById(R.id.view_pager);
-            viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(),list,titles));
         }
+        viewPager=(ViewPager)findViewById(R.id.view_pager);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(),list,titles));
     }
 
     @Override

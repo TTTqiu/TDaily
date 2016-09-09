@@ -5,7 +5,7 @@
             <item>
                 <color android:color="@color/背景灰"/>
             </item>
-            <item android:top="5dp" android:bottom="1dp">
+            <item android:top="5dp" android:bottom="2dp">
                 <shape>
                     <solid
                         android:color="@color/阴影灰"/>
@@ -28,7 +28,7 @@
             <item>
                 <color android:color="@color/背景灰"/>
             </item>
-            <item android:top="5dp" android:bottom="1dp">
+            <item android:top="5dp" android:bottom="2dp">
                 <shape>
                     <solid
                         android:color="@color/阴影灰"/>

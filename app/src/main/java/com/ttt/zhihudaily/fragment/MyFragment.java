@@ -1,11 +1,12 @@
 package com.ttt.zhihudaily.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +16,23 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
-import com.ttt.zhihudaily.activity.MainActivity;
 import com.ttt.zhihudaily.activity.NewsActivity;
-import com.ttt.zhihudaily.adapter.TitleAdapter;
+import com.ttt.zhihudaily.adapter.MyListAdapter;
+import com.ttt.zhihudaily.adapter.MyRecyclerAdapter;
+import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadTitleTask;
 import com.ttt.zhihudaily.util.HttpUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyFragment extends Fragment{
 
     private SwipeRefreshLayout swipeRefreshLayout;
-    private TitleAdapter adapter;
-    private ListView listView;
+    private MyRecyclerAdapter adapter;
+    private RecyclerView recyclerView;
     private View view;
+    private List<Title> list;
 
     @Nullable
     @Override
@@ -40,18 +46,20 @@ public class MyFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        initListView();
+//        initListView();
+        initRecyclerView();
+        pullToRefresh();
+
         if(HttpUtil.isNetworkConnected(getActivity())){
             Bundle bundle=getArguments();
             if(bundle!=null){
-                new LoadTitleTask(adapter,bundle.getString("date")).execute();
+                new LoadTitleTask(adapter,list,bundle.getString("date")).execute();
             }else {
-                new LoadTitleTask(adapter).execute();
+                new LoadTitleTask(adapter,list).execute();
             }
         }else {
             Toast.makeText(getActivity(), "No Network", Toast.LENGTH_SHORT).show();
         }
-        pullToRefresh();
     }
 
     /**
@@ -66,10 +74,10 @@ public class MyFragment extends Fragment{
                 if(HttpUtil.isNetworkConnected(getActivity())){
                     Bundle bundle=getArguments();
                     if(bundle!=null){
-                        new LoadTitleTask(adapter,swipeRefreshLayout,getActivity(),
+                        new LoadTitleTask(adapter,list,swipeRefreshLayout,getActivity(),
                                 bundle.getString("date")).execute();
                     }else {
-                        new LoadTitleTask(adapter,swipeRefreshLayout,getActivity()).execute();
+                        new LoadTitleTask(adapter,list,swipeRefreshLayout,getActivity()).execute();
                     }
                 }else {
                     Toast.makeText(getActivity(), "No Network", Toast.LENGTH_SHORT).show();
@@ -79,15 +87,27 @@ public class MyFragment extends Fragment{
         });
     }
 
-    private void initListView(){
-        listView=(ListView)view.findViewById(R.id.list_view);
-        adapter=new TitleAdapter(getActivity(),R.layout.list_view_item);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                NewsActivity.startNewsActivity(getActivity(),adapter.getItem(position));
-            }
-        });
+//    private void initListView(){
+//        listView=(ListView)view.findViewById(R.id.list_view);
+//        adapter=new MyListAdapter(getActivity(),R.layout.recycler_view_item);
+//        listView.setAdapter(adapter);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                if(HttpUtil.isNetworkConnected(getActivity())){
+//                    NewsActivity.startNewsActivity(getActivity(),adapter.getItem(position));
+//                }else {
+//                    Toast.makeText(getActivity(), "No Network", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//    }
+
+    private void initRecyclerView(){
+        recyclerView=(RecyclerView)view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list=new ArrayList<>();
+        adapter=new MyRecyclerAdapter(getActivity(),list);
+        recyclerView.setAdapter(adapter);
     }
 }
