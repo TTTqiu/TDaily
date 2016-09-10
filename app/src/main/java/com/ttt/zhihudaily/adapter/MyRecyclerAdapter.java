@@ -19,11 +19,16 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
 
     private List<Title> list;
     private Context context;
+    private MyOnItemClickListener myOnItemClickListener;
 
     public MyRecyclerAdapter(Context context,List<Title> list){
         super();
         this.context=context;
         this.list=list;
+    }
+
+    public void setMyOnItemClickListener(MyOnItemClickListener myOnItemClickListener){
+        this.myOnItemClickListener=myOnItemClickListener;
     }
 
     @Override
@@ -36,6 +41,22 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textView.setText(list.get(position).getName());
         Glide.with(context).load(list.get(position).getImage()).into(holder.imageView);
+        final int pos=holder.getAdapterPosition();
+        if(myOnItemClickListener!=null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myOnItemClickListener.onItemClick(v,pos);
+                }
+            });
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    myOnItemClickListener.onItemLongClick(v,pos);
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -53,5 +74,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
             textView=(TextView)itemView.findViewById(R.id.title_text);
             imageView=(ImageView)itemView.findViewById(R.id.title_image);
         }
+    }
+
+    public interface MyOnItemClickListener{
+        void onItemClick(View view,int position);
+        void onItemLongClick(View view,int position);
     }
 }

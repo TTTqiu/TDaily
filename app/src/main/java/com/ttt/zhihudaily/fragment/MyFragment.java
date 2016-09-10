@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -105,9 +107,20 @@ public class MyFragment extends Fragment{
 
     private void initRecyclerView(){
         recyclerView=(RecyclerView)view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         list=new ArrayList<>();
         adapter=new MyRecyclerAdapter(getActivity(),list);
+        adapter.setMyOnItemClickListener(new MyRecyclerAdapter.MyOnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                NewsActivity.startNewsActivity(getActivity(),list.get(position));
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
         recyclerView.setAdapter(adapter);
     }
 }

@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
@@ -192,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initBannerList(){
         bannerList=new ArrayList<>();
         for(int i=0;i<5;i++){
-            View view= LayoutInflater.from(this).inflate(R.layout.banner_view,null);
+            View view= LayoutInflater.from(this).inflate(R.layout.banner_item,null);
             view.setOnClickListener(this);
             bannerList.add(view);
         }
