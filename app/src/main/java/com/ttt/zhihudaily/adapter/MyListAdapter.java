@@ -19,12 +19,6 @@ public class MyListAdapter extends ArrayAdapter<Title>{
     private int resource;
     private Context mContext;
 
-    public MyListAdapter(Context context, int resource){
-        super(context,resource);
-        this.resource=resource;
-        mContext=context;
-    }
-
     public MyListAdapter(Context context, int resource, List<Title> objects){
         super(context,resource,objects);
         this.resource=resource;
@@ -47,18 +41,13 @@ public class MyListAdapter extends ArrayAdapter<Title>{
             viewHolder=(ViewHolder) view.getTag();
         }
         viewHolder.textView.setText(title.getName());
-        Glide.with(mContext).load(title.getImage()).into(viewHolder.imageView);
+        Glide.with(mContext).load(title.getImage()).placeholder(R.drawable.loading_image)
+                .error(R.drawable.fail_image).into(viewHolder.imageView);
         return view;
     }
 
     private class ViewHolder{
         private ImageView imageView;
         private TextView textView;
-    }
-
-    public void refreshList(List<Title> list){
-        clear();
-        addAll(list);
-        notifyDataSetChanged();
     }
 }

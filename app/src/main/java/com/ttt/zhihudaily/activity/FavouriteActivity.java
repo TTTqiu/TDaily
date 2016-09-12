@@ -2,6 +2,7 @@ package com.ttt.zhihudaily.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -28,7 +29,7 @@ public class FavouriteActivity extends AppCompatActivity {
         mZhiHuDailyDB=ZhiHuDailyDB.getInstance(this);
         List<Title> list=mZhiHuDailyDB.loadNewsTitle();
         ListView listView=(ListView)findViewById(R.id.list_view_fav);
-        adapter=new MyListAdapter(this,R.layout.recycler_view_item,list);
+        adapter=new MyListAdapter(this,R.layout.list_view_item,list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -40,5 +41,17 @@ public class FavouriteActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

@@ -2,10 +2,18 @@ package com.ttt.zhihudaily.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.view.WindowCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -13,22 +21,53 @@ import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.db.ZhiHuDailyDB;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadNewsTask;
+import com.ttt.zhihudaily.util.MyScrollView;
 
 public class NewsActivity extends AppCompatActivity {
 
     private Boolean isFavourite=false;
     private ZhiHuDailyDB mZhiHuDailyDB;
     private Title title;
+    private MyScrollView myScrollView;
     private WebView webView;
+    private Toolbar toolbar;
+    private int currentY=500;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+        toolbar=(Toolbar)findViewById(R.id.toolbar_news);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         webView=(WebView)findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
+        myScrollView =(MyScrollView)findViewById(R.id.my_scroll_view);
+        myScrollView.setMyOnScrollChangedListener(new MyScrollView.MyOnScrollChangedListener() {
+            @Override
+            public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                float alpha;
+                if(scrollY>=currentY){
+                    alpha=0;
+                    toolbar.setVisibility(View.INVISIBLE);
+                    currentY=scrollY;
+                }else {
+                    toolbar.setVisibility(View.VISIBLE);
+                    if(scrollY<currentY&&scrollY>(currentY-500)){
+                        alpha=(float)(currentY-scrollY)/500;
+                    }else {
+                        alpha=1;
+                        currentY=scrollY+500;
+                    }
+                }
+                toolbar.setAlpha(alpha);
+                toolbar.setBackgroundColor(Color.argb((int)(alpha*255),44,194,177));
+            }
+        });
+
         title=(Title) getIntent().getSerializableExtra("title");
         int newsId=title.getId();
         new LoadNewsTask(webView).execute(newsId);
@@ -62,10 +101,11 @@ public class NewsActivity extends AppCompatActivity {
             case R.id.menu_settings:
 
                 break;
-            default:
+            case android.R.id.home:
+                finish();
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     public static void startNewsActivity(Context context, Title title) {
