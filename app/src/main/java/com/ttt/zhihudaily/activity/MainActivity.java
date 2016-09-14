@@ -3,10 +3,14 @@ package com.ttt.zhihudaily.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private Toolbar toolbar;
     private List<Fragment> list;
     private String[] titles=new String[5];
     private ViewPager viewPager;
@@ -43,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<Title> bannerTitleList;
     private Boolean isAutoPlay=false;
     private int currentItem;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
     private ScheduledExecutorService executorService;
     private Handler handler=new Handler(){
         @Override
@@ -55,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_main);
+        toolbar=(Toolbar)findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
         initViewPager();
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initDotList();
         initBannerList();
         initBanner();
+        initNavigation();
 
         if (HttpUtil.isNetworkConnected(this)) {
             new LoadBannerTask(bannerList, this, bannerTitleList).execute();
@@ -102,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu_options,menu);
         return true;
     }
 
@@ -121,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * 获得日期
@@ -149,20 +160,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isAutoPlay=false;
     }
 
-    private void initViewPager(){
-        list = new ArrayList<>();
-        for(int i=0;i<5;i++) {
-            titles[i] = getDate(i, true);
-            MyFragment fragment = new MyFragment();
-            if (i != 0) {
-                Bundle bundle = new Bundle();
-                bundle.putString("date", getDate(i - 1, false));
-                fragment.setArguments(bundle);
-            }
-            list.add(fragment);
+    // 按返回时若侧边导航栏是打开的，先退出
+    @Override
+    public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(findViewById(R.id.navigation_view))){
+            drawerLayout.closeDrawers();
+        }else {
+            super.onBackPressed();
         }
-        viewPager=(ViewPager)findViewById(R.id.view_pager);
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(),list,titles));
     }
 
     @Override
@@ -186,6 +191,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentItem=(currentItem+1)%bannerList.size();
             handler.obtainMessage().sendToTarget();
         }
+    }
+
+    private void initViewPager(){
+        list = new ArrayList<>();
+        for(int i=0;i<5;i++) {
+            titles[i] = getDate(i, true);
+            MyFragment fragment = new MyFragment();
+            if (i != 0) {
+                Bundle bundle = new Bundle();
+                bundle.putString("date", getDate(i - 1, false));
+                fragment.setArguments(bundle);
+            }
+            list.add(fragment);
+        }
+        viewPager=(ViewPager)findViewById(R.id.view_pager);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(),list,titles));
     }
 
     private void initBannerList(){
@@ -268,5 +289,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+    }
+
+    private void initNavigation(){
+        drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerToggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,
+                R.string.drawer_open,R.string.drawer_close);
+        drawerToggle.syncState();
+        drawerLayout.addDrawerListener(drawerToggle);
+
+        navigationView=(NavigationView)findViewById(R.id.navigation_view);
+        // 去掉scrollbar。scrollbar在NavigationView的child:NavigationMenuView中，
+        navigationView.getChildAt(0).setVerticalScrollBarEnabled(false);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        item.setChecked(true);
+                        Toast.makeText(MainActivity.this, ""+item.getTitle(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
     }
 }

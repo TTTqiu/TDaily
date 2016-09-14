@@ -2,18 +2,12 @@ package com.ttt.zhihudaily.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.support.v4.view.WindowCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -42,31 +36,11 @@ public class NewsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        initToolbarAlphaChange();
+
         webView=(WebView)findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        myScrollView =(MyScrollView)findViewById(R.id.my_scroll_view);
-        myScrollView.setMyOnScrollChangedListener(new MyScrollView.MyOnScrollChangedListener() {
-            @Override
-            public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                float alpha;
-                if(scrollY>=currentY){
-                    alpha=0;
-                    toolbar.setVisibility(View.INVISIBLE);
-                    currentY=scrollY;
-                }else {
-                    toolbar.setVisibility(View.VISIBLE);
-                    if(scrollY<currentY&&scrollY>(currentY-500)){
-                        alpha=(float)(currentY-scrollY)/500;
-                    }else {
-                        alpha=1;
-                        currentY=scrollY+500;
-                    }
-                }
-                toolbar.setAlpha(alpha);
-                toolbar.setBackgroundColor(Color.argb((int)(alpha*255),44,194,177));
-            }
-        });
 
         title=(Title) getIntent().getSerializableExtra("title");
         int newsId=title.getId();
@@ -77,7 +51,7 @@ public class NewsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu_options,menu);
         if(isFavourite){
             menu.findItem(R.id.menu_fav).setIcon(R.drawable.fav_selected);
         }
@@ -106,6 +80,30 @@ public class NewsActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    private void initToolbarAlphaChange(){
+        myScrollView =(MyScrollView)findViewById(R.id.my_scroll_view);
+        myScrollView.setMyOnScrollChangedListener(new MyScrollView.MyOnScrollChangedListener() {
+            @Override
+            public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                float alpha;
+                if(scrollY>=currentY){
+                    alpha=0;
+                    toolbar.setVisibility(View.INVISIBLE);
+                    currentY=scrollY;
+                }else {
+                    toolbar.setVisibility(View.VISIBLE);
+                    if(scrollY<currentY&&scrollY>(currentY-500)){
+                        alpha=(float)(currentY-scrollY)/500;
+                    }else {
+                        alpha=1;
+                        currentY=scrollY+500;
+                    }
+                }
+                toolbar.setAlpha(alpha);
+            }
+        });
     }
 
     public static void startNewsActivity(Context context, Title title) {
