@@ -19,6 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
@@ -66,14 +71,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar=(Toolbar)findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
-        initViewPager();
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
-
         initDotList();
         initBannerList();
         initBanner();
         initNavigation();
+        initSplash();
+        initViewPager();
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
         if (HttpUtil.isNetworkConnected(this)) {
             new LoadBannerTask(bannerList, this, bannerTitleList).execute();
@@ -310,5 +315,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return true;
                     }
                 });
+    }
+
+    private void initSplash(){
+        drawerLayout.setVisibility(View.INVISIBLE);
+
+        ImageView splashImage=(ImageView)findViewById(R.id.splash_image);
+        TextView splashText1=(TextView)findViewById(R.id.splash_text_1);
+        TextView splashText2=(TextView)findViewById(R.id.splash_text_2);
+
+        AlphaAnimation imageAnimation=new AlphaAnimation(0.0f,1.0f);
+        imageAnimation.setDuration(1000);
+        splashImage.setAnimation(imageAnimation);
+
+        AlphaAnimation textAnimation=new AlphaAnimation(0.0f,1.0f);
+        textAnimation.setDuration(1000);
+        textAnimation.setStartOffset(800);
+        splashText1.setAnimation(textAnimation);
+        splashText2.setAnimation(textAnimation);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LinearLayout splashLayout=(LinearLayout)findViewById(R.id.splash_layout);
+                AlphaAnimation layoutAnimation=new AlphaAnimation(1.0f,0.0f);
+                layoutAnimation.setDuration(500);
+                splashLayout.setAnimation(layoutAnimation);
+                splashLayout.setVisibility(View.GONE);
+                drawerLayout.setVisibility(View.VISIBLE);
+            }
+        },2500);
     }
 }

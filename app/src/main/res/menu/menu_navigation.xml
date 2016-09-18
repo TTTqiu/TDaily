@@ -17,19 +17,15 @@
                     android:checkableBehavior="single">
                     <item
                         android:id="@+id/nav_item_3"
-                        android:icon="@drawable/nav_item_1"
                         android:title="    第一小项"/>
                     <item
                         android:id="@+id/nav_item_4"
-                        android:icon="@drawable/nav_item_2"
                         android:title="    第二小项"/>
                     <item
                         android:id="@+id/nav_item_5"
-                        android:icon="@drawable/nav_item_3"
                         android:title="    第三小项"/>
                     <item
                         android:id="@+id/nav_item_6"
-                        android:icon="@drawable/nav_item_4"
                         android:title="    第四小项"/>
                 </group>
             </menu>
@@ -44,11 +40,11 @@
             android:icon="@drawable/nav_item_1" />
         <item
             android:id="@+id/nav_item_9"
-            android:icon="@drawable/nav_item_1"
+            android:icon="@drawable/nav_item_2"
             android:title="第一项" />
         <item
             android:id="@+id/nav_item_10"
-            android:icon="@drawable/nav_item_2"
+            android:icon="@drawable/nav_item_3"
             android:title="第二项"/>
         <item
             android:id="@+id/nav_item_11"
@@ -56,7 +52,7 @@
             android:title="第一项" />
         <item
             android:id="@+id/nav_item_12"
-            android:icon="@drawable/nav_item_2"
+            android:icon="@drawable/nav_item_3"
             android:title="第二项"/>
         <item
             android:id="@+id/nav_item_13"

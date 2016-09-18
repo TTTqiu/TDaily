@@ -1,117 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/Theme.AppCompat.Light"
-                app:theme="@style/MyToolbarTheme" />
-        </android.support.design.widget.AppBarLayout>
-
-        <RelativeLayout
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:orientation="vertical">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/banner"
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp" />
+                android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/dot_linear"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_alignBottom="@+id/banner"
-                android:gravity="center">
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/Theme.AppCompat.Light"
+                    app:theme="@style/MyToolbarTheme" />
+            </android.support.design.widget.AppBarLayout>
 
-                <View
-                    android:id="@+id/dot1"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/dot_focus" />
-
-                <View
-                    android:id="@+id/dot2"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/dot_normal" />
-
-                <View
-                    android:id="@+id/dot3"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/dot_normal" />
-
-                <View
-                    android:id="@+id/dot4"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/dot_normal" />
-
-                <View
-                    android:id="@+id/dot5"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/dot_normal" />
-            </LinearLayout>
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_below="@+id/banner"
-                app:tabBackground="@color/colorPrimary"
-                app:tabIndicatorColor="@color/白色"
-                app:tabMode="scrollable"
-                app:tabSelectedTextColor="@color/白色"
-                app:tabTextColor="@color/按下灰" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/tab_layout" />
-        </RelativeLayout>
-    </android.support.design.widget.CoordinatorLayout>
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="250dp"
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp" />
+
+                <LinearLayout
+                    android:id="@+id/dot_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_alignBottom="@+id/banner"
+                    android:gravity="center">
+
+                    <View
+                        android:id="@+id/dot1"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:background="@drawable/dot_focus" />
+
+                    <View
+                        android:id="@+id/dot2"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:background="@drawable/dot_normal" />
+
+                    <View
+                        android:id="@+id/dot3"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:background="@drawable/dot_normal" />
+
+                    <View
+                        android:id="@+id/dot4"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:background="@drawable/dot_normal" />
+
+                    <View
+                        android:id="@+id/dot5"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:background="@drawable/dot_normal" />
+                </LinearLayout>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_below="@+id/banner"
+                    app:tabBackground="@color/colorPrimary"
+                    app:tabIndicatorColor="@color/white"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextColor="@color/gray_pressed" />
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tab_layout" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_shadow"
+                    android:layout_below="@+id/tab_layout"/>
+
+            </RelativeLayout>
+        </android.support.design.widget.CoordinatorLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/navigation_header"
+            app:menu="@menu/menu_navigation"/>
+
+    </android.support.v4.widget.DrawerLayout>
+
+    <LinearLayout
+        android:id="@+id/splash_layout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/menu_navigation"/>
+        android:orientation="vertical"
+        android:background="@color/white">
 
-</android.support.v4.widget.DrawerLayout>
+        <ImageView
+            android:id="@+id/splash_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:scaleType="centerCrop"
+            android:src="@drawable/splash_image"/>
+
+        <TextView
+            android:id="@+id/splash_text_1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="40sp"
+            android:textColor="@color/colorPrimary"
+            android:text="知乎日报"/>
+
+        <TextView
+            android:id="@+id/splash_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_horizontal"
+            android:textSize="15sp"
+            android:textColor="@color/colorPrimary"
+            android:text="By   TTTqiu"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
 

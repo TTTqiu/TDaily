@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ttt.zhihudaily">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -29,12 +29,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.NewsActivity"
-            android:theme="@style/MyTheme.OverlayActionBar"
-            android:parentActivityName=".activity.MainActivity">
+        <activity
+            android:name=".activity.NewsActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/MyTheme.OverlayActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/MyTheme.NoActionBar">
         </activity>
     </application>
 

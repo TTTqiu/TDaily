@@ -33,8 +33,8 @@ public class MyListAdapter extends ArrayAdapter<Title>{
         if(convertView==null){
             view= LayoutInflater.from(getContext()).inflate(resource,null);
             viewHolder=new ViewHolder();
-            viewHolder.imageView=(ImageView)view.findViewById(R.id.title_image);
-            viewHolder.textView=(TextView)view.findViewById(R.id.title_text);
+            viewHolder.imageView=(ImageView)view.findViewById(R.id.list_title_image);
+            viewHolder.textView=(TextView)view.findViewById(R.id.list_title_text);
             view.setTag(viewHolder);
         }else {
             view=convertView;

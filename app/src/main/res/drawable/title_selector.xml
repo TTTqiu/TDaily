@@ -3,12 +3,12 @@
     <item android:state_pressed="false">
         <layer-list>
             <item>
-                <color android:color="@color/背景灰"/>
+                <color android:color="@color/gray_background"/>
             </item>
             <item android:top="5dp" android:bottom="3dp" android:left="5dp" android:right="5dp">
                 <shape>
                     <solid
-                        android:color="@color/阴影灰"/>
+                        android:color="@color/gray_shadow"/>
                     <corners
                         android:radius="3dp"/>
                 </shape>
@@ -16,7 +16,7 @@
             <item android:top="5dp" android:bottom="5dp" android:left="5dp" android:right="5dp">
                 <shape>
                     <solid
-                        android:color="@color/白色"/>
+                        android:color="@color/white"/>
                     <corners
                         android:radius="3dp"/>
                 </shape>
@@ -26,12 +26,12 @@
     <item android:state_pressed="true">
         <layer-list>
             <item>
-                <color android:color="@color/背景灰"/>
+                <color android:color="@color/gray_background"/>
             </item>
             <item android:top="5dp" android:bottom="3dp" android:left="5dp" android:right="5dp">
                 <shape>
                     <solid
-                        android:color="@color/阴影灰"/>
+                        android:color="@color/gray_shadow"/>
                     <corners
                         android:radius="3dp"/>
                 </shape>
@@ -39,7 +39,7 @@
             <item android:top="5dp" android:bottom="5dp" android:left="5dp" android:right="5dp">
                 <shape>
                     <solid
-                        android:color="@color/按下灰"/>
+                        android:color="@color/gray_pressed"/>
                     <corners
                         android:radius="3dp"/>
                 </shape>

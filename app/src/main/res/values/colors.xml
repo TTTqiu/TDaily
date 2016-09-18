@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffa61e</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#c48119</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="背景灰">#f1f1f1</color>
-    <color name="阴影灰">#c1c1c1</color>
-    <color name="白色">#ffffff</color>
-    <color name="黑色">#000000</color>
-    <color name="按下灰">#d9d9d9</color>
+    <color name="gray_background">#f1f1f1</color>
+    <color name="gray_shadow">#c1c1c1</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray_pressed">#d9d9d9</color>
 
 </resources>

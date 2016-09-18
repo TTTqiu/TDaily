@@ -17,8 +17,8 @@
         android:paddingRight="25dp"
         android:paddingBottom="25dp"
         android:textSize="18sp"
-        android:textColor="@color/白色"
-        android:shadowColor="@color/黑色"
+        android:textColor="@color/white"
+        android:shadowColor="@color/black"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="5"/>

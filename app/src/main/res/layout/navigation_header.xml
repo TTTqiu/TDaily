@@ -18,5 +18,5 @@
         android:textSize="20sp"
         android:layout_below="@+id/header_image"
         android:text="立即登录"
-        android:textColor="@color/白色"/>
+        android:textColor="@color/white"/>
 </RelativeLayout>

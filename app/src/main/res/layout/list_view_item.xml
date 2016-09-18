@@ -7,18 +7,18 @@
     android:background="@drawable/title_selector">
 
     <ImageView
-        android:id="@+id/title_image"
+        android:id="@+id/list_title_image"
         android:layout_width="80dp"
         android:layout_height="80dp"/>
 
     <TextView
-        android:id="@+id/title_text"
+        android:id="@+id/list_title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="10dp"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/黑色"/>
+        android:textColor="@color/black"/>
 
 </LinearLayout>
