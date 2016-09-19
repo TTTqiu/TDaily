@@ -51,7 +51,7 @@ public class NewsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_options,menu);
+        getMenuInflater().inflate(R.menu.menu_news,menu);
         if(isFavourite){
             menu.findItem(R.id.menu_fav).setIcon(R.drawable.fav_selected);
         }
@@ -71,9 +71,6 @@ public class NewsActivity extends AppCompatActivity {
                     isFavourite=true;
                     mZhiHuDailyDB.saveNewsTitle(title);
                 }
-                break;
-            case R.id.menu_settings:
-
                 break;
             case android.R.id.home:
                 finish();

@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_options,menu);
+        getMenuInflater().inflate(R.menu.menu_main,menu);
         return true;
     }
 
@@ -124,11 +123,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.menu_fav:
-                Intent intent=new Intent(MainActivity.this,FavouriteActivity.class);
-                startActivity(intent);
+                Intent intent1=new Intent(MainActivity.this,FavouriteActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.menu_settings:
-
+                Intent intent2=new Intent(MainActivity.this,PrefsActivity.class);
+                startActivity(intent2);
                 break;
             default:
                 break;

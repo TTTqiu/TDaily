@@ -25,6 +25,7 @@ public class FavouriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mZhiHuDailyDB=ZhiHuDailyDB.getInstance(this);
         List<Title> list=mZhiHuDailyDB.loadNewsTitle();

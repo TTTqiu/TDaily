@@ -23,23 +23,18 @@
         </activity>
         <activity
             android:name=".activity.FavouriteActivity"
-            android:label="@string/menu_fav"
-            android:parentActivityName=".activity.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
+            android:label="@string/menu_fav">
         </activity>
         <activity
             android:name=".activity.NewsActivity"
-            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/MyTheme.OverlayActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/MyTheme.NoActionBar">
+            android:theme="@style/MyTheme.NoActionBar" />
+        <activity
+            android:name=".activity.PrefsActivity"
+            android:label="设置">
         </activity>
     </application>
 

@@ -29,10 +29,10 @@ public class MyListAdapter extends ArrayAdapter<Title>{
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         View view;
-        Title title=getItem(position);
-        if(convertView==null){
-            view= LayoutInflater.from(getContext()).inflate(resource,null);
-            viewHolder=new ViewHolder();
+        Title title = getItem(position);
+        if (convertView == null) {
+            view = LayoutInflater.from(getContext()).inflate(resource, null);
+            viewHolder =new ViewHolder();
             viewHolder.imageView=(ImageView)view.findViewById(R.id.list_title_image);
             viewHolder.textView=(TextView)view.findViewById(R.id.list_title_text);
             view.setTag(viewHolder);
