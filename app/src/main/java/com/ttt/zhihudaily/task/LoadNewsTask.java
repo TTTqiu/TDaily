@@ -1,5 +1,6 @@
 package com.ttt.zhihudaily.task;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.webkit.WebView;
 
@@ -9,9 +10,11 @@ import com.ttt.zhihudaily.util.HttpUtil;
 public class LoadNewsTask extends AsyncTask<Integer,Void,NewsBean>{
 
     private WebView webView;
+    private Intent shareIntent;
 
-    public LoadNewsTask(WebView webView){
+    public LoadNewsTask(WebView webView,Intent shareIntent){
         this.webView=webView;
+        this.shareIntent=shareIntent;
     }
 
 
@@ -22,6 +25,7 @@ public class LoadNewsTask extends AsyncTask<Integer,Void,NewsBean>{
 
     @Override
     protected void onPostExecute(NewsBean bean) {
+        shareIntent.putExtra(Intent.EXTRA_TEXT,bean.getShare_url());
         String headerImage;
         if (bean.getImage() == null || bean.getImage() == "") {
             headerImage = "file:///android_asset/news_detail_header_image.jpg";

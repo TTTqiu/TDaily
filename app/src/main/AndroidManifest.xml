@@ -27,7 +27,8 @@
         </activity>
         <activity
             android:name=".activity.NewsActivity"
-            android:theme="@style/MyTheme.OverlayActionBar">
+            android:theme="@style/MyTheme.OverlayActionBar"
+            android:label="">
         </activity>
         <activity
             android:name=".activity.SplashActivity"

@@ -122,11 +122,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.menu_fav:
+            case R.id.menu_main_fav:
                 Intent intent1=new Intent(MainActivity.this,FavouriteActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.menu_settings:
+            case R.id.menu_main_settings:
                 Intent intent2=new Intent(MainActivity.this,PrefsActivity.class);
                 startActivity(intent2);
                 break;

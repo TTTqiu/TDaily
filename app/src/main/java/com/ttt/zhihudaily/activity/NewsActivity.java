@@ -2,12 +2,16 @@ package com.ttt.zhihudaily.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.view.MenuCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -25,6 +29,7 @@ public class NewsActivity extends AppCompatActivity {
     private MyScrollView myScrollView;
     private WebView webView;
     private Toolbar toolbar;
+    private Intent shareIntent;
     private int currentY=500;
 
 
@@ -44,7 +49,9 @@ public class NewsActivity extends AppCompatActivity {
 
         title=(Title) getIntent().getSerializableExtra("title");
         int newsId=title.getId();
-        new LoadNewsTask(webView).execute(newsId);
+        shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        new LoadNewsTask(webView,shareIntent).execute(newsId);
         mZhiHuDailyDB=ZhiHuDailyDB.getInstance(this);
         isFavourite=mZhiHuDailyDB.isFavourite(title);
     }
@@ -53,15 +60,27 @@ public class NewsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_news,menu);
         if(isFavourite){
-            menu.findItem(R.id.menu_fav).setIcon(R.drawable.fav_selected);
+            menu.findItem(R.id.menu_news_fav).setIcon(R.drawable.fav_selected);
         }
+
+        MenuItem item=menu.findItem(R.id.menu_news_share);
+        // 为了不在右边显示最常用应用图标。暂未出现问题。
+        ShareActionProvider shareActionProvider=new ShareActionProvider(this){
+            @Override
+            public View onCreateActionView() {
+                return null;
+            }
+        };
+        item.setIcon(R.drawable.share);
+        MenuItemCompat.setActionProvider(item,shareActionProvider);
+        shareActionProvider.setShareIntent(shareIntent);
         return true;
     }
 //
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case R.id.menu_fav:
+            case R.id.menu_news_fav:
                 if(isFavourite){
                     item.setIcon(R.drawable.fav_normal);
                     isFavourite=false;
@@ -71,6 +90,10 @@ public class NewsActivity extends AppCompatActivity {
                     isFavourite=true;
                     mZhiHuDailyDB.saveNewsTitle(title);
                 }
+                break;
+            case R.id.menu_news_settings:
+                Intent intent=new Intent(NewsActivity.this,PrefsActivity.class);
+                startActivity(intent);
                 break;
             case android.R.id.home:
                 finish();

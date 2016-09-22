@@ -6,7 +6,16 @@ public class NewsBean {
     private String image;
     private String image_source;
     private String body;
+    private String share_url;
     private int id;
+
+    public String getShare_url() {
+        return share_url;
+    }
+
+    public void setShare_url(String share_url) {
+        this.share_url = share_url;
+    }
 
     public String getTitle() {
         return title;

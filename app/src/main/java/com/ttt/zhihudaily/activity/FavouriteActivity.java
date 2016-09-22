@@ -19,7 +19,6 @@ import java.util.List;
 public class FavouriteActivity extends AppCompatActivity {
 
     private MyListAdapter adapter;
-    private ZhiHuDailyDB mZhiHuDailyDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +26,7 @@ public class FavouriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favourite);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mZhiHuDailyDB=ZhiHuDailyDB.getInstance(this);
-        List<Title> list=mZhiHuDailyDB.loadNewsTitle();
+        List<Title> list=ZhiHuDailyDB.getInstance(this).loadNewsTitle();
         ListView listView=(ListView)findViewById(R.id.list_view_fav);
         adapter=new MyListAdapter(this,R.layout.list_view_item,list);
         listView.setAdapter(adapter);
