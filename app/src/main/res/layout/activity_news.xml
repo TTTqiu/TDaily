@@ -30,13 +30,6 @@
         </LinearLayout>
     </com.ttt.zhihudaily.util.MyScrollView>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_news"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/Theme.AppCompat.Light"
-        app:theme="@style/MyToolbarTheme" />
+    <include layout="@layout/toolbar" android:id="@+id/toolbar_news"/>
 
 </FrameLayout>

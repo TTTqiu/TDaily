@@ -40,23 +40,23 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
     private List<Fragment> list;
-    private String[] titles=new String[5];
+    private String[] titles = new String[5];
     private ViewPager viewPager;
     private ViewPager banner;
     private List<View> dotList;
     private List<View> bannerList;
     private List<Title> bannerTitleList;
-    private Boolean isAutoPlay=false;
+    private Boolean isAutoPlay = false;
     private int currentItem;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private ScheduledExecutorService executorService;
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             banner.setCurrentItem(currentItem);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar=(Toolbar)findViewById(R.id.toolbar_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
         initDotList();
@@ -115,19 +115,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.menu_main_fav:
-                Intent intent1=new Intent(MainActivity.this,FavouriteActivity.class);
+                Intent intent1 = new Intent(MainActivity.this, FavouriteActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.menu_main_settings:
-                Intent intent2=new Intent(MainActivity.this,PrefsActivity.class);
+                Intent intent2 = new Intent(MainActivity.this, PrefsActivity.class);
                 startActivity(intent2);
                 break;
             default:
@@ -137,40 +137,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     /**
      * 获得日期
+     *
      * @return 2016年8月23日 格式的日期
      */
-    private String getDate(int i,Boolean isFormat){
-        Calendar calendar=Calendar.getInstance();
-        calendar.add(Calendar.DATE,-i);
+    private String getDate(int i, Boolean isFormat) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -i);
         SimpleDateFormat simpleDateFormat;
-        if(isFormat){
-            simpleDateFormat=new SimpleDateFormat("yyyy年M月d日");
-        }else {
-            simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
+        if (isFormat) {
+            simpleDateFormat = new SimpleDateFormat("yyyy年M月d日");
+        } else {
+            simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         }
         return simpleDateFormat.format(calendar.getTime());
     }
 
-    private void startPlay(){
-        executorService=Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(new SlideTask(),4,5, TimeUnit.SECONDS);
-        isAutoPlay=true;
+    private void startPlay() {
+        executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(new SlideTask(), 4, 5, TimeUnit.SECONDS);
+        isAutoPlay = true;
     }
 
-    private void stopPlay(){
+    private void stopPlay() {
         executorService.shutdown();
-        isAutoPlay=false;
+        isAutoPlay = false;
     }
 
     // 按返回时若侧边导航栏是打开的，先退出
     @Override
-    public void onBackPressed(){
-        if(drawerLayout.isDrawerOpen(findViewById(R.id.navigation_view))){
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(findViewById(R.id.navigation_view))) {
             drawerLayout.closeDrawers();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -179,28 +179,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
         startPlay();
-        isAutoPlay=true;
+        isAutoPlay = true;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         stopPlay();
-        isAutoPlay=false;
+        isAutoPlay = false;
     }
 
-    private class SlideTask implements Runnable{
+    private class SlideTask implements Runnable {
 
         @Override
         public void run() {
-            currentItem=(currentItem+1)%bannerList.size();
+            currentItem = (currentItem + 1) % bannerList.size();
             handler.obtainMessage().sendToTarget();
         }
     }
 
-    private void initViewPager(){
+    private void initViewPager() {
         list = new ArrayList<>();
-        for(int i=0;i<5;i++) {
+        for (int i = 0; i < 5; i++) {
             titles[i] = getDate(i, true);
             MyFragment fragment = new MyFragment();
             if (i != 0) {
@@ -210,21 +210,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             list.add(fragment);
         }
-        viewPager=(ViewPager)findViewById(R.id.view_pager);
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(),list,titles));
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), list, titles));
     }
 
-    private void initBannerList(){
-        bannerList=new ArrayList<>();
-        for(int i=0;i<5;i++){
-            View view= LayoutInflater.from(this).inflate(R.layout.banner_item,null);
+    private void initBannerList() {
+        bannerList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.banner_item, null);
             view.setOnClickListener(this);
             bannerList.add(view);
         }
     }
 
-    private void initDotList(){
-        dotList=new ArrayList<>();
+    private void initDotList() {
+        dotList = new ArrayList<>();
         dotList.add(findViewById(R.id.dot1));
         dotList.add(findViewById(R.id.dot2));
         dotList.add(findViewById(R.id.dot3));
@@ -232,10 +232,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dotList.add(findViewById(R.id.dot5));
     }
 
-    private void initBanner(){
-        currentItem=0;
-        bannerTitleList=new ArrayList<>();
-        banner=(ViewPager)findViewById(R.id.banner);
+    private void initBanner() {
+        currentItem = 0;
+        bannerTitleList = new ArrayList<>();
+        banner = (ViewPager) findViewById(R.id.banner);
         banner.setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public boolean isViewFromObject(View view, Object object) {
-                return view==object;
+                return view == object;
             }
 
             @Override
@@ -266,11 +266,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int position) {
-                currentItem=position;
-                for(int i=0;i<5;i++){
-                    if(i==position){
+                currentItem = position;
+                for (int i = 0; i < 5; i++) {
+                    if (i == position) {
                         dotList.get(i).setBackgroundResource(R.drawable.dot_focus);
-                    }else {
+                    } else {
                         dotList.get(i).setBackgroundResource(R.drawable.dot_normal);
                     }
                 }
@@ -278,16 +278,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                switch (state){
+                switch (state) {
                     case 0:
-                        if(!isAutoPlay){
+                        if (!isAutoPlay) {
                             startPlay();
-                            isAutoPlay=true;
+                            isAutoPlay = true;
                         }
                         break;
                     case 1:
                         stopPlay();
-                        isAutoPlay=false;
+                        isAutoPlay = false;
                         break;
                     default:
                         break;
@@ -296,14 +296,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initNavigation(){
-        drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
-        drawerToggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,
-                R.string.drawer_open,R.string.drawer_close);
+    private void initNavigation() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.drawer_open, R.string.drawer_close);
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
 
-        navigationView=(NavigationView)findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         // 去掉scrollbar。scrollbar在NavigationView的child:NavigationMenuView中，
         navigationView.getChildAt(0).setVerticalScrollBarEnabled(false);
         navigationView.setNavigationItemSelectedListener(
@@ -311,24 +311,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         item.setChecked(true);
-                        Toast.makeText(MainActivity.this, ""+item.getTitle(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "" + item.getTitle(), Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
     }
 
-    private void initSplash(){
+    private void initSplash() {
         drawerLayout.setVisibility(View.INVISIBLE);
 
-        ImageView splashImage=(ImageView)findViewById(R.id.splash_image);
-        TextView splashText1=(TextView)findViewById(R.id.splash_text_1);
-        TextView splashText2=(TextView)findViewById(R.id.splash_text_2);
+        ImageView splashImage = (ImageView) findViewById(R.id.splash_image);
+        TextView splashText1 = (TextView) findViewById(R.id.splash_text_1);
+        TextView splashText2 = (TextView) findViewById(R.id.splash_text_2);
 
-        AlphaAnimation imageAnimation=new AlphaAnimation(0.0f,1.0f);
+        AlphaAnimation imageAnimation = new AlphaAnimation(0.0f, 1.0f);
         imageAnimation.setDuration(1000);
         splashImage.setAnimation(imageAnimation);
 
-        AlphaAnimation textAnimation=new AlphaAnimation(0.0f,1.0f);
+        AlphaAnimation textAnimation = new AlphaAnimation(0.0f, 1.0f);
         textAnimation.setDuration(1000);
         textAnimation.setStartOffset(800);
         splashText1.setAnimation(textAnimation);
@@ -337,13 +337,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                LinearLayout splashLayout=(LinearLayout)findViewById(R.id.splash_layout);
-                AlphaAnimation layoutAnimation=new AlphaAnimation(1.0f,0.0f);
+                LinearLayout splashLayout = (LinearLayout) findViewById(R.id.splash_layout);
+                AlphaAnimation layoutAnimation = new AlphaAnimation(1.0f, 0.0f);
                 layoutAnimation.setDuration(500);
                 splashLayout.setAnimation(layoutAnimation);
                 splashLayout.setVisibility(View.GONE);
                 drawerLayout.setVisibility(View.VISIBLE);
             }
-        },2500);
+        }, 2500);
     }
 }

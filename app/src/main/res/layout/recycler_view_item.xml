@@ -3,23 +3,25 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
+    android:padding="5dp"
     android:background="@drawable/title_selector">
 
     <ImageView
         android:id="@+id/recycler_title_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/recycler_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="8dp"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/black"/>
+        android:textColor="@color/text"/>
 
 </LinearLayout>

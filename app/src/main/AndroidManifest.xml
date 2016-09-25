@@ -31,9 +31,6 @@
             android:label="">
         </activity>
         <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/MyTheme.NoActionBar" />
-        <activity
             android:name=".activity.PrefsActivity"
             android:label="设置">
         </activity>
