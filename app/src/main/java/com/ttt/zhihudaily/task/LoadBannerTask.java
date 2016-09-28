@@ -2,10 +2,12 @@ package com.ttt.zhihudaily.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ttt.zhihudaily.R;
@@ -22,11 +24,18 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
     private Context context;
     private List<View> bannerList;
     private List<Title> titleList;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public LoadBannerTask(List<View> bannerList, Context context,List<Title> titleList){
         this.context=context;
         this.bannerList=bannerList;
         this.titleList=titleList;
+    }
+
+    public LoadBannerTask(List<View> bannerList, Context context, List<Title> titleList,
+                          SwipeRefreshLayout swipeRefreshLayout){
+        this(bannerList,context,titleList);
+        this.swipeRefreshLayout=swipeRefreshLayout;
     }
 
     @Override
@@ -47,6 +56,11 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
             textView.setText(name);
             ImageView imageView=(ImageView)bannerList.get(i).findViewById(R.id.banner_image);
             Glide.with(context).load(image).error(R.drawable.fail_image).into(imageView);
+        }
+
+        if(swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(context, "刷新成功", Toast.LENGTH_SHORT).show();
         }
     }
 }

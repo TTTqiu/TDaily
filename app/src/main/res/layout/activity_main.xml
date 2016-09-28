@@ -27,122 +27,128 @@
 
             </android.support.design.widget.AppBarLayout>
 
-            <RelativeLayout
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <com.ttt.zhihudaily.myView.MyNestedScrollView
-                    android:id="@+id/nested_scroll_view"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <RelativeLayout
+                    <com.ttt.zhihudaily.myView.MyNestedScrollView
+                        android:id="@+id/nested_scroll_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/banner"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="160dp" />
+                            android:layout_height="match_parent">
 
-                        <LinearLayout
-                            android:id="@+id/dot_linear"
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:layout_alignBottom="@+id/banner"
-                            android:gravity="center">
 
-                            <View
-                                android:id="@+id/dot1"
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_marginLeft="2dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/dot_focus" />
-
-                            <View
-                                android:id="@+id/dot2"
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_marginLeft="2dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/dot_normal" />
-
-                            <View
-                                android:id="@+id/dot3"
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_marginLeft="2dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/dot_normal" />
-
-                            <View
-                                android:id="@+id/dot4"
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_marginLeft="2dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/dot_normal" />
-
-                            <View
-                                android:id="@+id/dot5"
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_marginLeft="2dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/dot_normal" />
-                        </LinearLayout>
-
-                        <android.support.design.widget.AppBarLayout
-                            android:id="@+id/appbar_center"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/banner">
-
-                            <android.support.design.widget.TabLayout
-                                android:id="@+id/tab_center"
+                            <android.support.v4.view.ViewPager
+                                android:id="@+id/banner"
                                 android:layout_width="match_parent"
-                                android:layout_height="32dp"
-                                app:tabBackground="@color/colorPrimary"
-                                app:tabIndicatorColor="@color/white"
-                                app:tabMode="scrollable"
-                                app:tabSelectedTextColor="@color/white"
-                                app:tabTextColor="@color/gray_pressed" />
+                                android:layout_height="160dp" />
 
-                        </android.support.design.widget.AppBarLayout>
+                            <LinearLayout
+                                android:id="@+id/dot_linear"
+                                android:layout_width="match_parent"
+                                android:layout_height="25dp"
+                                android:layout_alignBottom="@+id/banner"
+                                android:gravity="center">
 
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="3000dp"
-                            android:layout_below="@+id/appbar_center" />
+                                <View
+                                    android:id="@+id/dot1"
+                                    android:layout_width="6dp"
+                                    android:layout_height="6dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@drawable/dot_focus" />
 
-                    </RelativeLayout>
-                </com.ttt.zhihudaily.myView.MyNestedScrollView>
+                                <View
+                                    android:id="@+id/dot2"
+                                    android:layout_width="6dp"
+                                    android:layout_height="6dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@drawable/dot_normal" />
 
-                <android.support.design.widget.AppBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true">
+                                <View
+                                    android:id="@+id/dot3"
+                                    android:layout_width="6dp"
+                                    android:layout_height="6dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@drawable/dot_normal" />
 
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/tab_top"
+                                <View
+                                    android:id="@+id/dot4"
+                                    android:layout_width="6dp"
+                                    android:layout_height="6dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@drawable/dot_normal" />
+
+                                <View
+                                    android:id="@+id/dot5"
+                                    android:layout_width="6dp"
+                                    android:layout_height="6dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:background="@drawable/dot_normal" />
+                            </LinearLayout>
+
+                            <android.support.design.widget.AppBarLayout
+                                android:id="@+id/appbar_center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/banner">
+
+                                <android.support.design.widget.TabLayout
+                                    android:id="@+id/tab_center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    app:tabBackground="@color/colorPrimary"
+                                    app:tabIndicatorColor="@color/white"
+                                    app:tabMode="scrollable"
+                                    app:tabSelectedTextColor="@color/white"
+                                    app:tabTextColor="@color/gray_pressed" />
+
+                            </android.support.design.widget.AppBarLayout>
+
+                            <android.support.v4.view.ViewPager
+                                android:id="@+id/view_pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="3000dp"
+                                android:layout_below="@+id/appbar_center" />
+
+                        </RelativeLayout>
+                    </com.ttt.zhihudaily.myView.MyNestedScrollView>
+
+                    <android.support.design.widget.AppBarLayout
                         android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_alignParentTop="true"
-                        android:visibility="gone"
-                        app:tabBackground="@color/colorPrimary"
-                        app:tabIndicatorColor="@color/white"
-                        app:tabMode="scrollable"
-                        app:tabSelectedTextColor="@color/white"
-                        app:tabTextColor="@color/gray_pressed" />
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true">
 
-                </android.support.design.widget.AppBarLayout>
+                        <android.support.design.widget.TabLayout
+                            android:id="@+id/tab_top"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp"
+                            android:layout_alignParentTop="true"
+                            android:visibility="gone"
+                            app:tabBackground="@color/colorPrimary"
+                            app:tabIndicatorColor="@color/white"
+                            app:tabMode="scrollable"
+                            app:tabSelectedTextColor="@color/white"
+                            app:tabTextColor="@color/gray_pressed" />
 
-            </RelativeLayout>
+                    </android.support.design.widget.AppBarLayout>
 
+                </RelativeLayout>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
 
         </android.support.design.widget.CoordinatorLayout>
 

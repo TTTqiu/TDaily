@@ -20,7 +20,6 @@ public class LoadTitleTask extends AsyncTask<Void,Void,TitleBean>{
 
     private List<Title> list;
     private MyRecyclerAdapter adapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private Context context;
     private String date;
 
@@ -34,15 +33,13 @@ public class LoadTitleTask extends AsyncTask<Void,Void,TitleBean>{
         this.date=date;
     }
 
-    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list,SwipeRefreshLayout swipeRefreshLayout, Context context){
+    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list, Context context){
         this(adapter,list);
-        this.swipeRefreshLayout=swipeRefreshLayout;
         this.context=context;
     }
 
-    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list, SwipeRefreshLayout swipeRefreshLayout,
-                         Context context, String date){
-        this(adapter,list,swipeRefreshLayout,context);
+    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list, Context context, String date){
+        this(adapter,list,context);
         this.date=date;
     }
 
@@ -57,17 +54,15 @@ public class LoadTitleTask extends AsyncTask<Void,Void,TitleBean>{
 
     @Override
     protected void onPostExecute(TitleBean bean) {
-        list.clear();
-        Title title;
-        for(int i=0;i<bean.getStories().length;i++){
-            title=new Title(bean.getStories()[i].getTitle(),bean.getStories()[i].getImages()[0],
-                    bean.getStories()[i].getId());
-            list.add(title);
-        }
-        adapter.notifyDataSetChanged();
-        if(swipeRefreshLayout!=null){
-            swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(context, "刷新成功", Toast.LENGTH_SHORT).show();
+        if (list!=null){
+            list.clear();
+            Title title;
+            for(int i=0;i<bean.getStories().length;i++){
+                title=new Title(bean.getStories()[i].getTitle(),bean.getStories()[i].getImages()[0],
+                        bean.getStories()[i].getId());
+                list.add(title);
+            }
+            adapter.notifyDataSetChanged();
         }
     }
 }

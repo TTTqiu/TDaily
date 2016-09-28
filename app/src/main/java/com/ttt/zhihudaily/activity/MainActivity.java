@@ -1,10 +1,10 @@
 package com.ttt.zhihudaily.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -13,18 +13,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
@@ -62,7 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TabLayout tabCenter;
     private MyNestedScrollView myNestedScrollView;
     private ScheduledExecutorService executorService;
-    private Boolean isViewPagerHeightSetted=false;
+    private Boolean isViewPagerHeightSet = false;
+    private int viewPagerHeight=0;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        initSplash();
         initViewPager();
         initTabLayout();
+        refreshBannerAndTitleList();
 
         if (HttpUtil.isNetworkConnected(this)) {
             new LoadBannerTask(bannerList, this, bannerTitleList).execute();
@@ -230,19 +233,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 // 每次切换设置ViewPager高度
-                ViewGroup.LayoutParams params=viewPager.getLayoutParams();
-                if(position!=0){
-                    params.height=8030;
+                ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+                if (position != 0) {
+                    params.height = 8030;
                     viewPager.setLayoutParams(params);
-                }else {
-                    int viewPagerHeight;
-                    MyFragment myFragment=(MyFragment)fragmentList.get(0);
-                    RecyclerView recyclerView =myFragment.getRecyclerView();
-                    View lastView1=recyclerView.getChildAt(myFragment.getList().size()-1);
-                    View lastView2=recyclerView.getChildAt(myFragment.getList().size()-2);
-                    viewPagerHeight=Math.max(lastView1.getBottom(),lastView2.getBottom());
-                    params.height=viewPagerHeight+15;
-                    viewPager.setLayoutParams(params);
+                } else {
+                    if(isViewPagerHeightSet){
+                        params.height = viewPagerHeight;
+                        viewPager.setLayoutParams(params);
+                    }
                 }
             }
 
@@ -416,17 +415,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
 
-                if (!isViewPagerHeightSetted){
-                    int viewPagerHeight;
-                    MyFragment myFragment=(MyFragment)fragmentList.get(0);
-                    RecyclerView recyclerView =myFragment.getRecyclerView();
-                    View lastView1=recyclerView.getChildAt(myFragment.getList().size()-1);
-                    View lastView2=recyclerView.getChildAt(myFragment.getList().size()-2);
-                    viewPagerHeight=Math.max(lastView1.getBottom(),lastView2.getBottom());
-                    ViewGroup.LayoutParams params=viewPager.getLayoutParams();
-                    params.height=viewPagerHeight+15;
+                // 设定ViewPager第一页高度
+                if (!isViewPagerHeightSet) {
+                    MyFragment myFragment = (MyFragment) fragmentList.get(0);
+                    RecyclerView recyclerView = myFragment.getRecyclerView();
+                    View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
+                    View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
+                    viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom())+15;
+                    ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+                    params.height = viewPagerHeight;
                     viewPager.setLayoutParams(params);
-                    isViewPagerHeightSetted=true;
+                    isViewPagerHeightSet = true;
+                }
+            }
+        });
+    }
+
+    private void refreshBannerAndTitleList() {
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(Color.GREEN, Color.YELLOW, Color.RED);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (HttpUtil.isNetworkConnected(MainActivity.this)) {
+                    new LoadBannerTask(bannerList, MainActivity.this, bannerTitleList,
+                            swipeRefreshLayout).execute();
+                    for (int i = 0; i < 5; i++) {
+                        MyFragment myFragment = (MyFragment) fragmentList.get(i);
+                        myFragment.refreshTitleList();
+                    }
+                    isViewPagerHeightSet=false;
+                } else {
+                    Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
