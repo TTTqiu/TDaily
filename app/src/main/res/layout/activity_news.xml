@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.NewsActivity">
 
-    <com.ttt.zhihudaily.util.MyScrollView
+    <com.ttt.zhihudaily.myView.MyNestedScrollView
         android:id="@+id/my_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,8 +26,17 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
-    </com.ttt.zhihudaily.util.MyScrollView>
+    </com.ttt.zhihudaily.myView.MyNestedScrollView>
 
-    <include layout="@layout/toolbar" android:id="@+id/toolbar_news"/>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_news_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar_news"
+            layout="@layout/toolbar" />
+
+    </android.support.design.widget.AppBarLayout>
 
 </FrameLayout>

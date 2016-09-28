@@ -1,9 +1,12 @@
 package com.ttt.zhihudaily.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,22 +16,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.adapter.MyPagerAdapter;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.fragment.MyFragment;
+import com.ttt.zhihudaily.myView.MyNestedScrollView;
 import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.util.HttpUtil;
 
@@ -43,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
-    private List<Fragment> list;
+    private List<Fragment> fragmentList;
     private String[] titles = new String[5];
     private ViewPager viewPager;
     private ViewPager banner;
@@ -55,7 +58,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private TabLayout tabTop;
+    private TabLayout tabCenter;
+    private MyNestedScrollView myNestedScrollView;
     private ScheduledExecutorService executorService;
+    private Boolean isViewPagerHeightSetted=false;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -70,14 +77,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
-        initDotList();
-        initBannerList();
         initBanner();
         initNavigation();
-        initSplash();
+//        initSplash();
         initViewPager();
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        initTabLayout();
 
         if (HttpUtil.isNetworkConnected(this)) {
             new LoadBannerTask(bannerList, this, bannerTitleList).execute();
@@ -199,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViewPager() {
-        list = new ArrayList<>();
+        fragmentList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             titles[i] = getDate(i, true);
             MyFragment fragment = new MyFragment();
@@ -208,10 +212,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 bundle.putString("date", getDate(i - 1, false));
                 fragment.setArguments(bundle);
             }
-            list.add(fragment);
+            fragmentList.add(fragment);
         }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), list, titles));
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList, titles));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // 每次切换时回到ViewPager顶端
+                if (myNestedScrollView.getScrollY() > banner.getHeight()) {
+                    myNestedScrollView.scrollTo(0, banner.getHeight());
+                }
+
+                // 每次切换设置ViewPager高度
+                ViewGroup.LayoutParams params=viewPager.getLayoutParams();
+                if(position!=0){
+                    params.height=8030;
+                    viewPager.setLayoutParams(params);
+                }else {
+                    int viewPagerHeight;
+                    MyFragment myFragment=(MyFragment)fragmentList.get(0);
+                    RecyclerView recyclerView =myFragment.getRecyclerView();
+                    View lastView1=recyclerView.getChildAt(myFragment.getList().size()-1);
+                    View lastView2=recyclerView.getChildAt(myFragment.getList().size()-2);
+                    viewPagerHeight=Math.max(lastView1.getBottom(),lastView2.getBottom());
+                    params.height=viewPagerHeight+15;
+                    viewPager.setLayoutParams(params);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initBannerList() {
@@ -233,6 +272,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBanner() {
+        initDotList();
+        initBannerList();
         currentItem = 0;
         bannerTitleList = new ArrayList<>();
         banner = (ViewPager) findViewById(R.id.banner);
@@ -294,6 +335,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        // 防止ViewPager自动跳到屏幕顶端
+        banner.setFocusable(true);
+        banner.setFocusableInTouchMode(true);
+        banner.requestFocus();
     }
 
     private void initNavigation() {
@@ -317,33 +362,73 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
-    private void initSplash() {
-        drawerLayout.setVisibility(View.INVISIBLE);
+//    private void initSplash() {
+//        drawerLayout.setVisibility(View.INVISIBLE);
+//
+//        ImageView splashImage = (ImageView) findViewById(R.id.splash_image);
+//        TextView splashText1 = (TextView) findViewById(R.id.splash_text_1);
+//        TextView splashText2 = (TextView) findViewById(R.id.splash_text_2);
+//
+//        AlphaAnimation imageAnimation = new AlphaAnimation(0.0f, 1.0f);
+//        imageAnimation.setDuration(1000);
+//        splashImage.setAnimation(imageAnimation);
+//
+//        AlphaAnimation textAnimation = new AlphaAnimation(0.0f, 1.0f);
+//        textAnimation.setDuration(1000);
+//        textAnimation.setStartOffset(800);
+//        splashText1.setAnimation(textAnimation);
+//        splashText2.setAnimation(textAnimation);
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                LinearLayout splashLayout = (LinearLayout) findViewById(R.id.splash_layout);
+//                AlphaAnimation layoutAnimation = new AlphaAnimation(1.0f, 0.0f);
+//                layoutAnimation.setDuration(500);
+//                splashLayout.setAnimation(layoutAnimation);
+//                splashLayout.setVisibility(View.GONE);
+//                drawerLayout.setVisibility(View.VISIBLE);
+//            }
+//        }, 2500);
+//    }
 
-        ImageView splashImage = (ImageView) findViewById(R.id.splash_image);
-        TextView splashText1 = (TextView) findViewById(R.id.splash_text_1);
-        TextView splashText2 = (TextView) findViewById(R.id.splash_text_2);
+    private void initTabLayout() {
+        tabTop = (TabLayout) findViewById(R.id.tab_top);
+        tabTop.setupWithViewPager(viewPager);
+        tabCenter = (TabLayout) findViewById(R.id.tab_center);
+        tabCenter.setupWithViewPager(viewPager);
 
-        AlphaAnimation imageAnimation = new AlphaAnimation(0.0f, 1.0f);
-        imageAnimation.setDuration(1000);
-        splashImage.setAnimation(imageAnimation);
-
-        AlphaAnimation textAnimation = new AlphaAnimation(0.0f, 1.0f);
-        textAnimation.setDuration(1000);
-        textAnimation.setStartOffset(800);
-        splashText1.setAnimation(textAnimation);
-        splashText2.setAnimation(textAnimation);
-
-        new Handler().postDelayed(new Runnable() {
+        myNestedScrollView = (MyNestedScrollView) findViewById(R.id.nested_scroll_view);
+        myNestedScrollView.setMyOnScrollChangedListener(new MyNestedScrollView.MyOnScrollChangedListener() {
             @Override
-            public void run() {
-                LinearLayout splashLayout = (LinearLayout) findViewById(R.id.splash_layout);
-                AlphaAnimation layoutAnimation = new AlphaAnimation(1.0f, 0.0f);
-                layoutAnimation.setDuration(500);
-                splashLayout.setAnimation(layoutAnimation);
-                splashLayout.setVisibility(View.GONE);
-                drawerLayout.setVisibility(View.VISIBLE);
+            public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int height = banner.getHeight();
+                AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_main_toolbar);
+                if (scrollY >= height) {
+                    tabTop.setVisibility(View.VISIBLE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        appBarLayout.setElevation(0);
+                    }
+                } else {
+                    tabTop.setVisibility(View.GONE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        appBarLayout.setElevation(12);
+                    }
+                }
+
+                if (!isViewPagerHeightSetted){
+                    int viewPagerHeight;
+                    MyFragment myFragment=(MyFragment)fragmentList.get(0);
+                    RecyclerView recyclerView =myFragment.getRecyclerView();
+                    View lastView1=recyclerView.getChildAt(myFragment.getList().size()-1);
+                    View lastView2=recyclerView.getChildAt(myFragment.getList().size()-2);
+                    viewPagerHeight=Math.max(lastView1.getBottom(),lastView2.getBottom());
+                    ViewGroup.LayoutParams params=viewPager.getLayoutParams();
+                    params.height=viewPagerHeight+15;
+                    viewPager.setLayoutParams(params);
+                    isViewPagerHeightSetted=true;
+                }
             }
-        }, 2500);
+        });
     }
 }

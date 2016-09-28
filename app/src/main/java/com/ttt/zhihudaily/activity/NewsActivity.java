@@ -2,7 +2,7 @@ package com.ttt.zhihudaily.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.MenuCompat;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -19,16 +18,17 @@ import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.db.ZhiHuDailyDB;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadNewsTask;
-import com.ttt.zhihudaily.util.MyScrollView;
+import com.ttt.zhihudaily.myView.MyNestedScrollView;
 
 public class NewsActivity extends AppCompatActivity {
 
     private Boolean isFavourite=false;
     private ZhiHuDailyDB mZhiHuDailyDB;
     private Title title;
-    private MyScrollView myScrollView;
+    private MyNestedScrollView myNestedScrollView;
     private WebView webView;
     private Toolbar toolbar;
+    private AppBarLayout appBarLayout;
     private Intent shareIntent;
     private int currentY=500;
 
@@ -103,8 +103,9 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     private void initToolbarAlphaChange(){
-        myScrollView =(MyScrollView)findViewById(R.id.my_scroll_view);
-        myScrollView.setMyOnScrollChangedListener(new MyScrollView.MyOnScrollChangedListener() {
+        myNestedScrollView =(MyNestedScrollView)findViewById(R.id.my_scroll_view);
+        appBarLayout=(AppBarLayout)findViewById(R.id.appbar_news_toolbar);
+        myNestedScrollView.setMyOnScrollChangedListener(new MyNestedScrollView.MyOnScrollChangedListener() {
             @Override
             public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 float alpha;
@@ -121,6 +122,7 @@ public class NewsActivity extends AppCompatActivity {
                         currentY=scrollY+500;
                     }
                 }
+                appBarLayout.setAlpha(alpha);
                 toolbar.setAlpha(alpha);
             }
         });

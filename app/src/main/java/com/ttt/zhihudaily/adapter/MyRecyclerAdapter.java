@@ -1,7 +1,9 @@
 package com.ttt.zhihudaily.adapter;
 
 import android.content.Context;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private List<Title> list;
     private Context context;
     private MyOnItemClickListener myOnItemClickListener;
-    private List<Integer> heights;
+    private int heights[]=
+            {526,657,678,486,588,549,532,592,478,591,545,524,633,532,596,545,584,478,625,587};
 
     public MyRecyclerAdapter(Context context, List<Title> list) {
         super();
@@ -35,10 +38,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_item, parent, false);
-        heights =new ArrayList<>();
-        for (int i=0;i<list.size();i++){
-            heights.add(492+(int)(Math.random()*200));
-        }
         return new MyViewHolder(view);
     }
 
@@ -48,7 +47,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
 
         // 为imageView设置随机高度
         ViewGroup.LayoutParams params = holder.imageView.getLayoutParams();
-        params.height= heights.get(position);
+        params.height= heights[position];
         holder.imageView.setLayoutParams(params);
         Glide.with(context).load(list.get(position).getImage()).into(holder.imageView);
         final int pos = holder.getAdapterPosition();
@@ -81,6 +80,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
 
         MyViewHolder(View itemView) {
             super(itemView);
+
             textView = (TextView) itemView.findViewById(R.id.recycler_title_text);
             imageView = (ImageView) itemView.findViewById(R.id.recycler_title_image);
         }

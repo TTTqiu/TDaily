@@ -57,6 +57,7 @@ public class LoadTitleTask extends AsyncTask<Void,Void,TitleBean>{
 
     @Override
     protected void onPostExecute(TitleBean bean) {
+        list.clear();
         Title title;
         for(int i=0;i<bean.getStories().length;i++){
             title=new Title(bean.getStories()[i].getTitle(),bean.getStories()[i].getImages()[0],

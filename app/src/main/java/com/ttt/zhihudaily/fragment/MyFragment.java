@@ -5,21 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.activity.NewsActivity;
-import com.ttt.zhihudaily.adapter.MyListAdapter;
 import com.ttt.zhihudaily.adapter.MyRecyclerAdapter;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadTitleTask;
@@ -35,6 +29,14 @@ public class MyFragment extends Fragment{
     private RecyclerView recyclerView;
     private View view;
     private List<Title> list;
+
+    public List<Title> getList() {
+        return list;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
 
     @Nullable
     @Override
@@ -121,6 +123,8 @@ public class MyFragment extends Fragment{
 
             }
         });
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
+
     }
 }
