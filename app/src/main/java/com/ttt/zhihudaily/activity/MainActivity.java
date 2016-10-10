@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean isViewPagerHeightSet = false;
     private int viewPagerHeight = 0;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private Boolean prepareExit = false;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -90,37 +92,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTabLayout();
         refreshBannerAndTitleList();
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+
         if (HttpUtil.isNetworkConnected(this)) {
             new LoadBannerTask(bannerList, this, bannerTitleList).execute();
         } else {
-            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+            Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void onClick(View v) {
-        if (HttpUtil.isNetworkConnected(this)) {
-            switch (currentItem) {
-                case 0:
-                    NewsActivity.startNewsActivity(this, bannerTitleList.get(0));
-                    break;
-                case 1:
-                    NewsActivity.startNewsActivity(this, bannerTitleList.get(1));
-                    break;
-                case 2:
-                    NewsActivity.startNewsActivity(this, bannerTitleList.get(2));
-                    break;
-                case 3:
-                    NewsActivity.startNewsActivity(this, bannerTitleList.get(3));
-                    break;
-                case 4:
-                    NewsActivity.startNewsActivity(this, bannerTitleList.get(4));
-                    break;
-                default:
-                    break;
-            }
+        if (v.getId() == R.id.fab) {
+            Intent intent1 = new Intent(MainActivity.this, FavouriteActivity.class);
+            startActivity(intent1);
         } else {
-            Toast.makeText(this, "No Network", Toast.LENGTH_SHORT).show();
+            if (HttpUtil.isNetworkConnected(this)) {
+                switch (currentItem) {
+                    case 0:
+                        NewsActivity.startNewsActivity(this, bannerTitleList.get(0));
+                        break;
+                    case 1:
+                        NewsActivity.startNewsActivity(this, bannerTitleList.get(1));
+                        break;
+                    case 2:
+                        NewsActivity.startNewsActivity(this, bannerTitleList.get(2));
+                        break;
+                    case 3:
+                        NewsActivity.startNewsActivity(this, bannerTitleList.get(3));
+                        break;
+                    case 4:
+                        NewsActivity.startNewsActivity(this, bannerTitleList.get(4));
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -133,10 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_main_fav:
-                Intent intent1 = new Intent(MainActivity.this, FavouriteActivity.class);
-                startActivity(intent1);
-                break;
             case R.id.menu_main_settings:
                 Intent intent2 = new Intent(MainActivity.this, PrefsActivity.class);
                 startActivity(intent2);
@@ -176,13 +182,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isAutoPlay = false;
     }
 
-    // 按返回时若侧边导航栏是打开的，先退出
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(findViewById(R.id.navigation_view))) {
+            // 按返回时若侧边导航栏是打开的，先退出
             drawerLayout.closeDrawers();
         } else {
-            super.onBackPressed();
+            // 按两次退出
+            if (!prepareExit) {
+                Snackbar.make(myNestedScrollView, "再按一次退出", Snackbar.LENGTH_SHORT).show();
+                prepareExit = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        prepareExit = false;
+                    }
+                }, 2000);
+            } else {
+                finish();
+            }
         }
     }
 
@@ -425,10 +443,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     RecyclerView recyclerView = myFragment.getRecyclerView();
                     View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
                     View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
-                    viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
-                    ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                    params.height = viewPagerHeight;
-                    viewPager.setLayoutParams(params);
+                    if (lastView1!=null&&lastView2!=null){
+                        viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
+                        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+                        params.height = viewPagerHeight;
+                        viewPager.setLayoutParams(params);
+                    }
                     isViewPagerHeightSet = true;
                 }
             }
@@ -450,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     isViewPagerHeightSet = false;
                 } else {
-                    Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }

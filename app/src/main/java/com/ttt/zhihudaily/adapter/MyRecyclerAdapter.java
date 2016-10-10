@@ -23,7 +23,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private Context context;
     private MyOnItemClickListener myOnItemClickListener;
     private int heights[]=
-            {526,657,678,486,588,549,532,592,478,591,545,524,633,532,596,545,584,478,625,587};
+            {526,657,678,486,588,549,532,592,478,591,545,524,633,532,596,545,584,478,625,587,514,597,625,475,574};
 
     public MyRecyclerAdapter(Context context, List<Title> list) {
         super();

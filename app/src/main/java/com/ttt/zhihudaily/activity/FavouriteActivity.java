@@ -1,5 +1,6 @@
 package com.ttt.zhihudaily.activity;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import java.util.List;
 public class FavouriteActivity extends AppCompatActivity {
 
     private MyListAdapter adapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +28,17 @@ public class FavouriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favourite);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        List<Title> list=ZhiHuDailyDB.getInstance(this).loadNewsTitle();
-        ListView listView=(ListView)findViewById(R.id.list_view_fav);
-        adapter=new MyListAdapter(this,R.layout.list_view_item,list);
+        List<Title> list = ZhiHuDailyDB.getInstance(this).loadNewsTitle();
+        listView = (ListView) findViewById(R.id.list_view_fav);
+        adapter = new MyListAdapter(this, R.layout.list_view_item, list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if(HttpUtil.isNetworkConnected(FavouriteActivity.this)){
-                    NewsActivity.startNewsActivity(FavouriteActivity.this,adapter.getItem(position));
-                }else {
-                    Toast.makeText(FavouriteActivity.this, "No Network", Toast.LENGTH_SHORT).show();
+                if (HttpUtil.isNetworkConnected(FavouriteActivity.this)) {
+                    NewsActivity.startNewsActivity(FavouriteActivity.this, adapter.getItem(position));
+                } else {
+                    Snackbar.make(listView, "没有网络", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -44,7 +46,7 @@ public class FavouriteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;

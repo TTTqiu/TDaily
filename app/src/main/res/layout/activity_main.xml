@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -149,6 +150,16 @@
                 </RelativeLayout>
 
             </android.support.v4.widget.SwipeRefreshLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fav_normal"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                app:layout_anchor="@id/swipe_refresh"
+                app:layout_anchorGravity="bottom|right"/>
 
         </android.support.design.widget.CoordinatorLayout>
 

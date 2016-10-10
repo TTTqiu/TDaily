@@ -2,6 +2,7 @@ package com.ttt.zhihudaily.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -60,7 +61,7 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
 
         if(swipeRefreshLayout!=null){
             swipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(context, "刷新成功", Toast.LENGTH_SHORT).show();
+            Snackbar.make(swipeRefreshLayout, "刷新成功", Snackbar.LENGTH_SHORT).show();
         }
     }
 }

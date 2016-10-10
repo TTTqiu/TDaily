@@ -2,6 +2,7 @@ package com.ttt.zhihudaily.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,6 +15,8 @@ import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.activity.NewsActivity;
 import com.ttt.zhihudaily.adapter.MyRecyclerAdapter;
 import com.ttt.zhihudaily.entity.Title;
+import com.ttt.zhihudaily.myView.MyNestedScrollView;
+import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.task.LoadTitleTask;
 import com.ttt.zhihudaily.util.HttpUtil;
 
@@ -39,7 +42,6 @@ public class MyFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        initListView();
         initRecyclerView();
 
         if (HttpUtil.isNetworkConnected(getActivity())) {
@@ -50,7 +52,7 @@ public class MyFragment extends Fragment {
                 new LoadTitleTask(adapter, list).execute();
             }
         } else {
-            Toast.makeText(getActivity(), "No Network", Toast.LENGTH_SHORT).show();
+            Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -74,7 +76,11 @@ public class MyFragment extends Fragment {
         adapter.setMyOnItemClickListener(new MyRecyclerAdapter.MyOnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                NewsActivity.startNewsActivity(getActivity(), list.get(position));
+                if (HttpUtil.isNetworkConnected(getActivity())) {
+                    NewsActivity.startNewsActivity(getActivity(), list.get(position));
+                } else {
+                    Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
+                }
             }
 
             @Override
