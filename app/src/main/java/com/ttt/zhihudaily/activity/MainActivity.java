@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initBanner();
         initNavigation();
-        initSplash();
         initViewPager();
         initTabLayout();
         refreshBannerAndTitleList();
@@ -381,36 +381,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return true;
                     }
                 });
-    }
-
-    private void initSplash() {
-        drawerLayout.setVisibility(View.INVISIBLE);
-
-        ImageView splashImage = (ImageView) findViewById(R.id.splash_image);
-        TextView splashText1 = (TextView) findViewById(R.id.splash_text_1);
-        TextView splashText2 = (TextView) findViewById(R.id.splash_text_2);
-
-        AlphaAnimation imageAnimation = new AlphaAnimation(0.0f, 1.0f);
-        imageAnimation.setDuration(1000);
-        splashImage.setAnimation(imageAnimation);
-
-        AlphaAnimation textAnimation = new AlphaAnimation(0.0f, 1.0f);
-        textAnimation.setDuration(1000);
-        textAnimation.setStartOffset(800);
-        splashText1.setAnimation(textAnimation);
-        splashText2.setAnimation(textAnimation);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                LinearLayout splashLayout = (LinearLayout) findViewById(R.id.splash_layout);
-                AlphaAnimation layoutAnimation = new AlphaAnimation(1.0f, 0.0f);
-                layoutAnimation.setDuration(500);
-                splashLayout.setAnimation(layoutAnimation);
-                splashLayout.setVisibility(View.GONE);
-                drawerLayout.setVisibility(View.VISIBLE);
-            }
-        }, 2500);
     }
 
     private void initTabLayout() {

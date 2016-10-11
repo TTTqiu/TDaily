@@ -15,11 +15,6 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/MyTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.FavouriteActivity"
@@ -27,12 +22,20 @@
         </activity>
         <activity
             android:name=".activity.NewsActivity"
-            android:theme="@style/MyTheme.OverlayActionBar"
-            android:label="">
+            android:label=""
+            android:theme="@style/MyTheme.OverlayActionBar">
         </activity>
         <activity
             android:name=".activity.PrefsActivity"
             android:label="设置">
+        </activity>
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/MyTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
