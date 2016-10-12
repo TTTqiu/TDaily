@@ -1,5 +1,6 @@
 package com.ttt.zhihudaily.activity;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -26,11 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
@@ -38,6 +34,7 @@ import com.ttt.zhihudaily.adapter.MyPagerAdapter;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.fragment.MyFragment;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
+import com.ttt.zhihudaily.service.MyIntentService;
 import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.util.HttpUtil;
 
@@ -100,7 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
+
+        Intent intent=new Intent(this, MyIntentService.class);
+        startService(intent);
     }
+
 
     @Override
     public void onClick(View v) {

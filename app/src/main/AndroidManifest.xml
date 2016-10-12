@@ -37,6 +37,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".service.MyIntentService"/>
+
+        <receiver android:name=".receiver.MyBroadcastReceiver"/>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.ttt.zhihudaily.activity;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
@@ -54,6 +55,9 @@ public class NewsActivity extends AppCompatActivity {
         new LoadNewsTask(webView,shareIntent).execute(newsId);
         mZhiHuDailyDB=ZhiHuDailyDB.getInstance(this);
         isFavourite=mZhiHuDailyDB.isFavourite(title);
+
+        NotificationManager nm=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(1);
     }
 
     @Override

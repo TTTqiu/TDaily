@@ -16,49 +16,38 @@ import com.ttt.zhihudaily.entity.TitleBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadTitleTask extends AsyncTask<Void,Void,TitleBean>{
+public class LoadTitleTask extends AsyncTask<Void, Void, TitleBean> {
 
     private List<Title> list;
     private MyRecyclerAdapter adapter;
-    private Context context;
     private String date;
 
-    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list){
-        this.adapter=adapter;
-        this.list=list;
+    public LoadTitleTask(MyRecyclerAdapter adapter, List<Title> list) {
+        this.list = list;
+        this.adapter = adapter;
     }
 
-    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list, String date){
-        this(adapter,list);
-        this.date=date;
-    }
-
-    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list, Context context){
-        this(adapter,list);
-        this.context=context;
-    }
-
-    public LoadTitleTask(MyRecyclerAdapter adapter,List<Title> list, Context context, String date){
-        this(adapter,list,context);
-        this.date=date;
+    public LoadTitleTask(MyRecyclerAdapter adapter, List<Title> list, String date) {
+        this(adapter, list);
+        this.date = date;
     }
 
     @Override
     protected TitleBean doInBackground(Void... voids) {
-        if(date!=null){
+        if (date != null) {
             return HttpUtil.getParsedBeforeTitle(date);
-        }else {
+        } else {
             return HttpUtil.getParsedLatestTitle();
         }
     }
 
     @Override
     protected void onPostExecute(TitleBean bean) {
-        if (list!=null){
+        if (list != null) {
             list.clear();
             Title title;
-            for(int i=0;i<bean.getStories().length;i++){
-                title=new Title(bean.getStories()[i].getTitle(),bean.getStories()[i].getImages()[0],
+            for (int i = 0; i < bean.getStories().length; i++) {
+                title = new Title(bean.getStories()[i].getTitle(), bean.getStories()[i].getImages()[0],
                         bean.getStories()[i].getId());
                 list.add(title);
             }

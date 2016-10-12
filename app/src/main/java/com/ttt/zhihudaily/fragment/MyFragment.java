@@ -62,9 +62,9 @@ public class MyFragment extends Fragment {
     public void refreshTitleList() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            new LoadTitleTask(adapter, list, getActivity(),bundle.getString("date")).execute();
+            new LoadTitleTask(adapter, list, bundle.getString("date")).execute();
         } else {
-            new LoadTitleTask(adapter, list, getActivity()).execute();
+            new LoadTitleTask(adapter, list).execute();
         }
     }
 
