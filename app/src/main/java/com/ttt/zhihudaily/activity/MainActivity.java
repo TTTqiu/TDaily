@@ -1,5 +1,6 @@
 package com.ttt.zhihudaily.activity;
 
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -88,9 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initViewPager();
         initTabLayout();
         refreshBannerAndTitleList();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        initService();
+        initFab();
 
         if (HttpUtil.isNetworkConnected(this)) {
             new LoadBannerTask(bannerList, this, bannerTitleList).execute();
@@ -98,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
 
-        Intent intent=new Intent(this, MyIntentService.class);
-        startService(intent);
+        NotificationManager nm=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(1);
     }
 
 
@@ -446,5 +447,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+    }
+
+    private void initFab(){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    private void initService(){
+        Intent intent=new Intent(this, MyIntentService.class);
+        startService(intent);
     }
 }
