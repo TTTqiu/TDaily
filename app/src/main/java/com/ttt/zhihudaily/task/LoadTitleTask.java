@@ -47,7 +47,7 @@ public class LoadTitleTask extends AsyncTask<Void, Void, TitleBean> {
                         bean.getStories()[i].getId(), bean.getDate(), 0);
                 list.add(title);
                 mDBUtil = DBUtil.getInstance(context);
-                if (!mDBUtil.isExist(title)){
+                if (!mDBUtil.isExist("title",title)){
                     mDBUtil.saveNewsTitle(title);
                 }
             }

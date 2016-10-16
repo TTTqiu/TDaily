@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -16,22 +16,19 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/MyTheme.NoActionBar">
-        </activity>
+            android:theme="@style/MyTheme.NoActionBar"/>
         <activity
             android:name=".activity.FavouriteActivity"
-            android:label="@string/menu_fav">
-        </activity>
+            android:label="收藏"/>
         <activity
             android:name=".activity.NewsActivity"
             android:label=""
-            android:theme="@style/MyTheme.OverlayActionBar">
-        </activity>
+            android:theme="@style/MyTheme.OverlayActionBar"/>
         <activity
             android:name=".activity.PrefsActivity"
-            android:label="设置">
-        </activity>
-        <activity android:name=".activity.SplashActivity"
+            android:label="设置"/>
+        <activity
+            android:name=".activity.SplashActivity"
             android:theme="@style/MyTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,9 +37,12 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.MyIntentService"/>
+        <service android:name=".service.MyIntentService" />
 
-        <receiver android:name=".receiver.MyBroadcastReceiver"/>
+        <receiver android:name=".receiver.MyBroadcastReceiver" />
+
+        <activity android:name=".activity.HistoryActivity"
+            android:label="历史浏览"/>
     </application>
 
 </manifest>

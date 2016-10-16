@@ -2,6 +2,7 @@ package com.ttt.zhihudaily.activity;
 
 import android.app.ActivityManager;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -107,8 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fab) {
-            Intent intent1 = new Intent(MainActivity.this, FavouriteActivity.class);
-            startActivity(intent1);
+            Intent intent = new Intent(MainActivity.this, FavouriteActivity.class);
+            startActivity(intent);
         } else {
             if (HttpUtil.isNetworkConnected(this)) {
                 switch (bannerCurrentItem) {
@@ -363,8 +365,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        item.setChecked(true);
-                        Toast.makeText(MainActivity.this, "" + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        Intent intent;
+                        switch (item.getItemId()) {
+                            case R.id.nav_item_fav:
+                                intent = new Intent(MainActivity.this, FavouriteActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.nav_item_history:
+                                intent = new Intent(MainActivity.this, HistoryActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.nav_item_settings:
+                                intent = new Intent(MainActivity.this, PrefsActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.nav_item_exit:
+//                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+//                                dialog.setTitle("确定要退出吗？");
+//                                dialog.setCancelable(true);
+//                                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        finish();
+//                                    }
+//                                });
+//                                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                    }
+//                                });
+//                                dialog.show();
+                                Snackbar.make(myNestedScrollView, "确定要退出吗？", Snackbar.LENGTH_SHORT)
+                                        .setAction("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                finish();
+                                            }
+                                        })
+                                        .show();
+                                break;
+                            default:
+                                break;
+                        }
+                        drawerLayout.closeDrawers();
                         return true;
                     }
                 });
@@ -401,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (myFragment.getList() != null) {
                         View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
                         View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
-                        if (lastView1!=null&&lastView2!=null){
+                        if (lastView1 != null && lastView2 != null) {
                             viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
                         }
                     }

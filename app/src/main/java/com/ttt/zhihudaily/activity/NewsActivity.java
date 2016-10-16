@@ -53,8 +53,15 @@ public class NewsActivity extends AppCompatActivity {
         shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         new LoadNewsTask(webView,shareIntent).execute(newsId);
+
         mDBUtil = DBUtil.getInstance(this);
         isFavourite= mDBUtil.isFavourite(title);
+        if (!mDBUtil.isExist("history",title)){
+            mDBUtil.saveHistoryTitle(title);
+        }else {
+            mDBUtil.deleteHistoryTitle(title);
+            mDBUtil.saveHistoryTitle(title);
+        }
     }
 
     @Override

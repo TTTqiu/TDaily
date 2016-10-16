@@ -8,21 +8,20 @@ public class MyDBHelper extends SQLiteOpenHelper{
 
     private static final String DB_NAME="ZhiHuDaily.db";
     private static final int DB_VERSION=1;
-    private static final String TABLE_NAME="title";
-    private static final String COLUMN_ID="id";
-    private static final String COLUMN_NEWS_TITLE="news_title";
-    private static final String COLUMN_NEWS_IMAGE="news_image";
-    private static final String COLUMN_NEWS_ID="news_id";
-    private static final String COLUMN_NEWS_DATE="news_date";
-    private static final String COLUMN_IS_FAVOURITE="is_favourite";
 
-    private static final String CREATE_TITLE="create table "+TABLE_NAME +"("+
-            COLUMN_ID+" integer primary key autoincrement," +
-            COLUMN_NEWS_ID+" integer,"+
-            COLUMN_NEWS_TITLE+" text,"+
-            COLUMN_NEWS_IMAGE+" text,"+
-            COLUMN_NEWS_DATE+" text,"+
-            COLUMN_IS_FAVOURITE+" integer)";
+    private static final String CREATE_TITLE="create table title("+
+            "id integer primary key autoincrement," +
+            "news_id integer,"+
+            "news_title text,"+
+            "news_image text,"+
+            "news_date text,"+
+            "is_favourite integer)";
+
+    private static final String CREATE_HISTORY="create table history("+
+            "id integer primary key autoincrement," +
+            "news_id integer,"+
+            "news_title text,"+
+            "news_image text)";
 
     public MyDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -31,6 +30,7 @@ public class MyDBHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_TITLE);
+        sqLiteDatabase.execSQL(CREATE_HISTORY);
     }
 
     @Override
