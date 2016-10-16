@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,13 @@ import android.widget.Toast;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.activity.NewsActivity;
 import com.ttt.zhihudaily.adapter.MyRecyclerAdapter;
+import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
 import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.task.LoadTitleTask;
 import com.ttt.zhihudaily.util.HttpUtil;
+import com.ttt.zhihudaily.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,7 @@ public class MyFragment extends Fragment {
     private RecyclerView recyclerView;
     private View view;
     private List<Title> list;
+    private DBUtil mDBUtil;
 
     @Nullable
     @Override
@@ -43,28 +47,17 @@ public class MyFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         initRecyclerView();
-
-        if (HttpUtil.isNetworkConnected(getActivity())) {
-            Bundle bundle = getArguments();
-            if (bundle != null) {
-                new LoadTitleTask(adapter, list, bundle.getString("date")).execute();
-            } else {
-                new LoadTitleTask(adapter, list).execute();
-            }
-        } else {
-            Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
-        }
+        loadData();
     }
 
-    /**
-     * 下拉刷新
-     */
     public void refreshTitleList() {
         Bundle bundle = getArguments();
-        if (bundle != null) {
-            new LoadTitleTask(adapter, list, bundle.getString("date")).execute();
-        } else {
-            new LoadTitleTask(adapter, list).execute();
+        if (bundle.getInt("position") == 0) {
+            if (HttpUtil.isNetworkConnected(getActivity())) {
+                new LoadTitleTask(adapter, list, getActivity(), Utility.getDate(-1, false)).execute();
+            } else {
+                Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -90,6 +83,30 @@ public class MyFragment extends Fragment {
         });
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void loadData() {
+        Bundle bundle = getArguments();
+        mDBUtil = DBUtil.getInstance(getActivity());
+        int position = bundle.getInt("position");
+        mDBUtil.loadNewsTitleAtDate(Utility.getDate(position, false), list);
+        if (position == 0) {
+            if (HttpUtil.isNetworkConnected(getActivity())) {
+                new LoadTitleTask(adapter, list, getActivity(),
+                        Utility.getDate(-1, false)).execute();
+            } else {
+                Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
+            }
+        } else {
+            if (list.size() == 0) {
+                if (HttpUtil.isNetworkConnected(getActivity())) {
+                    new LoadTitleTask(adapter, list, getActivity(),
+                            Utility.getDate(position - 1, false)).execute();
+                } else {
+                    Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     public List<Title> getList() {

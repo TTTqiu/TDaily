@@ -52,9 +52,9 @@ public class MyIntentService extends IntentService {
                 intents[1].putExtra("title", title);
                 PendingIntent nPi = PendingIntent.getActivities(MyIntentService.this, 0,
                         intents, PendingIntent.FLAG_UPDATE_CURRENT);
-
                 builder.setContentIntent(nPi);
                 Notification notification = builder.build();
+                notification.vibrate = new long[]{0, 500};
                 nm.notify(1, notification);
 
                 preferences.edit().putString("lastedName", lastedName).apply();
@@ -63,7 +63,7 @@ public class MyIntentService extends IntentService {
 
         // 定时
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        long triggerAtTime = SystemClock.elapsedRealtime() + 30 * 60 * 1000;
+        long triggerAtTime = SystemClock.elapsedRealtime() + 10 * 60 * 1000;
         Intent aIntent = new Intent(MyIntentService.this, MyBroadcastReceiver.class);
         PendingIntent aPi = PendingIntent.getBroadcast(MyIntentService.this, 0, aIntent, 0);
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, aPi);

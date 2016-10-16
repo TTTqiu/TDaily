@@ -7,10 +7,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
-import com.ttt.zhihudaily.db.ZhiHuDailyDB;
+import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.adapter.MyListAdapter;
 import com.ttt.zhihudaily.util.HttpUtil;
@@ -28,7 +27,7 @@ public class FavouriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favourite);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        List<Title> list = ZhiHuDailyDB.getInstance(this).loadNewsTitle();
+        List<Title> list = DBUtil.getInstance(this).loadFavourite();
         listView = (ListView) findViewById(R.id.list_view_fav);
         adapter = new MyListAdapter(this, R.layout.list_view_item, list);
         listView.setAdapter(adapter);

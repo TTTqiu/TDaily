@@ -16,7 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.ttt.zhihudaily.R;
-import com.ttt.zhihudaily.db.ZhiHuDailyDB;
+import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadNewsTask;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
@@ -24,7 +24,7 @@ import com.ttt.zhihudaily.myView.MyNestedScrollView;
 public class NewsActivity extends AppCompatActivity {
 
     private Boolean isFavourite=false;
-    private ZhiHuDailyDB mZhiHuDailyDB;
+    private DBUtil mDBUtil;
     private Title title;
     private MyNestedScrollView myNestedScrollView;
     private WebView webView;
@@ -53,8 +53,8 @@ public class NewsActivity extends AppCompatActivity {
         shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
         new LoadNewsTask(webView,shareIntent).execute(newsId);
-        mZhiHuDailyDB=ZhiHuDailyDB.getInstance(this);
-        isFavourite=mZhiHuDailyDB.isFavourite(title);
+        mDBUtil = DBUtil.getInstance(this);
+        isFavourite= mDBUtil.isFavourite(title);
     }
 
     @Override
@@ -77,7 +77,14 @@ public class NewsActivity extends AppCompatActivity {
         shareActionProvider.setShareIntent(shareIntent);
         return true;
     }
-//
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        NotificationManager nm=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(1);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
@@ -85,11 +92,11 @@ public class NewsActivity extends AppCompatActivity {
                 if(isFavourite){
                     item.setIcon(R.drawable.fav_normal);
                     isFavourite=false;
-                    mZhiHuDailyDB.deleteNewsTitle(title.getId());
+                    mDBUtil.cancelFavourite(title);
                 }else {
                     item.setIcon(R.drawable.fav_selected);
                     isFavourite=true;
-                    mZhiHuDailyDB.saveNewsTitle(title);
+                    mDBUtil.setFavourite(title);
                 }
                 break;
             case R.id.menu_news_settings:

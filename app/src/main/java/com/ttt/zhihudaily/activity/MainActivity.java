@@ -33,12 +33,14 @@ import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.adapter.MyPagerAdapter;
+import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.fragment.MyFragment;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
 import com.ttt.zhihudaily.service.MyIntentService;
 import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.util.HttpUtil;
+import com.ttt.zhihudaily.util.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<View> bannerList;
     private List<Title> bannerTitleList;
     private Boolean isAutoPlay = false;
-    private int currentItem;
+    private int bannerCurrentItem = 0;
+    private int viewPagerCurrentItem = 0;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            banner.setCurrentItem(currentItem);
+            banner.setCurrentItem(bannerCurrentItem);
         }
     };
 
@@ -98,9 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
-
-        NotificationManager nm=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        nm.cancel(1);
     }
 
 
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent1);
         } else {
             if (HttpUtil.isNetworkConnected(this)) {
-                switch (currentItem) {
+                switch (bannerCurrentItem) {
                     case 0:
                         NewsActivity.startNewsActivity(this, bannerTitleList.get(0));
                         break;
@@ -155,24 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-
-    /**
-     * 获得日期
-     *
-     * @return 2016年8月23日 格式的日期
-     */
-    private String getDate(int i, Boolean isFormat) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -i);
-        SimpleDateFormat simpleDateFormat;
-        if (isFormat) {
-            simpleDateFormat = new SimpleDateFormat("yyyy年M月d日");
-        } else {
-            simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        }
-        return simpleDateFormat.format(calendar.getTime());
-    }
-
     private void startPlay() {
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(new SlideTask(), 4, 5, TimeUnit.SECONDS);
@@ -211,6 +193,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         startPlay();
         isAutoPlay = true;
+
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(1);
     }
 
     @Override
@@ -224,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void run() {
-            currentItem = (currentItem + 1) % bannerList.size();
+            bannerCurrentItem = (bannerCurrentItem + 1) % bannerList.size();
             handler.obtainMessage().sendToTarget();
         }
     }
@@ -232,13 +217,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initViewPager() {
         fragmentList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            titles[i] = getDate(i, true);
+            titles[i] = Utility.getDate(i, true);
             MyFragment fragment = new MyFragment();
-            if (i != 0) {
-                Bundle bundle = new Bundle();
-                bundle.putString("date", getDate(i - 1, false));
-                fragment.setArguments(bundle);
-            }
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", i);
+            fragment.setArguments(bundle);
             fragmentList.add(fragment);
         }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -251,6 +234,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int position) {
+                viewPagerCurrentItem = position;
+
                 // 每次切换时回到ViewPager顶端
                 if (myNestedScrollView.getScrollY() > banner.getHeight()) {
                     myNestedScrollView.scrollTo(0, banner.getHeight());
@@ -262,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     params.height = 8030;
                     viewPager.setLayoutParams(params);
                 } else {
-                    if (isViewPagerHeightSet) {
+                    if (viewPagerHeight != 0) {
                         params.height = viewPagerHeight;
                         viewPager.setLayoutParams(params);
                     }
@@ -297,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initBanner() {
         initDotList();
         initBannerList();
-        currentItem = 0;
+        bannerCurrentItem = 0;
         bannerTitleList = new ArrayList<>();
         banner = (ViewPager) findViewById(R.id.banner);
         banner.setAdapter(new PagerAdapter() {
@@ -330,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPageSelected(int position) {
-                currentItem = position;
+                bannerCurrentItem = position;
                 for (int i = 0; i < 5; i++) {
                     if (i == position) {
                         dotList.get(i).setBackgroundResource(R.drawable.dot_focus);
@@ -410,17 +395,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 // 设定ViewPager第一页高度
-                if (!isViewPagerHeightSet) {
+                if (viewPagerCurrentItem == 0 && !isViewPagerHeightSet) {
                     MyFragment myFragment = (MyFragment) fragmentList.get(0);
                     RecyclerView recyclerView = myFragment.getRecyclerView();
-                    View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
-                    View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
-                    if (lastView1!=null&&lastView2!=null){
-                        viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
-                        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                        params.height = viewPagerHeight;
-                        viewPager.setLayoutParams(params);
+                    if (myFragment.getList() != null) {
+                        View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
+                        View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
+                        if (lastView1!=null&&lastView2!=null){
+                            viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
+                        }
                     }
+                    ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+                    params.height = viewPagerHeight;
+                    viewPager.setLayoutParams(params);
                     isViewPagerHeightSet = true;
                 }
             }
@@ -447,15 +434,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        isViewPagerHeightSet = false;
     }
 
-    private void initFab(){
+    private void initFab() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this);
     }
 
-    private void initService(){
-        Intent intent=new Intent(this, MyIntentService.class);
+    private void initService() {
+        Intent intent = new Intent(this, MyIntentService.class);
         startService(intent);
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.ttt.zhihudaily.adapter.MyListAdapter;
 import com.ttt.zhihudaily.adapter.MyRecyclerAdapter;
+import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.util.HttpUtil;
 import com.ttt.zhihudaily.entity.TitleBean;
@@ -21,24 +22,19 @@ public class LoadTitleTask extends AsyncTask<Void, Void, TitleBean> {
     private List<Title> list;
     private MyRecyclerAdapter adapter;
     private String date;
+    private Context context;
+    private DBUtil mDBUtil;
 
-    public LoadTitleTask(MyRecyclerAdapter adapter, List<Title> list) {
+    public LoadTitleTask(MyRecyclerAdapter adapter, List<Title> list, Context context, String date) {
         this.list = list;
         this.adapter = adapter;
-    }
-
-    public LoadTitleTask(MyRecyclerAdapter adapter, List<Title> list, String date) {
-        this(adapter, list);
+        this.context = context;
         this.date = date;
     }
 
     @Override
     protected TitleBean doInBackground(Void... voids) {
-        if (date != null) {
-            return HttpUtil.getParsedBeforeTitle(date);
-        } else {
-            return HttpUtil.getParsedLatestTitle();
-        }
+        return HttpUtil.getParsedBeforeTitle(date);
     }
 
     @Override
@@ -48,8 +44,12 @@ public class LoadTitleTask extends AsyncTask<Void, Void, TitleBean> {
             Title title;
             for (int i = 0; i < bean.getStories().length; i++) {
                 title = new Title(bean.getStories()[i].getTitle(), bean.getStories()[i].getImages()[0],
-                        bean.getStories()[i].getId());
+                        bean.getStories()[i].getId(), bean.getDate(), 0);
                 list.add(title);
+                mDBUtil = DBUtil.getInstance(context);
+                if (!mDBUtil.isExist(title)){
+                    mDBUtil.saveNewsTitle(title);
+                }
             }
             adapter.notifyDataSetChanged();
         }
