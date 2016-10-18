@@ -20,6 +20,7 @@ import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadNewsTask;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
+import com.ttt.zhihudaily.util.DensityUtil;
 
 public class NewsActivity extends AppCompatActivity {
 
@@ -31,7 +32,8 @@ public class NewsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private AppBarLayout appBarLayout;
     private Intent shareIntent;
-    private int currentY=500;
+    private int currentY;
+    private int px500;
 
 
     @Override
@@ -42,6 +44,8 @@ public class NewsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        px500 =DensityUtil.dip2px(this,179);
+        currentY= px500;
         initToolbarAlphaChange();
 
         webView=(WebView)findViewById(R.id.webview);
@@ -130,11 +134,11 @@ public class NewsActivity extends AppCompatActivity {
                     currentY=scrollY;
                 }else {
                     toolbar.setVisibility(View.VISIBLE);
-                    if(scrollY<currentY&&scrollY>(currentY-500)){
-                        alpha=(float)(currentY-scrollY)/500;
+                    if(scrollY<currentY&&scrollY>(currentY-px500)){
+                        alpha=(float)(currentY-scrollY)/px500;
                     }else {
                         alpha=1;
-                        currentY=scrollY+500;
+                        currentY=scrollY+px500;
                     }
                 }
                 appBarLayout.setAlpha(alpha);

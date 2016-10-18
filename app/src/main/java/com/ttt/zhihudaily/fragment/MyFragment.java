@@ -51,13 +51,10 @@ public class MyFragment extends Fragment {
     }
 
     public void refreshTitleList() {
-        Bundle bundle = getArguments();
-        if (bundle.getInt("position") == 0) {
-            if (HttpUtil.isNetworkConnected(getActivity())) {
-                new LoadTitleTask(adapter, list, getActivity(), Utility.getDate(-1, false)).execute();
-            } else {
-                Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
-            }
+        if (HttpUtil.isNetworkConnected(getActivity())) {
+            new LoadTitleTask(adapter, list, getActivity(), Utility.getDate(-1, false)).execute();
+        } else {
+            Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
     }
 

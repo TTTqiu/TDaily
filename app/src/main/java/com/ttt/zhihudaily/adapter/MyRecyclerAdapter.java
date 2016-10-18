@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.entity.Title;
+import com.ttt.zhihudaily.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private List<Title> list;
     private Context context;
     private MyOnItemClickListener myOnItemClickListener;
-    private int heights[]=
-            {526,657,678,486,588,549,532,592,478,591,545,524,633,532,596,545,584,478,625,587,514,597,625,475,574};
-
+    private int heightsDP[]={175,219,226,162,196,183,177,197,159,197,182,175,211,177,199,
+            182,195,159,208,196,171,199,208,158,191};
+    private int heightsPX[]=new int[25];
     public MyRecyclerAdapter(Context context, List<Title> list) {
         super();
         this.context = context;
@@ -44,10 +45,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.textView.setText(list.get(position).getName());
-
         // 为imageView设置随机高度
         ViewGroup.LayoutParams params = holder.imageView.getLayoutParams();
-        params.height= heights[position];
+        for (int i=0;i<25;i++){
+            heightsPX[i]=DensityUtil.dip2px(context,heightsDP[i]);
+        }
+        params.height= heightsPX[position];
         holder.imageView.setLayoutParams(params);
         Glide.with(context).load(list.get(position).getImage()).into(holder.imageView);
         final int pos = holder.getAdapterPosition();

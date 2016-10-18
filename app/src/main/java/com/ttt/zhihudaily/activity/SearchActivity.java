@@ -262,6 +262,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             listView.removeFooterView(footerView);
         }
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteList));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
     }
 
     // 触碰屏幕就关闭软键盘

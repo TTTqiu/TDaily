@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.ttt.zhihudaily.fragment.MyFragment;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
 import com.ttt.zhihudaily.service.MyIntentService;
 import com.ttt.zhihudaily.task.LoadBannerTask;
+import com.ttt.zhihudaily.util.DensityUtil;
 import com.ttt.zhihudaily.util.HttpUtil;
 import com.ttt.zhihudaily.util.Utility;
 
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MyNestedScrollView myNestedScrollView;
     private ScheduledExecutorService executorService;
     private Boolean isViewPagerHeightSet = false;
-    private int viewPagerHeight = 0;
+    private int[] viewPagerHeight = {0, 0, 0, 0, 0};
     private SwipeRefreshLayout swipeRefreshLayout;
     private Boolean prepareExit = false;
     private Handler handler = new Handler() {
@@ -239,14 +241,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // 每次切换设置ViewPager高度
                 ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                if (position != 0) {
-                    params.height = 8030;
+                params.height = DensityUtil.dip2px(MainActivity.this, 3000);
+                viewPager.setLayoutParams(params);
+                if (viewPagerHeight[position] != 0) {
+                    params.height = viewPagerHeight[position];
                     viewPager.setLayoutParams(params);
-                } else {
-                    if (viewPagerHeight != 0) {
-                        params.height = viewPagerHeight;
-                        viewPager.setLayoutParams(params);
-                    }
                 }
             }
 
@@ -409,21 +408,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
 
-                // 设定ViewPager第一页高度
+                ViewGroup.LayoutParams params = viewPager.getLayoutParams();
                 if (viewPagerCurrentItem == 0 && !isViewPagerHeightSet) {
+                    // 设定ViewPager第一页高度
                     MyFragment myFragment = (MyFragment) fragmentList.get(0);
                     RecyclerView recyclerView = myFragment.getRecyclerView();
                     if (myFragment.getList() != null) {
                         View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
                         View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
                         if (lastView1 != null && lastView2 != null) {
-                            viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
+                            viewPagerHeight[0] = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
                         }
                     }
-                    ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                    params.height = viewPagerHeight;
+                    params.height = viewPagerHeight[0];
                     viewPager.setLayoutParams(params);
                     isViewPagerHeightSet = true;
+                } else if (viewPagerCurrentItem != 0 && viewPagerHeight[viewPagerCurrentItem] == 0) {
+                    // 设定ViewPager其他页高度
+                    MyFragment myFragment = (MyFragment) fragmentList.get(viewPagerCurrentItem);
+                    RecyclerView recyclerView = myFragment.getRecyclerView();
+                    if (myFragment.getList() != null) {
+                        View lastView = recyclerView.getChildAt(myFragment.getList().size() - 1);
+                        if (lastView != null) {
+                            viewPagerHeight[viewPagerCurrentItem] = lastView.getBottom() + 15;
+                        }
+                    }
+                    params.height = viewPagerHeight[viewPagerCurrentItem];
+                    viewPager.setLayoutParams(params);
                 }
             }
         });
@@ -438,10 +449,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (HttpUtil.isNetworkConnected(MainActivity.this)) {
                     new LoadBannerTask(bannerList, MainActivity.this, bannerTitleList,
                             swipeRefreshLayout).execute();
-                    for (int i = 0; i < 5; i++) {
-                        MyFragment myFragment = (MyFragment) fragmentList.get(i);
-                        myFragment.refreshTitleList();
-                    }
+                    MyFragment myFragment = (MyFragment) fragmentList.get(0);
+                    myFragment.refreshTitleList();
                     isViewPagerHeightSet = false;
                 } else {
                     Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
@@ -449,7 +458,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        isViewPagerHeightSet = false;
     }
 
     private void initFab() {
