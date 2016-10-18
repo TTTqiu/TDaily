@@ -1,8 +1,6 @@
 package com.ttt.zhihudaily.activity;
 
-import android.app.ActivityManager;
 import android.app.NotificationManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,22 +18,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.adapter.MyPagerAdapter;
-import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.fragment.MyFragment;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
@@ -44,9 +39,7 @@ import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.util.HttpUtil;
 import com.ttt.zhihudaily.util.Utility;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -87,8 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
+        initToolbar();
 
         initBanner();
         initNavigation();
@@ -108,30 +100,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.fab) {
+        if (v.getId() == R.id.main_search_ll) {
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
+        } else if (v.getId() == R.id.fab) {
             Intent intent = new Intent(MainActivity.this, FavouriteActivity.class);
             startActivity(intent);
+        } else if (v.getId() == R.id.exit_ll) {
+            drawerLayout.closeDrawers();
+            Snackbar.make(myNestedScrollView, "确定要退出吗？", Snackbar.LENGTH_SHORT)
+                    .setAction("确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    })
+                    .show();
         } else {
             if (HttpUtil.isNetworkConnected(this)) {
-                switch (bannerCurrentItem) {
-                    case 0:
-                        NewsActivity.startNewsActivity(this, bannerTitleList.get(0));
-                        break;
-                    case 1:
-                        NewsActivity.startNewsActivity(this, bannerTitleList.get(1));
-                        break;
-                    case 2:
-                        NewsActivity.startNewsActivity(this, bannerTitleList.get(2));
-                        break;
-                    case 3:
-                        NewsActivity.startNewsActivity(this, bannerTitleList.get(3));
-                        break;
-                    case 4:
-                        NewsActivity.startNewsActivity(this, bannerTitleList.get(4));
-                        break;
-                    default:
-                        break;
-                }
+                NewsActivity.startNewsActivity(this, bannerTitleList.get(bannerCurrentItem));
             } else {
                 Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
             }
@@ -216,6 +203,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        LinearLayout searchLL = (LinearLayout) findViewById(R.id.main_search_ll);
+        searchLL.setOnClickListener(this);
+    }
+
     private void initViewPager() {
         fragmentList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -266,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initBannerList() {
         bannerList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.banner_item, null);
+            View view = LayoutInflater.from(this).inflate(R.layout.banner_item, myNestedScrollView);
             view.setOnClickListener(this);
             bannerList.add(view);
         }
@@ -345,10 +339,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        // 防止ViewPager自动跳到屏幕顶端
-        banner.setFocusable(true);
-        banner.setFocusableInTouchMode(true);
-        banner.requestFocus();
     }
 
     private void initNavigation() {
@@ -357,6 +347,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 R.string.drawer_open, R.string.drawer_close);
         drawerToggle.syncState();
         drawerLayout.addDrawerListener(drawerToggle);
+
+        LinearLayout exitLL = (LinearLayout) findViewById(R.id.exit_ll);
+        exitLL.setOnClickListener(this);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         // 去掉scrollbar。scrollbar在NavigationView的child:NavigationMenuView中，
@@ -379,30 +372,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 intent = new Intent(MainActivity.this, PrefsActivity.class);
                                 startActivity(intent);
                                 break;
-                            case R.id.nav_item_exit:
-//                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-//                                dialog.setTitle("确定要退出吗？");
-//                                dialog.setCancelable(true);
-//                                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        finish();
-//                                    }
-//                                });
-//                                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                    }
-//                                });
-//                                dialog.show();
-                                Snackbar.make(myNestedScrollView, "确定要退出吗？", Snackbar.LENGTH_SHORT)
-                                        .setAction("确定", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                finish();
-                                            }
-                                        })
-                                        .show();
+                            case R.id.nav_item_search:
+                                intent = new Intent(MainActivity.this, SearchActivity.class);
+                                startActivity(intent);
                                 break;
                             default:
                                 break;

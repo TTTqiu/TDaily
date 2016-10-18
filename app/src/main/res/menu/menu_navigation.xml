@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="none">
+    <group android:id="@+id/nav_group_1">
         <item
             android:id="@+id/nav_item_fav"
             android:icon="@drawable/nav_item_fav"
             android:title="收藏" />
+    </group>
+    <group android:id="@+id/nav_group_2">
         <item
             android:id="@+id/nav_item_history"
             android:icon="@drawable/nav_item_history"
             android:title="历史浏览" />
+    </group>
+    <group android:id="@+id/nav_group_3">
+        <item
+            android:id="@+id/nav_item_search"
+            android:icon="@drawable/nav_item_search"
+            android:title="搜索" />
+    </group>
+    <group android:id="@+id/nav_group_4">
         <item
             android:id="@+id/nav_item_settings"
             android:icon="@drawable/nav_item_settings"
             android:title="设置" />
-        <item
-            android:id="@+id/nav_item_exit"
-            android:icon="@drawable/nav_item_exit"
-            android:title="退出" />
     </group>
 </menu>

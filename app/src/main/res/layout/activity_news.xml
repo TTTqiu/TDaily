@@ -35,7 +35,7 @@
 
         <include
             android:id="@+id/toolbar_news"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar_news" />
 
     </android.support.design.widget.AppBarLayout>
 

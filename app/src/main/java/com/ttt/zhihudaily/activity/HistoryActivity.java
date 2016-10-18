@@ -1,9 +1,12 @@
 package com.ttt.zhihudaily.activity;
 
+import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +25,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private MyListAdapter adapter;
     private ListView listView;
+    private List<Title> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +35,36 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_history, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.menu_history_clear:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("确定删除所有记录？");
+                dialog.setCancelable(true);
+                dialog.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBUtil mDBUtil = DBUtil.getInstance(HistoryActivity.this);
+                        mDBUtil.clearHistory();
+                        list.clear();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                dialog.show();
                 break;
             default:
                 break;
@@ -45,7 +75,7 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        List<Title> list = DBUtil.getInstance(this).loadHistoryTitle();
+        list = DBUtil.getInstance(this).loadHistoryTitle();
         listView = (ListView) findViewById(R.id.list_view_history);
         // 倒序排列list
         Collections.reverse(list);

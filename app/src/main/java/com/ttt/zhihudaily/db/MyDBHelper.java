@@ -23,6 +23,10 @@ public class MyDBHelper extends SQLiteOpenHelper{
             "news_title text,"+
             "news_image text)";
 
+    private static final String CREATE_SEARCH="create table search("+
+            "id integer primary key autoincrement," +
+            "history_key text)";
+
     public MyDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -31,6 +35,7 @@ public class MyDBHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_TITLE);
         sqLiteDatabase.execSQL(CREATE_HISTORY);
+        sqLiteDatabase.execSQL(CREATE_SEARCH);
     }
 
     @Override

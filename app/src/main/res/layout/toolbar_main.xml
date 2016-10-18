@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_scrollFlags="scroll|enterAlways"
+    app:theme="@style/MyToolbarTheme"
+    app:contentInsetStart="0dp"
+    app:contentInsetLeft="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize">
+    <!--app:contentInsetStart="0dp" app:contentInsetLeft="0dp" 防止内部布局左边有留白-->
+    <LinearLayout
+        android:id="@+id/main_search_ll"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:background="@drawable/search_selector_main">
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/search"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:text="@string/search"
+            android:textColor="@color/gray_pressed"
+            android:textSize="16sp"/>
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

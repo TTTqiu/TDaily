@@ -33,7 +33,11 @@
         <item name="titleTextColor">@color/white</item>
         <!--默认按钮颜色-->
         <item name="colorControlNormal">@color/white</item>
+
         <!--底部弹出菜单字体颜色。若没设置colorControlNormal，也会影响默认按钮颜色-->
         <!--<item name="android:textColorSecondary">@color/white</item>-->
+
+        <!--弹出菜单是否覆盖锚点，默认为true，即盖住Toolbar-->
+        <item name="overlapAnchor">false</item>
     </style>
 </resources>

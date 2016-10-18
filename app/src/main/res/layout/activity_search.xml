@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_background"
+    tools:context="com.ttt.zhihudaily.activity.SearchActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_search_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar_search"
+            layout="@layout/toolbar_search" />
+
+    </android.support.design.widget.AppBarLayout>
+    <TextView
+        android:id="@+id/search_fail_text"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:background="@color/gray_background"
+        android:text="未搜索到结果"
+        android:textSize="16sp"
+        android:textColor="@color/text"/>
+    <ListView
+        android:id="@+id/list_view_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:footerDividersEnabled="false"
+        android:background="@color/gray_background"/>
+
+</LinearLayout>

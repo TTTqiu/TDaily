@@ -54,11 +54,10 @@ public class MyIntentService extends IntentService {
                         intents, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(nPi);
                 Notification notification = builder.build();
-                notification.vibrate = new long[]{0, 500};
+                notification.vibrate = new long[]{0, 400};
                 nm.notify(1, notification);
-
-                preferences.edit().putString("lastedName", lastedName).apply();
             }
+            preferences.edit().putString("lastedName", lastedName).apply();
         }
 
         // 定时

@@ -5,4 +5,7 @@
     <string name="menu_share">分享</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
+    <string name="search">搜索文章</string>
+    <string name="exit">退出</string>
+    <string name="search_hint">输入文章关键词</string>
 </resources>

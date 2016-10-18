@@ -24,7 +24,7 @@
 
                 <include
                     android:id="@+id/toolbar_main"
-                    layout="@layout/toolbar" />
+                    layout="@layout/toolbar_main" />
 
             </android.support.design.widget.AppBarLayout>
 
@@ -169,7 +169,33 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/navigation_header"
-            app:menu="@menu/menu_navigation" />
+            app:menu="@menu/menu_navigation" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:id="@+id/exit_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:background="@color/red_exit"
+                    android:layout_alignParentBottom="true">
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/nav_item_exit"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/exit"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.design.widget.NavigationView>
 
     </android.support.v4.widget.DrawerLayout>
 

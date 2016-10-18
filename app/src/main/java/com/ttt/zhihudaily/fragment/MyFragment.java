@@ -64,6 +64,9 @@ public class MyFragment extends Fragment {
     private void initRecyclerView() {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        // 阻止RecyclerView自动跳到顶端
+        recyclerView.setFocusable(false);
+        recyclerView.setFocusableInTouchMode(false);
         list = new ArrayList<>();
         adapter = new MyRecyclerAdapter(getActivity(), list);
         adapter.setMyOnItemClickListener(new MyRecyclerAdapter.MyOnItemClickListener() {

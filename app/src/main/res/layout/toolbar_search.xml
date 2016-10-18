@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
+    app:layout_scrollFlags="scroll|enterAlways"
+    app:theme="@style/MyToolbarTheme">
+    <!--app:contentInsetStart="0dp" app:contentInsetLeft="0dp" 防止内部布局左边有留白-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="30dp"
+            android:background="@drawable/search_selector_search"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="7dp"
+                android:src="@drawable/search"/>
+            <EditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:background="@null"
+                android:hint="@string/search_hint"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray_pressed"
+                android:maxLines="1"
+                android:textSize="16sp" />
+            <!--将软键盘Enter变为搜索：android:imeOptions="actionSearch" android:inputType="text"-->
+            <ImageView
+                android:id="@+id/search_cancel"
+                android:visibility="gone"
+                android:padding="5dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/search_cancel"/>
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/search_start"
+            android:padding="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="gone"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/search_start_selector"
+            android:src="@drawable/search"/>
+    </LinearLayout>
+
+</android.support.v7.widget.Toolbar>

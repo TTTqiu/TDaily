@@ -3,10 +3,16 @@
     <color name="colorPrimary">#ae72ce</color>
     <color name="colorPrimaryDark">#ae72ce</color>
     <color name="colorAccent">#e1a757</color>
+    <color name="Search">#cd9be4</color>
     <color name="gray_background">#e6e6e6</color>
+    <color name="gray_background_pressed">#cfcfcf</color>
     <color name="gray_shadow">#c1c1c1</color>
+    <color name="gray_search_history">#8b8b8b</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="red_exit">#eb4f38</color>
     <color name="text">#1d1d1d</color>
     <color name="gray_pressed">#d9d9d9</color>
+    <color name="colorPrimary_pressed">#9d67b7</color>
+
 </resources>

@@ -16,33 +16,38 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/MyTheme.NoActionBar"/>
-        <activity
-            android:name=".activity.FavouriteActivity"
-            android:label="收藏"/>
-        <activity
-            android:name=".activity.NewsActivity"
-            android:label=""
-            android:theme="@style/MyTheme.OverlayActionBar"/>
-        <activity
-            android:name=".activity.PrefsActivity"
-            android:label="设置"/>
-        <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/MyTheme.NoActionBar">
+            android:theme="@style/MyTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.FavouriteActivity"
+            android:label="收藏" />
+        <activity
+            android:name=".activity.NewsActivity"
+            android:label=""
+            android:theme="@style/MyTheme.OverlayActionBar" />
+        <activity
+            android:name=".activity.PrefsActivity"
+            android:label="设置" />
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/MyTheme.NoActionBar">
+
+        </activity>
 
         <service android:name=".service.MyIntentService" />
 
         <receiver android:name=".receiver.MyBroadcastReceiver" />
 
-        <activity android:name=".activity.HistoryActivity"
-            android:label="历史浏览"/>
+        <activity
+            android:name=".activity.HistoryActivity"
+            android:label="历史浏览" />
+        <activity android:name=".activity.SearchActivity"
+            android:theme="@style/MyTheme.NoActionBar"/>
     </application>
 
 </manifest>
