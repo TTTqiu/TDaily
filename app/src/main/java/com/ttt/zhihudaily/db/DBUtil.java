@@ -40,6 +40,10 @@ public class DBUtil {
         db.insert(TABLE_TITLE, null, values);
     }
 
+    public void deleteNewsTitle(Title title) {
+        db.delete(TABLE_TITLE, "news_id=?", new String[]{"" + title.getId()});
+    }
+
     public void loadNewsTitleAtDate(String date, List<Title> list) {
         Title title;
         Cursor cursor = db.query(TABLE_TITLE, null, "news_date=?", new String[]{date},

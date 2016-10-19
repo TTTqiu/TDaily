@@ -16,6 +16,7 @@ import com.ttt.zhihudaily.activity.MainActivity;
 import com.ttt.zhihudaily.activity.NewsActivity;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.entity.TitleBean;
+import com.ttt.zhihudaily.myView.PullToRefreshNestedScrollView;
 import com.ttt.zhihudaily.util.HttpUtil;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
     private Context context;
     private List<View> bannerList;
     private List<Title> titleList;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private PullToRefreshNestedScrollView pullToRefreshNestedScrollView;
 
     public LoadBannerTask(List<View> bannerList, Context context,List<Title> titleList){
         this.context=context;
@@ -34,9 +35,9 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
     }
 
     public LoadBannerTask(List<View> bannerList, Context context, List<Title> titleList,
-                          SwipeRefreshLayout swipeRefreshLayout){
+                          PullToRefreshNestedScrollView pullToRefreshNestedScrollView){
         this(bannerList,context,titleList);
-        this.swipeRefreshLayout=swipeRefreshLayout;
+        this.pullToRefreshNestedScrollView=pullToRefreshNestedScrollView;
     }
 
     @Override
@@ -59,9 +60,9 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
             Glide.with(context).load(image).error(R.drawable.fail_image).into(imageView);
         }
 
-        if(swipeRefreshLayout!=null){
-            swipeRefreshLayout.setRefreshing(false);
-            Snackbar.make(swipeRefreshLayout, "刷新成功", Snackbar.LENGTH_SHORT).show();
+        if(pullToRefreshNestedScrollView!=null){
+            pullToRefreshNestedScrollView.onRefreshComplete();
+            Snackbar.make(pullToRefreshNestedScrollView, "刷新成功", Snackbar.LENGTH_SHORT).show();
         }
     }
 }

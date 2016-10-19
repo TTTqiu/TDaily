@@ -16,13 +16,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,11 +30,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.adapter.MyPagerAdapter;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.fragment.MyFragment;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
+import com.ttt.zhihudaily.myView.PullToRefreshNestedScrollView;
 import com.ttt.zhihudaily.service.MyIntentService;
 import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.util.DensityUtil;
@@ -65,11 +67,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ActionBarDrawerToggle drawerToggle;
     private TabLayout tabTop;
     private TabLayout tabCenter;
+    private PullToRefreshNestedScrollView pullToRefreshNestedScrollView;
     private MyNestedScrollView myNestedScrollView;
     private ScheduledExecutorService executorService;
     private Boolean isViewPagerHeightSet = false;
     private int[] viewPagerHeight = {0, 0, 0, 0, 0};
-    private SwipeRefreshLayout swipeRefreshLayout;
     private Boolean prepareExit = false;
     private Handler handler = new Handler() {
         @Override
@@ -87,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initBanner();
         initNavigation();
         initViewPager();
-        initTabLayout();
         refreshBannerAndTitleList();
+        initTabLayout();
         initService();
         initFab();
 
@@ -390,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabCenter = (TabLayout) findViewById(R.id.tab_center);
         tabCenter.setupWithViewPager(viewPager);
 
-        myNestedScrollView = (MyNestedScrollView) findViewById(R.id.nested_scroll_view);
+        myNestedScrollView = (MyNestedScrollView) pullToRefreshNestedScrollView.getRefreshableView();
         myNestedScrollView.setMyOnScrollChangedListener(new MyNestedScrollView.MyOnScrollChangedListener() {
             @Override
             public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -441,20 +443,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void refreshBannerAndTitleList() {
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setColorSchemeColors(Color.GREEN, Color.YELLOW, Color.RED);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        pullToRefreshNestedScrollView = (PullToRefreshNestedScrollView) findViewById(R.id.PTR_nested_scroll_view);
+
+        pullToRefreshNestedScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<NestedScrollView>() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(PullToRefreshBase<NestedScrollView> refreshView) {
                 if (HttpUtil.isNetworkConnected(MainActivity.this)) {
                     new LoadBannerTask(bannerList, MainActivity.this, bannerTitleList,
-                            swipeRefreshLayout).execute();
+                            pullToRefreshNestedScrollView).execute();
                     MyFragment myFragment = (MyFragment) fragmentList.get(0);
                     myFragment.refreshTitleList();
                     isViewPagerHeightSet = false;
                 } else {
                     Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
-                    swipeRefreshLayout.setRefreshing(false);
+                    pullToRefreshNestedScrollView.onRefreshComplete();
                 }
             }
         });

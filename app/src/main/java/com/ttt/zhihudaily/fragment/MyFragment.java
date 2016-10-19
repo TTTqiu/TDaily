@@ -90,22 +90,11 @@ public class MyFragment extends Fragment {
         mDBUtil = DBUtil.getInstance(getActivity());
         int position = bundle.getInt("position");
         mDBUtil.loadNewsTitleAtDate(Utility.getDate(position, false), list);
-        if (position == 0) {
-            if (HttpUtil.isNetworkConnected(getActivity())) {
-                new LoadTitleTask(adapter, list, getActivity(),
-                        Utility.getDate(-1, false)).execute();
-            } else {
-                Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
-            }
+        if (HttpUtil.isNetworkConnected(getActivity())) {
+            new LoadTitleTask(adapter, list, getActivity(),
+                    Utility.getDate(position - 1, false)).execute();
         } else {
-            if (list.size() == 0) {
-                if (HttpUtil.isNetworkConnected(getActivity())) {
-                    new LoadTitleTask(adapter, list, getActivity(),
-                            Utility.getDate(position - 1, false)).execute();
-                } else {
-                    Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
-                }
-            }
+            Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
     }
 
