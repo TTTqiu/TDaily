@@ -2,7 +2,6 @@ package com.ttt.zhihudaily.activity;
 
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +16,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.main_search_ll) {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
-        } else if (v.getId() == R.id.fab) {
+        } else if (v.getId() == R.id.fab_main) {
             Intent intent = new Intent(MainActivity.this, FavouriteActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.exit_ll) {
@@ -443,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void refreshBannerAndTitleList() {
-        pullToRefreshNestedScrollView = (PullToRefreshNestedScrollView) findViewById(R.id.PTR_nested_scroll_view);
+        pullToRefreshNestedScrollView = (PullToRefreshNestedScrollView) findViewById(R.id.PTR_nested_scroll_view_main);
 
         pullToRefreshNestedScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<NestedScrollView>() {
             @Override
@@ -463,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initFab() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab.setOnClickListener(this);
     }
 

@@ -4,16 +4,19 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.db.DBUtil;
@@ -21,6 +24,10 @@ import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.task.LoadNewsTask;
 import com.ttt.zhihudaily.myView.MyNestedScrollView;
 import com.ttt.zhihudaily.util.DensityUtil;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 public class NewsActivity extends AppCompatActivity {
 
@@ -34,7 +41,22 @@ public class NewsActivity extends AppCompatActivity {
     private Intent shareIntent;
     private int currentY;
     private int px500;
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Snackbar.make(myNestedScrollView,"分享成功",Snackbar.LENGTH_SHORT).show();
+        }
 
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Snackbar.make(myNestedScrollView,"分享失败",Snackbar.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Snackbar.make(myNestedScrollView,"取消分享",Snackbar.LENGTH_SHORT).show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +105,6 @@ public class NewsActivity extends AppCompatActivity {
                 return null;
             }
         };
-        item.setIcon(R.drawable.share);
         MenuItemCompat.setActionProvider(item,shareActionProvider);
         shareActionProvider.setShareIntent(shareIntent);
         return true;
@@ -110,6 +131,17 @@ public class NewsActivity extends AppCompatActivity {
                     mDBUtil.setFavourite(title);
                 }
                 break;
+            case R.id.menu_news_share_wx:
+                // 分享到微信
+                UMImage image = new UMImage(NewsActivity.this, title.getImage());
+                new ShareAction(NewsActivity.this).setPlatform(SHARE_MEDIA.WEIXIN)
+                        .withText("分享自 知乎日报 By TTTqiu")
+                        .withTitle(title.getName())
+                        .withMedia(image)
+                        .withTargetUrl(shareIntent.getStringExtra(Intent.EXTRA_TEXT))
+                        .setCallback(umShareListener)
+                        .share();
+                break;
             case R.id.menu_news_settings:
                 Intent intent=new Intent(NewsActivity.this,PrefsActivity.class);
                 startActivity(intent);
@@ -122,7 +154,7 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     private void initToolbarAlphaChange(){
-        myNestedScrollView =(MyNestedScrollView)findViewById(R.id.my_scroll_view);
+        myNestedScrollView =(MyNestedScrollView)findViewById(R.id.nested_scroll_view_news);
         appBarLayout=(AppBarLayout)findViewById(R.id.appbar_news_toolbar);
         myNestedScrollView.setMyOnScrollChangedListener(new MyNestedScrollView.MyOnScrollChangedListener() {
             @Override

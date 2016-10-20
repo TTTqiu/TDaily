@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activity.NewsActivity">
 
     <com.ttt.zhihudaily.myView.MyNestedScrollView
-        android:id="@+id/my_scroll_view"
+        android:id="@+id/nested_scroll_view_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

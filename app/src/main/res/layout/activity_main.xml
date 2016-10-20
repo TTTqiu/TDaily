@@ -35,7 +35,7 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <com.ttt.zhihudaily.myView.PullToRefreshNestedScrollView
-                    android:id="@+id/PTR_nested_scroll_view"
+                    android:id="@+id/PTR_nested_scroll_view_main"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     ptr:ptrHeaderBackground="@color/gray_background"
@@ -149,13 +149,13 @@
             </RelativeLayout>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
+                android:id="@+id/fab_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/fav_normal"
-                app:layout_anchor="@id/PTR_nested_scroll_view"
+                android:src="@drawable/fav_fab"
+                app:layout_anchor="@id/PTR_nested_scroll_view_main"
                 app:layout_anchorGravity="bottom|right" />
 
         </android.support.design.widget.CoordinatorLayout>

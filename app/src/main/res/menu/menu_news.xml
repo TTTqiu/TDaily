@@ -9,8 +9,12 @@
     <item
         android:id="@+id/menu_news_share"
         android:title="@string/menu_share"
+        android:icon="@drawable/share"
         app:showAsAction="always"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+    <item
+        android:id="@+id/menu_news_share_wx"
+        android:title="@string/menu_share_wx"/>
     <item
         android:id="@+id/menu_news_settings"
         android:title="@string/menu_settings"/>

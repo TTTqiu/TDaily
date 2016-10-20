@@ -11,6 +11,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
+        android:name=".App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -36,18 +37,30 @@
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/MyTheme.NoActionBar">
-
         </activity>
-
-        <service android:name=".service.MyIntentService" />
-
-        <receiver android:name=".receiver.MyBroadcastReceiver" />
-
         <activity
             android:name=".activity.HistoryActivity"
             android:label="历史浏览" />
         <activity android:name=".activity.SearchActivity"
             android:theme="@style/MyTheme.NoActionBar"/>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="57e4fb7f67e58e7ded001403" >
+        </meta-data>
+
+        <service android:name=".service.MyIntentService" />
+
+        <receiver android:name=".receiver.MyBroadcastReceiver" />
+
+
     </application>
 
 </manifest>
