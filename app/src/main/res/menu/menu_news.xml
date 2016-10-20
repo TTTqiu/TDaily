@@ -14,7 +14,9 @@
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
     <item
         android:id="@+id/menu_news_share_wx"
-        android:title="@string/menu_share_wx"/>
+        android:icon="@drawable/share_wx"
+        android:title="@string/menu_share_wx"
+        app:showAsAction="always"/>
     <item
         android:id="@+id/menu_news_settings"
         android:title="@string/menu_settings"/>

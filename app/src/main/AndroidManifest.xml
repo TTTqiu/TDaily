@@ -18,11 +18,6 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/MyTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.FavouriteActivity"
@@ -37,6 +32,11 @@
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/MyTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.HistoryActivity"
