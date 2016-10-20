@@ -23,8 +23,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private List<Title> list;
     private Context context;
     private MyOnItemClickListener myOnItemClickListener;
-    private int heightsDP[]={175,219,226,162,196,183,177,197,159,197,182,175,211,177,199,
-            182,195,159,208,196,171,199,208,158,191};
     private int heightsPX[]=new int[25];
     public MyRecyclerAdapter(Context context, List<Title> list) {
         super();
@@ -48,7 +46,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
         // 为imageView设置随机高度
         ViewGroup.LayoutParams params = holder.imageView.getLayoutParams();
         for (int i=0;i<25;i++){
-            heightsPX[i]=DensityUtil.dip2px(context,heightsDP[i]);
+            heightsPX[i]=DensityUtil.dip2px(context,150+(int)(Math.random()*60));
         }
         params.height= heightsPX[position];
         holder.imageView.setLayoutParams(params);

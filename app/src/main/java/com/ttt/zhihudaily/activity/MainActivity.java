@@ -68,8 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PullToRefreshNestedScrollView pullToRefreshNestedScrollView;
     private MyNestedScrollView myNestedScrollView;
     private ScheduledExecutorService executorService;
-    private Boolean isViewPagerHeightSet = false;
-    private int[] viewPagerHeight = {0, 0, 0, 0, 0};
+    private int viewPagerHeight;
     private Boolean prepareExit = false;
     private Handler handler = new Handler() {
         @Override
@@ -241,12 +240,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // 每次切换设置ViewPager高度
                 ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                params.height = DensityUtil.dip2px(MainActivity.this, 3000);
+                params.height = DensityUtil.dip2px(MainActivity.this, 3500);
                 viewPager.setLayoutParams(params);
-                if (viewPagerHeight[position] != 0) {
-                    params.height = viewPagerHeight[position];
-                    viewPager.setLayoutParams(params);
-                }
+//                if (viewPagerHeight[position] != 0) {
+//                    params.height = viewPagerHeight[position];
+//                    viewPager.setLayoutParams(params);
+//                }
             }
 
             @Override
@@ -256,27 +255,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void initBannerList() {
-        bannerList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.banner_item, myNestedScrollView);
-            view.setOnClickListener(this);
-            bannerList.add(view);
-        }
-    }
-
-    private void initDotList() {
+    private void initBanner() {
         dotList = new ArrayList<>();
         dotList.add(findViewById(R.id.dot1));
         dotList.add(findViewById(R.id.dot2));
         dotList.add(findViewById(R.id.dot3));
         dotList.add(findViewById(R.id.dot4));
         dotList.add(findViewById(R.id.dot5));
-    }
 
-    private void initBanner() {
-        initDotList();
-        initBannerList();
+        bannerList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            View view = LayoutInflater.from(this).inflate(R.layout.banner_item, myNestedScrollView);
+            view.setOnClickListener(this);
+            bannerList.add(view);
+        }
+
         bannerCurrentItem = 0;
         bannerTitleList = new ArrayList<>();
         banner = (ViewPager) findViewById(R.id.banner);
@@ -394,6 +387,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         myNestedScrollView.setMyOnScrollChangedListener(new MyNestedScrollView.MyOnScrollChangedListener() {
             @Override
             public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                // 设置TabLayout是否可见
                 int height = banner.getHeight();
                 AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_main_toolbar);
                 if (scrollY >= height) {
@@ -408,41 +402,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
 
+                // 设定ViewPager高度
                 ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                if (viewPagerCurrentItem == 0 && !isViewPagerHeightSet) {
-                    // 设定ViewPager第一页高度
-                    MyFragment myFragment = (MyFragment) fragmentList.get(0);
-                    RecyclerView recyclerView = myFragment.getRecyclerView();
-                    if (myFragment.getList() != null) {
-                        View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
-                        View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
-                        if (lastView1 != null && lastView2 != null) {
-                            viewPagerHeight[0] = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
-                        }
+                MyFragment myFragment = (MyFragment) fragmentList.get(viewPagerCurrentItem);
+                RecyclerView recyclerView = myFragment.getRecyclerView();
+                if (myFragment.getList() != null) {
+                    View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
+                    View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
+                    if (lastView1 != null && lastView2 != null) {
+                        viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
                     }
-                    params.height = viewPagerHeight[0];
-                    viewPager.setLayoutParams(params);
-                    isViewPagerHeightSet = true;
-                } else if (viewPagerCurrentItem != 0 && viewPagerHeight[viewPagerCurrentItem] == 0) {
-                    // 设定ViewPager其他页高度
-                    MyFragment myFragment = (MyFragment) fragmentList.get(viewPagerCurrentItem);
-                    RecyclerView recyclerView = myFragment.getRecyclerView();
-                    if (myFragment.getList() != null) {
-                        View lastView = recyclerView.getChildAt(myFragment.getList().size() - 1);
-                        if (lastView != null) {
-                            viewPagerHeight[viewPagerCurrentItem] = lastView.getBottom() + 15;
-                        }
-                    }
-                    params.height = viewPagerHeight[viewPagerCurrentItem];
-                    viewPager.setLayoutParams(params);
                 }
+                params.height = viewPagerHeight;
+                viewPager.setLayoutParams(params);
             }
         });
     }
 
     private void refreshBannerAndTitleList() {
         pullToRefreshNestedScrollView = (PullToRefreshNestedScrollView) findViewById(R.id.PTR_nested_scroll_view_main);
-
         pullToRefreshNestedScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<NestedScrollView>() {
             @Override
             public void onRefresh(PullToRefreshBase<NestedScrollView> refreshView) {
@@ -451,7 +429,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             pullToRefreshNestedScrollView).execute();
                     MyFragment myFragment = (MyFragment) fragmentList.get(0);
                     myFragment.refreshTitleList();
-                    isViewPagerHeightSet = false;
                 } else {
                     Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
                     pullToRefreshNestedScrollView.onRefreshComplete();
