@@ -44,6 +44,10 @@ public class DBUtil {
         db.delete(TABLE_TITLE, "news_id=?", new String[]{"" + title.getId()});
     }
 
+    public void deleteAllNewsTitleAtDate(String date) {
+        db.delete(TABLE_TITLE, "news_date=?", new String[]{date});
+    }
+
     public void loadNewsTitleAtDate(String date, List<Title> list) {
         Title title;
         Cursor cursor = db.query(TABLE_TITLE, null, "news_date=?", new String[]{date},

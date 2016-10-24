@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     ptr:ptrHeaderBackground="@color/gray_background"
-                    ptr:ptrHeaderTextColor="@color/colorAccent"
+                    ptr:ptrHeaderTextColor="@color/yellow"
                     ptr:ptrDrawable="@drawable/refresh_icon">
 
                     <RelativeLayout
@@ -110,7 +110,7 @@
                                 android:id="@+id/tab_center"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
-                                app:tabBackground="@color/colorPrimary"
+                                app:tabBackground="?attr/tabLayoutBackground"
                                 app:tabIndicatorColor="@color/white"
                                 app:tabMode="scrollable"
                                 app:tabSelectedTextColor="@color/white"
@@ -138,7 +138,7 @@
                         android:layout_height="32dp"
                         android:layout_alignParentTop="true"
                         android:visibility="gone"
-                        app:tabBackground="@color/colorPrimary"
+                        app:tabBackground="?attr/tabLayoutBackground"
                         app:tabIndicatorColor="@color/white"
                         app:tabMode="scrollable"
                         app:tabSelectedTextColor="@color/white"
@@ -165,6 +165,8 @@
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:background="?attr/navigationBackground"
+            app:itemTextColor="?attr/navigationTextColor"
             app:headerLayout="@layout/navigation_header"
             app:menu="@menu/menu_navigation">
 
@@ -172,10 +174,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <ImageButton
+                    android:id="@+id/night_mode_switch"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerInside"
+                    android:layout_alignRight="@+id/exit_ll"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/yellow"
+                    android:src="?attr/nightModeSwitch"
+                    android:layout_above="@+id/exit_ll"/>
+
                 <LinearLayout
                     android:id="@+id/exit_ll"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_alignParentBottom="true"
                     android:background="@color/red_exit"
                     android:gravity="center"

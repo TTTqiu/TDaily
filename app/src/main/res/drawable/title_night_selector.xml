@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <color android:color="@color/black_night"/>
+            </item>
+            <item android:top="5dp" android:bottom="5dp" android:left="5dp" android:right="5dp">
+                <shape>
+                    <solid
+                        android:color="@color/gray_night"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

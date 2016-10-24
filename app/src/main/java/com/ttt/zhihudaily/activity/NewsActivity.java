@@ -29,7 +29,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends BaseActivity {
 
     private Boolean isFavourite=false;
     private DBUtil mDBUtil;

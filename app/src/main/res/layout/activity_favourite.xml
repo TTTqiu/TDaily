@@ -3,9 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_background"
+    android:background="?attr/fragmentBackground"
     android:orientation="vertical"
     tools:context=".activity.FavouriteActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar_fav"
+            app:theme="@style/MyToolbarTheme"
+            android:background="?attr/toolbarBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <ListView
         android:id="@+id/list_view_fav"
@@ -13,7 +29,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        android:background="@color/gray_background"
+        android:background="?attr/recyclerBackground"
         android:divider="@null">
     </ListView>
 </LinearLayout>

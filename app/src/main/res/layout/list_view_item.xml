@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
-    android:background="@drawable/title_selector">
+    android:background="?attr/recyclerItemBackground">
 
     <ImageView
         android:id="@+id/list_title_image"
@@ -19,6 +19,6 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="10dp"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/black"/>
+        android:textColor="?attr/recyclerTextColor"/>
 
 </LinearLayout>

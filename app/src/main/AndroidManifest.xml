@@ -8,30 +8,16 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:name=".App"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MyTheme.NoActionBar.Day">
+        <activity android:name=".activity.BaseActivity" />
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/MyTheme.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".activity.FavouriteActivity"
-            android:label="收藏" />
-        <activity
-            android:name=".activity.NewsActivity"
-            android:label=""
-            android:theme="@style/MyTheme.OverlayActionBar" />
-        <activity
-            android:name=".activity.PrefsActivity"
-            android:label="设置" />
-        <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/MyTheme.NoActionBar">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,27 +25,33 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.FavouriteActivity"
+            android:label="收藏" />
+        <activity
+            android:name=".activity.NewsActivity"
+            android:label="" />
+        <activity
+            android:name=".activity.PrefsActivity"
+            android:label="设置" />
+        <activity android:name=".activity.SplashActivity" />
+        <activity
             android:name=".activity.HistoryActivity"
             android:label="历史浏览" />
-        <activity android:name=".activity.SearchActivity"
-            android:theme="@style/MyTheme.NoActionBar"/>
+        <activity android:name=".activity.SearchActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="57e4fb7f67e58e7ded001403" >
-        </meta-data>
+            android:value="57e4fb7f67e58e7ded001403" />
 
         <service android:name=".service.MyIntentService" />
 
         <receiver android:name=".receiver.MyBroadcastReceiver" />
-
 
     </application>
 

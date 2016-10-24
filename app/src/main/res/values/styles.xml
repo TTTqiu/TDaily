@@ -1,35 +1,65 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="MyTheme.NoActionBar.Day" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryDark">@color/purple</item>
+        <item name="colorAccent">@color/yellow</item>
+
+        <item name="toolbarBackground">@color/purple</item>
+        <item name="mainEditBackground">@drawable/search_day_selector_main</item>
+        <item name="searchEditBackground">@drawable/search_day_selector_search</item>
+        <item name="searchStartBackground">@drawable/search_start_day_selector</item>
+        <item name="tabLayoutBackground">@color/purple</item>
+        <item name="fragmentBackground">@color/gray_background</item>
+        <item name="recyclerBackground">@color/gray_background</item>
+        <item name="recyclerItemBackground">@drawable/title_day_selector</item>
+        <item name="recyclerTextColor">@color/black_title_text</item>
+        <item name="fabBackground">@color/yellow</item>
+        <item name="navigationBackground">@color/white</item>
+        <item name="navigationTextColor">@color/black_title_text</item>
+        <item name="PreferenceBackground">@color/white</item>
+        <item name="nightModeSwitch">@drawable/night_mode</item>
     </style>
 
-    <style name="MyTheme.NoActionBar.FullScreen" parent="MyTheme.NoActionBar">
+    <style name="MyTheme.NoActionBar.Night" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/black_night</item>
+        <item name="colorPrimaryDark">@color/black_night</item>
+        <item name="colorAccent">@color/gray_night</item>
+
+        <item name="toolbarBackground">@color/black_night</item>
+        <item name="mainEditBackground">@drawable/search_night_selector_main</item>
+        <item name="searchEditBackground">@drawable/search_night_selector_search</item>
+        <item name="searchStartBackground">@drawable/search_start_night_selector</item>
+        <item name="tabLayoutBackground">@color/gray_night</item>
+        <item name="fragmentBackground">@color/black_night</item>
+        <item name="recyclerBackground">@color/black_night</item>
+        <item name="recyclerItemBackground">@drawable/title_night_selector</item>
+        <item name="recyclerTextColor">@color/white</item>
+        <item name="fabBackground">@color/gray_night</item>
+        <item name="navigationBackground">@color/gray_night</item>
+        <item name="navigationTextColor">@color/white</item>
+        <item name="PreferenceBackground">@color/gray_search_history</item>
+        <item name="nightModeSwitch">@drawable/day_mode</item>
+    </style>
+
+    <style name="MyTheme.NoActionBar.FullScreen" parent="MyTheme.NoActionBar.Day">
         <!-- Customize your theme here. -->
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="MyTheme.OverlayActionBar" parent="MyTheme.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="windowActionBarOverlay">true</item>
-    </style>
 
     <style name="MyToolbarTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryDark">@color/purple</item>
+        <item name="colorAccent">@color/yellow</item>
         <item name="titleTextColor">@color/white</item>
         <!--默认按钮颜色-->
         <item name="colorControlNormal">@color/white</item>

@@ -2,9 +2,14 @@ package com.ttt.zhihudaily.activity;
 
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -21,11 +26,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -47,13 +57,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
     private List<Fragment> fragmentList;
     private String[] titles = new String[5];
     private ViewPager viewPager;
     private ViewPager banner;
+    private MyPagerAdapter myPagerAdapter;
+    private ImageButton nightModeSwitch;
     private List<View> dotList;
     private List<View> bannerList;
     private List<Title> bannerTitleList;
@@ -70,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ScheduledExecutorService executorService;
     private int viewPagerHeight;
     private Boolean prepareExit = false;
+    private WindowManager windowManager;
+    private View nightModeView;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -101,28 +115,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.main_search_ll) {
-            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-            startActivity(intent);
-        } else if (v.getId() == R.id.fab_main) {
-            Intent intent = new Intent(MainActivity.this, FavouriteActivity.class);
-            startActivity(intent);
-        } else if (v.getId() == R.id.exit_ll) {
-            drawerLayout.closeDrawers();
-            Snackbar.make(myNestedScrollView, "确定要退出吗？", Snackbar.LENGTH_SHORT)
-                    .setAction("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                        }
-                    })
-                    .show();
-        } else {
-            if (HttpUtil.isNetworkConnected(this)) {
-                NewsActivity.startNewsActivity(this, bannerTitleList.get(bannerCurrentItem));
-            } else {
-                Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
-            }
+        switch (v.getId()) {
+            case R.id.main_search_ll:
+                Intent intent1 = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.fab_main:
+                Intent intent2 = new Intent(MainActivity.this, FavouriteActivity.class);
+                startActivity(intent2);
+                break;
+            case R.id.exit_ll:
+                drawerLayout.closeDrawers();
+                Snackbar.make(myNestedScrollView, "确定要退出吗？", Snackbar.LENGTH_SHORT)
+                        .setAction("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                finish();
+                            }
+                        })
+                        .show();
+                break;
+            case R.id.night_mode_switch:
+                nightModeView=new View(this);
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = pref.edit();
+                if (pref.getBoolean("isNightMode", false)) {
+                    editor.putBoolean("isNightMode", false);
+                    nightModeView.setBackgroundResource(R.drawable.day);
+                } else {
+                    editor.putBoolean("isNightMode", true);
+                    nightModeView.setBackgroundResource(R.drawable.night);
+                }
+                editor.apply();
+
+                WindowManager.LayoutParams params= new WindowManager.LayoutParams(
+                        WindowManager.LayoutParams.TYPE_APPLICATION,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        PixelFormat.TRANSPARENT);
+                windowManager=(WindowManager)getSystemService(WINDOW_SERVICE);
+                windowManager.addView(nightModeView,params);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        recreate();
+                    }
+                }, 100);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        windowManager.removeViewImmediate(nightModeView);
+                    }
+                }, 1000);
+                break;
+            default:
+                if (HttpUtil.isNetworkConnected(this)) {
+                    NewsActivity.startNewsActivity(this, bannerTitleList.get(bannerCurrentItem));
+                } else {
+                    Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
@@ -222,7 +275,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentList.add(fragment);
         }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList, titles));
+        myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager(), fragmentList, titles);
+        viewPager.setAdapter(myPagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -375,6 +429,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return true;
                     }
                 });
+
+        nightModeSwitch = (ImageButton) findViewById(R.id.night_mode_switch);
+        nightModeSwitch.setOnClickListener(this);
     }
 
     private void initTabLayout() {
@@ -404,17 +461,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 // 设定ViewPager高度
                 ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                MyFragment myFragment = (MyFragment) fragmentList.get(viewPagerCurrentItem);
+                MyFragment myFragment = (MyFragment)myPagerAdapter.
+                        instantiateItem(viewPager,viewPagerCurrentItem);
                 RecyclerView recyclerView = myFragment.getRecyclerView();
                 if (myFragment.getList() != null) {
                     View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
                     View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
                     if (lastView1 != null && lastView2 != null) {
                         viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
+                        params.height = viewPagerHeight;
+                        viewPager.setLayoutParams(params);
                     }
                 }
-                params.height = viewPagerHeight;
-                viewPager.setLayoutParams(params);
             }
         });
     }
@@ -427,7 +485,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (HttpUtil.isNetworkConnected(MainActivity.this)) {
                     new LoadBannerTask(bannerList, MainActivity.this, bannerTitleList,
                             pullToRefreshNestedScrollView).execute();
-                    MyFragment myFragment = (MyFragment) fragmentList.get(0);
+                    MyFragment myFragment = (MyFragment) myPagerAdapter.
+                            instantiateItem(viewPager,0);
                     myFragment.refreshTitleList();
                 } else {
                     Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();

@@ -24,6 +24,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private Context context;
     private MyOnItemClickListener myOnItemClickListener;
     private int heightsPX[]=new int[25];
+
     public MyRecyclerAdapter(Context context, List<Title> list) {
         super();
         this.context = context;

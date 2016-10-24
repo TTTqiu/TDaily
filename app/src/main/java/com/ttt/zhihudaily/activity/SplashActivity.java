@@ -42,8 +42,8 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intent=new Intent(SplashActivity.this,MainActivity.class);
                 startActivity(intent);
                 // 去掉跳转动画
-                overridePendingTransition(0, 0);
                 finish();
+                overridePendingTransition(0, 0);
             }
         }, 2500);
     }

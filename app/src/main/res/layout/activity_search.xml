@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/gray_background"
+    android:background="?attr/fragmentBackground"
     tools:context="com.ttt.zhihudaily.activity.SearchActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -24,10 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:background="@color/gray_background"
+        android:background="?attr/fragmentBackground"
         android:text="未搜索到结果"
         android:textSize="16sp"
-        android:textColor="@color/text"/>
+        android:textColor="?attr/navigationTextColor"/>
     <ListView
         android:id="@+id/list_view_search"
         android:layout_width="match_parent"
@@ -35,6 +35,6 @@
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:footerDividersEnabled="false"
-        android:background="@color/gray_background"/>
+        android:background="?attr/recyclerBackground"/>
 
 </LinearLayout>

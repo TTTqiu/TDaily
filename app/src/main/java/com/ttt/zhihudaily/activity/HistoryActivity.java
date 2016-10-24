@@ -5,6 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ import com.ttt.zhihudaily.util.HttpUtil;
 import java.util.Collections;
 import java.util.List;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends BaseActivity {
 
     private MyListAdapter adapter;
     private ListView listView;
@@ -31,6 +32,8 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_history);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

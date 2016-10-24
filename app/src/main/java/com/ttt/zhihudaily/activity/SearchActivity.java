@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
+public class SearchActivity extends BaseActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
     private DBUtil mDBUtil;

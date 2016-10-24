@@ -3,6 +3,7 @@ package com.ttt.zhihudaily.activity;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +17,7 @@ import com.ttt.zhihudaily.util.HttpUtil;
 
 import java.util.List;
 
-public class FavouriteActivity extends AppCompatActivity {
+public class FavouriteActivity extends BaseActivity {
 
     private MyListAdapter adapter;
     private ListView listView;
@@ -25,6 +26,8 @@ public class FavouriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_fav);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         List<Title> list = DBUtil.getInstance(this).loadFavourite();

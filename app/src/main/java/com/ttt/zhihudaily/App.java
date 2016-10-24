@@ -1,6 +1,8 @@
 package com.ttt.zhihudaily;
 
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.view.View;
 
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;

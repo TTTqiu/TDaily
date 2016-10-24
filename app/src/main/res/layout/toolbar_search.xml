@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
+    android:background="?attr/toolbarBackground"
     android:minHeight="?attr/actionBarSize"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="30dp"
-            android:background="@drawable/search_selector_search"
+            android:background="?attr/searchEditBackground"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="22dp"
@@ -60,7 +60,7 @@
             android:visibility="gone"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:background="@drawable/search_start_selector"
+            android:background="?attr/searchStartBackground"
             android:src="@drawable/search"/>
     </LinearLayout>
 

@@ -33,6 +33,7 @@ public class MyFragment extends Fragment {
     private View view;
     private List<Title> list;
     private DBUtil mDBUtil;
+    private int position;
 
     @Nullable
     @Override
@@ -52,7 +53,7 @@ public class MyFragment extends Fragment {
 
     public void refreshTitleList() {
         if (HttpUtil.isNetworkConnected(getActivity())) {
-            new LoadTitleTask(adapter, list, getActivity(), Utility.getDate(-1, false)).execute();
+            new LoadTitleTask(adapter, list, getActivity(), Utility.getDate(position-1, false)).execute();
         } else {
             Snackbar.make(recyclerView, "没有网络", Snackbar.LENGTH_SHORT).show();
         }
@@ -88,7 +89,7 @@ public class MyFragment extends Fragment {
     private void loadData() {
         Bundle bundle = getArguments();
         mDBUtil = DBUtil.getInstance(getActivity());
-        int position = bundle.getInt("position");
+        position = bundle.getInt("position");
         mDBUtil.loadNewsTitleAtDate(Utility.getDate(position, false), list);
         if (HttpUtil.isNetworkConnected(getActivity())) {
             new LoadTitleTask(adapter, list, getActivity(),

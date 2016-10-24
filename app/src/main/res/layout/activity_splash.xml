@@ -24,7 +24,7 @@
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:text="知乎日报"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/purple"
         android:textSize="40sp" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_height="45dp"
         android:gravity="center_horizontal"
         android:text="By   TTTqiu"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/purple"
         android:textSize="15sp" />
 
 </LinearLayout>

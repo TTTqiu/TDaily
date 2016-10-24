@@ -3,12 +3,12 @@
     <item >
         <layer-list>
             <item>
-                <color android:color="@color/colorPrimary"/>
+                <color android:color="@color/purple"/>
             </item>
-            <item android:right="17dp">
+            <item android:right="10dp">
                 <shape>
                     <solid
-                        android:color="@color/Search"/>
+                        android:color="@color/purple_search"/>
                     <corners
                         android:radius="15dp" />
                 </shape>

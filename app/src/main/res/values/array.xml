@@ -14,4 +14,19 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+
+    <attr name="toolbarBackground" format="reference|color"/>
+    <attr name="mainEditBackground" format="reference"/>
+    <attr name="searchEditBackground" format="reference"/>
+    <attr name="searchStartBackground" format="reference"/>
+    <attr name="tabLayoutBackground" format="reference|color"/>
+    <attr name="fragmentBackground" format="reference|color"/>
+    <attr name="recyclerBackground" format="reference|color"/>
+    <attr name="recyclerItemBackground" format="reference|color"/>
+    <attr name="recyclerTextColor" format="reference|color"/>
+    <attr name="fabBackground" format="reference|color"/>
+    <attr name="navigationBackground" format="reference|color"/>
+    <attr name="navigationTextColor" format="reference|color"/>
+    <attr name="PreferenceBackground" format="reference|color"/>
+    <attr name="nightModeSwitch" format="reference"/>
 </resources>

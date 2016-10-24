@@ -8,7 +8,7 @@
     app:contentInsetLeft="0dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
+    android:background="?attr/toolbarBackground"
     android:minHeight="?attr/actionBarSize">
     <!--app:contentInsetStart="0dp" app:contentInsetLeft="0dp" 防止内部布局左边有留白-->
     <LinearLayout
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
-        android:background="@drawable/search_selector_main">
+        android:background="?attr/mainEditBackground">
         <ImageView
             android:layout_width="22dp"
             android:layout_height="22dp"
