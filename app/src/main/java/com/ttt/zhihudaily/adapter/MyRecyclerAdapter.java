@@ -1,6 +1,8 @@
 package com.ttt.zhihudaily.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.util.DensityUtil;
+import com.ttt.zhihudaily.util.HttpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,9 +53,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
         for (int i=0;i<25;i++){
             heightsPX[i]=DensityUtil.dip2px(context,150+(int)(Math.random()*60));
         }
-        params.height= heightsPX[position];
+        if (position<25){
+            params.height= heightsPX[position];
+        }
         holder.imageView.setLayoutParams(params);
-        Glide.with(context).load(list.get(position).getImage()).into(holder.imageView);
+        Glide
+                .with(context)
+                .load(list.get(position).getImage())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(holder.imageView);
         final int pos = holder.getAdapterPosition();
         if (myOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
