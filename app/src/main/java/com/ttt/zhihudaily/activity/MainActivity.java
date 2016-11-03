@@ -32,11 +32,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.ttt.zhihudaily.R;
@@ -60,6 +62,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Toolbar toolbar;
+    private LinearLayout searchLL;
     private List<Fragment> fragmentList;
     private String[] titles = new String[5];
     private ViewPager viewPager;
@@ -84,6 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Boolean prepareExit = false;
     private WindowManager windowManager;
     private View nightModeView;
+    private FloatingActionButton fab;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -97,6 +101,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         initToolbar();
 
+        // 显示欢迎页
+        Intent intent = new Intent(this, SplashActivity.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+
         initBanner();
         initNavigation();
         initViewPager();
@@ -104,12 +113,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initTabLayout();
         initService();
         initFab();
-
-        if (HttpUtil.isNetworkConnected(this)) {
-            new LoadBannerTask(bannerList, this, bannerTitleList).execute();
-        } else {
-            Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
-        }
     }
 
 
@@ -136,38 +139,111 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         .show();
                 break;
             case R.id.night_mode_switch:
-                nightModeView=new View(this);
+//                nightModeView=new View(this);
+//                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+//                SharedPreferences.Editor editor = pref.edit();
+//                if (pref.getBoolean("isNightMode", false)) {
+//                    editor.putBoolean("isNightMode", false);
+//                    nightModeView.setBackgroundResource(R.drawable.day);
+//                } else {
+//                    editor.putBoolean("isNightMode", true);
+//                    nightModeView.setBackgroundResource(R.drawable.night);
+//                }
+//                editor.apply();
+//
+//                WindowManager.LayoutParams params= new WindowManager.LayoutParams(
+//                        WindowManager.LayoutParams.TYPE_APPLICATION,
+//                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+//                        PixelFormat.TRANSPARENT);
+//                windowManager=(WindowManager)getSystemService(WINDOW_SERVICE);
+//                windowManager.addView(nightModeView,params);
+//
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        recreate();
+//                    }
+//                }, 100);
+//
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        windowManager.removeViewImmediate(nightModeView);
+//                    }
+//                }, 1000);
+
                 SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = pref.edit();
+
                 if (pref.getBoolean("isNightMode", false)) {
                     editor.putBoolean("isNightMode", false);
-                    nightModeView.setBackgroundResource(R.drawable.day);
+
+                    navigationView.setBackgroundResource(R.color.white);
+                    navigationView.setItemTextColor(getResources().getColorStateList(R.color.black_title_text));
+                    navigationView.getHeaderView(0).setBackgroundResource(R.color.purple);
+                    nightModeSwitch.setImageResource(R.drawable.night_mode);
+                    toolbar.setBackgroundResource(R.color.purple);
+                    searchLL.setBackgroundResource(R.drawable.search_day_selector_search);
+                    tabTop.setBackgroundResource(R.color.purple);
+                    tabCenter.setBackgroundResource(R.color.purple);
+                    fab.setBackgroundTintList(getResources().getColorStateList(R.color.yellow));
+                    nightModeSwitch.setBackgroundResource(R.drawable.switch_day_selector);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        getWindow().setStatusBarColor(getResources().getColor(R.color.purple));
+                    }
+                    for (int i = 0; i < 5; i++) {
+                        MyFragment myFragment = (MyFragment) myPagerAdapter.instantiateItem(viewPager, i);
+                        myFragment.getView().setBackgroundResource(R.color.gray_background);
+                        RecyclerView recyclerView = myFragment.getRecyclerView();
+                        recyclerView.setBackgroundResource(R.color.gray_background);
+                        for (int j = 0; j < myFragment.getList().size(); j++) {
+                            if (recyclerView.getChildAt(j) != null) {
+                                recyclerView.getChildAt(j).setBackgroundResource(
+                                        R.drawable.title_day_selector);
+                                TextView textView = (TextView) recyclerView.getChildAt(j)
+                                        .findViewById(R.id.recycler_title_text);
+                                textView.setTextColor(getResources().getColor(R.color.black_title_text));
+                            }
+                        }
+                    }
+
                 } else {
                     editor.putBoolean("isNightMode", true);
-                    nightModeView.setBackgroundResource(R.drawable.night);
+
+                    navigationView.setBackgroundResource(R.color.gray_night);
+                    navigationView.setItemTextColor(getResources().getColorStateList(R.color.white));
+                    navigationView.getHeaderView(0).setBackgroundResource(R.color.black_night);
+                    nightModeSwitch.setImageResource(R.drawable.day_mode);
+                    toolbar.setBackgroundResource(R.color.black_night);
+                    searchLL.setBackgroundResource(R.drawable.search_night_selector_search);
+                    tabTop.setBackgroundResource(R.color.gray_night);
+                    tabCenter.setBackgroundResource(R.color.gray_night);
+                    fab.setBackgroundTintList(getResources().getColorStateList(R.color.gray_night));
+                    nightModeSwitch.setBackgroundResource(R.drawable.switch_night_selector);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        getWindow().setStatusBarColor(getResources().getColor(R.color.black_night));
+                    }
+                    for (int i = 0; i < 5; i++) {
+                        MyFragment myFragment = (MyFragment) myPagerAdapter.instantiateItem(viewPager, i);
+                        myFragment.getView().setBackgroundResource(R.color.black_night);
+                        RecyclerView recyclerView = myFragment.getRecyclerView();
+                        recyclerView.setBackgroundResource(R.color.black_night);
+                        for (int j = 0; j < myFragment.getList().size(); j++) {
+                            if (recyclerView.getChildAt(j) != null) {
+                                recyclerView.getChildAt(j).setBackgroundResource(
+                                        R.drawable.title_night_selector);
+                                TextView textView = (TextView) recyclerView.getChildAt(j)
+                                        .findViewById(R.id.recycler_title_text);
+                                textView.setTextColor(getResources().getColor(R.color.white));
+                            }
+                        }
+                    }
                 }
+
                 editor.apply();
 
-                WindowManager.LayoutParams params= new WindowManager.LayoutParams(
-                        WindowManager.LayoutParams.TYPE_APPLICATION,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                        PixelFormat.TRANSPARENT);
-                windowManager=(WindowManager)getSystemService(WINDOW_SERVICE);
-                windowManager.addView(nightModeView,params);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        recreate();
-                    }
-                }, 100);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        windowManager.removeViewImmediate(nightModeView);
-                    }
-                }, 1000);
                 break;
             default:
                 if (HttpUtil.isNetworkConnected(this)) {
@@ -260,7 +336,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        LinearLayout searchLL = (LinearLayout) findViewById(R.id.main_search_ll);
+        searchLL = (LinearLayout) findViewById(R.id.main_search_ll);
         searchLL.setOnClickListener(this);
     }
 
@@ -275,7 +351,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             fragmentList.add(fragment);
         }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager(), fragmentList, titles);
+        // 屏幕外缓存4页，防止卡顿
+        viewPager.setOffscreenPageLimit(4);
+        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, titles);
         viewPager.setAdapter(myPagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -385,6 +463,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
             }
         });
+
+        if (HttpUtil.isNetworkConnected(this)) {
+            new LoadBannerTask(bannerList, this, bannerTitleList).execute();
+        } else {
+            Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void initNavigation() {
@@ -461,8 +545,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 // 设定ViewPager高度
                 ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                MyFragment myFragment = (MyFragment)myPagerAdapter.
-                        instantiateItem(viewPager,viewPagerCurrentItem);
+                MyFragment myFragment = (MyFragment) myPagerAdapter.
+                        instantiateItem(viewPager, viewPagerCurrentItem);
                 RecyclerView recyclerView = myFragment.getRecyclerView();
                 if (myFragment.getList() != null) {
                     View lastView1 = recyclerView.getChildAt(myFragment.getList().size() - 1);
@@ -486,7 +570,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     new LoadBannerTask(bannerList, MainActivity.this, bannerTitleList,
                             pullToRefreshNestedScrollView).execute();
                     MyFragment myFragment = (MyFragment) myPagerAdapter.
-                            instantiateItem(viewPager,0);
+                            instantiateItem(viewPager, 0);
                     myFragment.refreshTitleList();
                 } else {
                     Snackbar.make(myNestedScrollView, "没有网络", Snackbar.LENGTH_SHORT).show();
@@ -497,7 +581,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initFab() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
+        fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab.setOnClickListener(this);
     }
 

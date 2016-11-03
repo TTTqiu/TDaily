@@ -18,6 +18,7 @@ import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.util.DensityUtil;
 import com.ttt.zhihudaily.util.HttpUtil;
+import com.tttqiu.library.TUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +58,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
             params.height= heightsPX[position];
         }
         holder.imageView.setLayoutParams(params);
-        Glide
-                .with(context)
-                .load(list.get(position).getImage())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(holder.imageView);
+//        Glide
+//                .with(context)
+//                .load(list.get(position).getImage())
+//                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                .into(holder.imageView);
+        TUtil.loadImageInto(context,list.get(position).getImage(),holder.imageView,
+                TUtil.DEFAULT,TUtil.DEFAULT);
         final int pos = holder.getAdapterPosition();
         if (myOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -18,6 +18,7 @@ import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.entity.TitleBean;
 import com.ttt.zhihudaily.myView.PullToRefreshNestedScrollView;
 import com.ttt.zhihudaily.util.HttpUtil;
+import com.tttqiu.library.TUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,8 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
             TextView textView=(TextView)bannerList.get(i).findViewById(R.id.banner_text);
             textView.setText(name);
             ImageView imageView=(ImageView)bannerList.get(i).findViewById(R.id.banner_image);
-            Glide.with(context).load(image).error(R.drawable.fail_image).into(imageView);
+//            Glide.with(context).load(image).error(R.drawable.fail_image).into(imageView);
+            TUtil.loadImageInto(context,image,imageView, TUtil.DEFAULT,TUtil.DEFAULT);
         }
 
         if(pullToRefreshNestedScrollView!=null){

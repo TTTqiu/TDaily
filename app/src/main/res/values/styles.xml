@@ -24,7 +24,8 @@
         <item name="navigationBackground">@color/white</item>
         <item name="navigationTextColor">@color/black_title_text</item>
         <item name="PreferenceBackground">@color/white</item>
-        <item name="nightModeSwitch">@drawable/night_mode</item>
+        <item name="nightModeSwitchSrc">@drawable/night_mode</item>
+        <item name="nightModeSwitchBG">@drawable/switch_day_selector</item>
     </style>
 
     <style name="MyTheme.NoActionBar.Night" parent="Theme.AppCompat.Light.NoActionBar">
@@ -46,7 +47,8 @@
         <item name="navigationBackground">@color/gray_night</item>
         <item name="navigationTextColor">@color/white</item>
         <item name="PreferenceBackground">@color/gray_search_history</item>
-        <item name="nightModeSwitch">@drawable/day_mode</item>
+        <item name="nightModeSwitchSrc">@drawable/day_mode</item>
+        <item name="nightModeSwitchBG">@drawable/switch_night_selector</item>
     </style>
 
     <style name="MyTheme.NoActionBar.FullScreen" parent="MyTheme.NoActionBar.Day">

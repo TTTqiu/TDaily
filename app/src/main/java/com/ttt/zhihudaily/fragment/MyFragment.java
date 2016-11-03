@@ -6,19 +6,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.activity.NewsActivity;
 import com.ttt.zhihudaily.adapter.MyRecyclerAdapter;
 import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
-import com.ttt.zhihudaily.myView.MyNestedScrollView;
-import com.ttt.zhihudaily.task.LoadBannerTask;
 import com.ttt.zhihudaily.task.LoadTitleTask;
 import com.ttt.zhihudaily.util.HttpUtil;
 import com.ttt.zhihudaily.util.Utility;
@@ -39,7 +35,7 @@ public class MyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_list, container, false);
+        view = inflater.inflate(R.layout.fragment, container, false);
         return view;
     }
 

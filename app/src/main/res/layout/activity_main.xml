@@ -110,7 +110,7 @@
                                 android:id="@+id/tab_center"
                                 android:layout_width="match_parent"
                                 android:layout_height="32dp"
-                                app:tabBackground="?attr/tabLayoutBackground"
+                                android:background="?attr/tabLayoutBackground"
                                 app:tabIndicatorColor="@color/white"
                                 app:tabMode="scrollable"
                                 app:tabSelectedTextColor="@color/white"
@@ -138,7 +138,7 @@
                         android:layout_height="32dp"
                         android:layout_alignParentTop="true"
                         android:visibility="gone"
-                        app:tabBackground="?attr/tabLayoutBackground"
+                        android:background="?attr/tabLayoutBackground"
                         app:tabIndicatorColor="@color/white"
                         app:tabMode="scrollable"
                         app:tabSelectedTextColor="@color/white"
@@ -176,13 +176,15 @@
 
                 <ImageButton
                     android:id="@+id/night_mode_switch"
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
                     android:scaleType="centerInside"
                     android:layout_alignRight="@+id/exit_ll"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/yellow"
-                    android:src="?attr/nightModeSwitch"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginRight="5dp"
+                    android:background="?attr/nightModeSwitchBG"
+                    android:src="?attr/nightModeSwitchSrc"
                     android:layout_above="@+id/exit_ll"/>
 
                 <LinearLayout

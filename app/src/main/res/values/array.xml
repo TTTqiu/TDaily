@@ -28,5 +28,6 @@
     <attr name="navigationBackground" format="reference|color"/>
     <attr name="navigationTextColor" format="reference|color"/>
     <attr name="PreferenceBackground" format="reference|color"/>
-    <attr name="nightModeSwitch" format="reference"/>
+    <attr name="nightModeSwitchSrc" format="reference"/>
+    <attr name="nightModeSwitchBG" format="reference"/>
 </resources>

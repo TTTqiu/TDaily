@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.entity.Title;
+import com.tttqiu.library.TUtil;
 
 import java.util.List;
 
@@ -41,8 +42,9 @@ public class MyListAdapter extends ArrayAdapter<Title>{
             viewHolder=(ViewHolder) view.getTag();
         }
         viewHolder.textView.setText(title.getName());
-        Glide.with(mContext).load(title.getImage()).placeholder(R.drawable.loading_image)
-                .error(R.drawable.fail_image).into(viewHolder.imageView);
+//        Glide.with(mContext).load(title.getImage()).placeholder(R.drawable.loading_image)
+//                .error(R.drawable.fail_image).into(viewHolder.imageView);
+        TUtil.loadImageInto(mContext,title.getImage(),viewHolder.imageView,TUtil.DEFAULT,TUtil.DEFAULT);
         return view;
     }
 
