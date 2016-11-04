@@ -21,7 +21,6 @@
     <attr name="searchStartBackground" format="reference"/>
     <attr name="tabLayoutBackground" format="reference|color"/>
     <attr name="fragmentBackground" format="reference|color"/>
-    <attr name="recyclerBackground" format="reference|color"/>
     <attr name="recyclerItemBackground" format="reference|color"/>
     <attr name="recyclerTextColor" format="reference|color"/>
     <attr name="fabBackground" format="reference|color"/>

@@ -17,7 +17,6 @@
         <item name="searchStartBackground">@drawable/search_start_day_selector</item>
         <item name="tabLayoutBackground">@color/purple</item>
         <item name="fragmentBackground">@color/gray_background</item>
-        <item name="recyclerBackground">@color/gray_background</item>
         <item name="recyclerItemBackground">@drawable/title_day_selector</item>
         <item name="recyclerTextColor">@color/black_title_text</item>
         <item name="fabBackground">@color/yellow</item>
@@ -40,7 +39,6 @@
         <item name="searchStartBackground">@drawable/search_start_night_selector</item>
         <item name="tabLayoutBackground">@color/gray_night</item>
         <item name="fragmentBackground">@color/black_night</item>
-        <item name="recyclerBackground">@color/black_night</item>
         <item name="recyclerItemBackground">@drawable/title_night_selector</item>
         <item name="recyclerTextColor">@color/white</item>
         <item name="fabBackground">@color/gray_night</item>

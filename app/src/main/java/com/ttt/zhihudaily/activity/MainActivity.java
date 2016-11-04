@@ -3,9 +3,6 @@ package com.ttt.zhihudaily.activity;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -22,11 +19,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,8 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.AnimationSet;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,7 +42,6 @@ import com.ttt.zhihudaily.myView.MyNestedScrollView;
 import com.ttt.zhihudaily.myView.PullToRefreshNestedScrollView;
 import com.ttt.zhihudaily.service.MyIntentService;
 import com.ttt.zhihudaily.task.LoadBannerTask;
-import com.ttt.zhihudaily.util.DensityUtil;
 import com.ttt.zhihudaily.util.HttpUtil;
 import com.ttt.zhihudaily.util.Utility;
 
@@ -85,8 +77,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ScheduledExecutorService executorService;
     private int viewPagerHeight;
     private Boolean prepareExit = false;
-    private WindowManager windowManager;
-    private View nightModeView;
     private FloatingActionButton fab;
     private Handler handler = new Handler() {
         @Override
@@ -139,111 +129,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         .show();
                 break;
             case R.id.night_mode_switch:
-//                nightModeView=new View(this);
-//                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-//                SharedPreferences.Editor editor = pref.edit();
-//                if (pref.getBoolean("isNightMode", false)) {
-//                    editor.putBoolean("isNightMode", false);
-//                    nightModeView.setBackgroundResource(R.drawable.day);
-//                } else {
-//                    editor.putBoolean("isNightMode", true);
-//                    nightModeView.setBackgroundResource(R.drawable.night);
-//                }
-//                editor.apply();
-//
-//                WindowManager.LayoutParams params= new WindowManager.LayoutParams(
-//                        WindowManager.LayoutParams.TYPE_APPLICATION,
-//                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-//                        PixelFormat.TRANSPARENT);
-//                windowManager=(WindowManager)getSystemService(WINDOW_SERVICE);
-//                windowManager.addView(nightModeView,params);
-//
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        recreate();
-//                    }
-//                }, 100);
-//
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        windowManager.removeViewImmediate(nightModeView);
-//                    }
-//                }, 1000);
-
                 SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = pref.edit();
-
                 if (pref.getBoolean("isNightMode", false)) {
                     editor.putBoolean("isNightMode", false);
-
-                    navigationView.setBackgroundResource(R.color.white);
-                    navigationView.setItemTextColor(getResources().getColorStateList(R.color.black_title_text));
-                    navigationView.getHeaderView(0).setBackgroundResource(R.color.purple);
-                    nightModeSwitch.setImageResource(R.drawable.night_mode);
-                    toolbar.setBackgroundResource(R.color.purple);
-                    searchLL.setBackgroundResource(R.drawable.search_day_selector_search);
-                    tabTop.setBackgroundResource(R.color.purple);
-                    tabCenter.setBackgroundResource(R.color.purple);
-                    fab.setBackgroundTintList(getResources().getColorStateList(R.color.yellow));
-                    nightModeSwitch.setBackgroundResource(R.drawable.switch_day_selector);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        getWindow().setStatusBarColor(getResources().getColor(R.color.purple));
-                    }
-                    for (int i = 0; i < 5; i++) {
-                        MyFragment myFragment = (MyFragment) myPagerAdapter.instantiateItem(viewPager, i);
-                        myFragment.getView().setBackgroundResource(R.color.gray_background);
-                        RecyclerView recyclerView = myFragment.getRecyclerView();
-                        recyclerView.setBackgroundResource(R.color.gray_background);
-                        for (int j = 0; j < myFragment.getList().size(); j++) {
-                            if (recyclerView.getChildAt(j) != null) {
-                                recyclerView.getChildAt(j).setBackgroundResource(
-                                        R.drawable.title_day_selector);
-                                TextView textView = (TextView) recyclerView.getChildAt(j)
-                                        .findViewById(R.id.recycler_title_text);
-                                textView.setTextColor(getResources().getColor(R.color.black_title_text));
-                            }
-                        }
-                    }
-
+                    changeToDayMode();
                 } else {
                     editor.putBoolean("isNightMode", true);
-
-                    navigationView.setBackgroundResource(R.color.gray_night);
-                    navigationView.setItemTextColor(getResources().getColorStateList(R.color.white));
-                    navigationView.getHeaderView(0).setBackgroundResource(R.color.black_night);
-                    nightModeSwitch.setImageResource(R.drawable.day_mode);
-                    toolbar.setBackgroundResource(R.color.black_night);
-                    searchLL.setBackgroundResource(R.drawable.search_night_selector_search);
-                    tabTop.setBackgroundResource(R.color.gray_night);
-                    tabCenter.setBackgroundResource(R.color.gray_night);
-                    fab.setBackgroundTintList(getResources().getColorStateList(R.color.gray_night));
-                    nightModeSwitch.setBackgroundResource(R.drawable.switch_night_selector);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                        getWindow().setStatusBarColor(getResources().getColor(R.color.black_night));
-                    }
-                    for (int i = 0; i < 5; i++) {
-                        MyFragment myFragment = (MyFragment) myPagerAdapter.instantiateItem(viewPager, i);
-                        myFragment.getView().setBackgroundResource(R.color.black_night);
-                        RecyclerView recyclerView = myFragment.getRecyclerView();
-                        recyclerView.setBackgroundResource(R.color.black_night);
-                        for (int j = 0; j < myFragment.getList().size(); j++) {
-                            if (recyclerView.getChildAt(j) != null) {
-                                recyclerView.getChildAt(j).setBackgroundResource(
-                                        R.drawable.title_night_selector);
-                                TextView textView = (TextView) recyclerView.getChildAt(j)
-                                        .findViewById(R.id.recycler_title_text);
-                                textView.setTextColor(getResources().getColor(R.color.white));
-                            }
-                        }
-                    }
+                    changeToNightMode();
                 }
-
                 editor.apply();
-
                 break;
             default:
                 if (HttpUtil.isNetworkConnected(this)) {
@@ -369,15 +264,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (myNestedScrollView.getScrollY() > banner.getHeight()) {
                     myNestedScrollView.scrollTo(0, banner.getHeight());
                 }
-
-                // 每次切换设置ViewPager高度
-                ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-                params.height = DensityUtil.dip2px(MainActivity.this, 3500);
-                viewPager.setLayoutParams(params);
-//                if (viewPagerHeight[position] != 0) {
-//                    params.height = viewPagerHeight[position];
-//                    viewPager.setLayoutParams(params);
-//                }
             }
 
             @Override
@@ -543,8 +429,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
                 }
 
-                // 设定ViewPager高度
-                ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+                // 限制只能滑到内容底部
                 MyFragment myFragment = (MyFragment) myPagerAdapter.
                         instantiateItem(viewPager, viewPagerCurrentItem);
                 RecyclerView recyclerView = myFragment.getRecyclerView();
@@ -553,9 +438,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     View lastView2 = recyclerView.getChildAt(myFragment.getList().size() - 2);
                     if (lastView1 != null && lastView2 != null) {
                         viewPagerHeight = Math.max(lastView1.getBottom(), lastView2.getBottom()) + 15;
-                        params.height = viewPagerHeight;
-                        viewPager.setLayoutParams(params);
                     }
+                }
+                int maxScroll=banner.getHeight()+(int)(tabCenter.getHeight()*1.7)+viewPagerHeight
+                        - getResources().getDisplayMetrics().heightPixels;
+                if (scrollY>=maxScroll){
+                    myNestedScrollView.scrollTo(0,maxScroll);
                 }
             }
         });
@@ -588,5 +476,65 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initService() {
         Intent intent = new Intent(this, MyIntentService.class);
         startService(intent);
+    }
+
+    private void changeToDayMode() {
+        navigationView.setBackgroundResource(R.color.white);
+        navigationView.setItemTextColor(getResources().getColorStateList(R.color.black_title_text));
+        navigationView.getHeaderView(0).setBackgroundResource(R.color.purple);
+        nightModeSwitch.setImageResource(R.drawable.night_mode);
+        toolbar.setBackgroundResource(R.color.purple);
+        searchLL.setBackgroundResource(R.drawable.search_day_selector_search);
+        tabTop.setBackgroundResource(R.color.purple);
+        tabCenter.setBackgroundResource(R.color.purple);
+        fab.setBackgroundTintList(getResources().getColorStateList(R.color.yellow));
+        nightModeSwitch.setBackgroundResource(R.drawable.switch_day_selector);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.purple));
+        }
+        for (int i = 0; i < 5; i++) {
+            MyFragment myFragment = (MyFragment) myPagerAdapter.instantiateItem(viewPager, i);
+            myFragment.getView().setBackgroundResource(R.color.gray_background);
+            RecyclerView recyclerView = myFragment.getRecyclerView();
+            for (int j = 0; j < myFragment.getList().size(); j++) {
+                View recyclerViewItem=recyclerView.getChildAt(j);
+                if (recyclerViewItem!= null) {
+                    recyclerViewItem.setBackgroundResource(R.drawable.title_day_selector);
+                    TextView textView = (TextView) recyclerViewItem.findViewById(R.id.recycler_title_text);
+                    textView.setTextColor(getResources().getColor(R.color.black_title_text));
+                }
+            }
+        }
+    }
+
+    private void changeToNightMode() {
+        navigationView.setBackgroundResource(R.color.gray_night);
+        navigationView.setItemTextColor(getResources().getColorStateList(R.color.white));
+        navigationView.getHeaderView(0).setBackgroundResource(R.color.black_night);
+        nightModeSwitch.setImageResource(R.drawable.day_mode);
+        toolbar.setBackgroundResource(R.color.black_night);
+        searchLL.setBackgroundResource(R.drawable.search_night_selector_search);
+        tabTop.setBackgroundResource(R.color.gray_night);
+        tabCenter.setBackgroundResource(R.color.gray_night);
+        fab.setBackgroundTintList(getResources().getColorStateList(R.color.gray_night));
+        nightModeSwitch.setBackgroundResource(R.drawable.switch_night_selector);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.black_night));
+        }
+        for (int i = 0; i < 5; i++) {
+            MyFragment myFragment = (MyFragment) myPagerAdapter.instantiateItem(viewPager, i);
+            myFragment.getView().setBackgroundResource(R.color.black_night);
+            RecyclerView recyclerView = myFragment.getRecyclerView();
+            for (int j = 0; j < myFragment.getList().size(); j++) {
+                View recyclerViewItem=recyclerView.getChildAt(j);
+                if (recyclerViewItem != null) {
+                    recyclerViewItem.setBackgroundResource(R.drawable.title_night_selector);
+                    TextView textView = (TextView) recyclerViewItem.findViewById(R.id.recycler_title_text);
+                    textView.setTextColor(getResources().getColor(R.color.white));
+                }
+            }
+        }
     }
 }

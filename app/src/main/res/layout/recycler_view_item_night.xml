@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:background="?attr/recyclerItemBackground">
+    android:background="@drawable/title_night_selector">
 
     <ImageView
         android:id="@+id/recycler_title_image"
@@ -24,6 +24,6 @@
         android:layout_marginBottom="8dp"
         android:layout_gravity="center_vertical"
         android:lines="3"
-        android:textColor="?attr/recyclerTextColor"/>
+        android:textColor="@color/white"/>
 
 </LinearLayout>

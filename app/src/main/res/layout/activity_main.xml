@@ -181,8 +181,8 @@
                     android:padding="8dp"
                     android:scaleType="centerInside"
                     android:layout_alignRight="@+id/exit_ll"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="7dp"
                     android:background="?attr/nightModeSwitchBG"
                     android:src="?attr/nightModeSwitchSrc"
                     android:layout_above="@+id/exit_ll"/>

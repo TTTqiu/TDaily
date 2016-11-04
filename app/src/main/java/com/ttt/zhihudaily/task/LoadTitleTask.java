@@ -2,19 +2,13 @@ package com.ttt.zhihudaily.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.ttt.zhihudaily.adapter.MyListAdapter;
 import com.ttt.zhihudaily.adapter.MyRecyclerAdapter;
 import com.ttt.zhihudaily.db.DBUtil;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.util.HttpUtil;
 import com.ttt.zhihudaily.entity.TitleBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LoadTitleTask extends AsyncTask<Void, Void, TitleBean> {
