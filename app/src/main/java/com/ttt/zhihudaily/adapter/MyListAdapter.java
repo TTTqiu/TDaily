@@ -1,6 +1,7 @@
 package com.ttt.zhihudaily.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,10 @@ import com.bumptech.glide.Glide;
 import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.entity.Title;
 import com.tttqiu.library.TUtil;
+import com.tttqiu.library.network.RequestQueue;
+import com.tttqiu.library.network.Response;
+import com.tttqiu.library.request.BitmapRequest;
+import com.tttqiu.library.request.Request;
 
 import java.util.List;
 
@@ -19,6 +24,7 @@ public class MyListAdapter extends ArrayAdapter<Title>{
 
     private int resource;
     private Context mContext;
+    private RequestQueue mRequestQueue;
 
     public MyListAdapter(Context context, int resource, List<Title> objects){
         super(context,resource,objects);
@@ -28,7 +34,7 @@ public class MyListAdapter extends ArrayAdapter<Title>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         View view;
         Title title = getItem(position);
         if (convertView == null) {
@@ -44,7 +50,20 @@ public class MyListAdapter extends ArrayAdapter<Title>{
         viewHolder.textView.setText(title.getName());
 //        Glide.with(mContext).load(title.getImage()).placeholder(R.drawable.loading_image)
 //                .error(R.drawable.fail_image).into(viewHolder.imageView);
-        TUtil.loadImageInto(mContext,title.getImage(),viewHolder.imageView,TUtil.DEFAULT,TUtil.DEFAULT);
+        mRequestQueue=TUtil.startRequestQueue(mContext,RequestQueue.DEFAULT_THREAD_NUM);
+        BitmapRequest request=new BitmapRequest(Request.GET,true,true,title.getImage(),
+                new Request.RequestListener<Bitmap>() {
+                    @Override
+                    public void onComplete(Bitmap result) {
+                        viewHolder.imageView.setImageBitmap(result);
+                    }
+
+                    @Override
+                    public void onError(Response response) {
+
+                    }
+                });
+        mRequestQueue.addRequest(request);
         return view;
     }
 

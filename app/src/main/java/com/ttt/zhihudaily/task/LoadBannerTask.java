@@ -58,8 +58,7 @@ public class LoadBannerTask extends AsyncTask<Void,Void,TitleBean>{
             TextView textView=(TextView)bannerList.get(i).findViewById(R.id.banner_text);
             textView.setText(name);
             ImageView imageView=(ImageView)bannerList.get(i).findViewById(R.id.banner_image);
-//            Glide.with(context).load(image).error(R.drawable.fail_image).into(imageView);
-            TUtil.loadImageInto(context,image,imageView, TUtil.DEFAULT,TUtil.DEFAULT);
+            Glide.with(context).load(image).error(R.drawable.fail_image).into(imageView);
         }
 
         if(pullToRefreshNestedScrollView!=null){

@@ -22,6 +22,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -91,13 +92,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         initToolbar();
 
+        Log.d("ppqq","111");
+
         // 显示欢迎页
         Intent intent = new Intent(this, SplashActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);
 
-        initBanner();
         initNavigation();
+        initBanner();
         initViewPager();
         refreshBannerAndTitleList();
         initTabLayout();
@@ -283,7 +286,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         bannerList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.banner_item, myNestedScrollView);
+            View view = LayoutInflater.from(this).inflate(R.layout.banner_item, null);
             view.setOnClickListener(this);
             bannerList.add(view);
         }
@@ -358,6 +361,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initNavigation() {
+        pullToRefreshNestedScrollView = (PullToRefreshNestedScrollView) findViewById(R.id.PTR_nested_scroll_view_main);
+        myNestedScrollView = (MyNestedScrollView) pullToRefreshNestedScrollView.getRefreshableView();
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close);

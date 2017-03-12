@@ -2,6 +2,7 @@ package com.ttt.zhihudaily.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,10 @@ import com.ttt.zhihudaily.R;
 import com.ttt.zhihudaily.entity.Title;
 import com.ttt.zhihudaily.util.DensityUtil;
 import com.tttqiu.library.TUtil;
+import com.tttqiu.library.network.RequestQueue;
+import com.tttqiu.library.network.Response;
+import com.tttqiu.library.request.BitmapRequest;
+import com.tttqiu.library.request.Request;
 
 import java.util.List;
 
@@ -23,6 +28,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private Context context;
     private MyOnItemClickListener myOnItemClickListener;
     private int heightsPX[]=new int[25];
+    private RequestQueue mRequestQueue;
 
     public MyRecyclerAdapter(Context context, List<Title> list) {
         super();
@@ -47,7 +53,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.textView.setText(list.get(position).getName());
         // 为imageView设置随机高度
         ViewGroup.LayoutParams params = holder.imageView.getLayoutParams();
@@ -63,8 +69,21 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
 //                .load(list.get(position).getImage())
 //                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
 //                .into(holder.imageView);
-        TUtil.loadImageInto(context,list.get(position).getImage(),holder.imageView,
-                TUtil.DEFAULT,TUtil.DEFAULT);
+        mRequestQueue=TUtil.startRequestQueue(context,RequestQueue.DEFAULT_THREAD_NUM);
+        BitmapRequest request=new BitmapRequest(Request.GET,true,true,list.get(position).getImage(),
+                new Request.RequestListener<Bitmap>() {
+                    @Override
+                    public void onComplete(Bitmap result) {
+                        holder.imageView.setImageBitmap(result);
+                    }
+
+                    @Override
+                    public void onError(Response response) {
+
+                    }
+                });
+        mRequestQueue.addRequest(request);
+
         final int pos = holder.getAdapterPosition();
         if (myOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
