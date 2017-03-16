@@ -25,3 +25,11 @@
 ## 应用截图：
 
 ![image](https://github.com/TTTqiu/TDaily/blob/master/GIF/GIF1.gif)
+
+![image](https://github.com/TTTqiu/TDaily/blob/master/GIF/GIF2.gif)
+
+![image](https://github.com/TTTqiu/TDaily/blob/master/GIF/GIF3.gif)
+
+![image](https://github.com/TTTqiu/TDaily/blob/master/GIF/GIF4.gif)
+
+![image](https://github.com/TTTqiu/TDaily/blob/master/GIF/GIF5.gif)
